@@ -1,0 +1,18 @@
+{
+  "extends" : ["@visionappscz/eslint-config-visionapps"],
+  "env": {
+    "browser": true,
+    "jest": true,
+    "serviceworker": true
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "import/prefer-default-export": "off"
+      }
+    }
+  ]
+}

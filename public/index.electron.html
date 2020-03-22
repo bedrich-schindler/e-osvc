@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval';" />
+
+    <title>e-OSVČ</title>
+
+    <style>
+      body {
+        margin: 0;
+        font: 12px Lato, Helvetica, Roboto, Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .app {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+    <style>
+      @-webkit-keyframes spin {
+        from {
+          -webkit-transform: scale(3) rotate(0deg);
+          transform: scale(3) rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: scale(3) rotate(360deg);
+          transform: scale(3) rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        from {
+          -webkit-transform: scale(3) rotate(0deg);
+          transform: scale(3) rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: scale(3) rotate(360deg);
+          transform: scale(3) rotate(360deg);
+        }
+      }
+
+      .loader-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <body>
+  <div id="app" class="app">
+    <div class="loader-container">
+      Loading
+    </div>
+  </div>
+
+  <script src="./generated/bundle.electron.js?__ASSET_VERSION__"></script>
+  </body>
+</html>

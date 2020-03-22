@@ -5,7 +5,9 @@ module.exports = (env, argv) => ({
   devServer: {
     contentBase: './public',
     disableHostCheck: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: 'index.web.html',
+    },
     host: '0.0.0.0',
     inline: true,
   },
@@ -14,7 +16,7 @@ module.exports = (env, argv) => ({
     : false,
   entry: {
     bundle: [
-      Path.join(__dirname, 'src/index.jsx'),
+      Path.join(__dirname, 'src/index.web.js'),
     ],
   },
   module: {

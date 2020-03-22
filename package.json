@@ -1,15 +1,48 @@
 {
   "private": true,
   "name": "e-osvc",
+  "description": "Application for management of self-employeed people",
   "version": "0.1.0",
   "license": "MIT",
-  "author": "Bedřich Schindler <bedrich.schindler@gmail.com>",
-  "description": "Application for management of self-employeed people",
+  "author": {
+    "email": "bedrich.schindler@gmail.com",
+    "name": "Bedřich Schindler"
+  },
+  "contributors": [
+    {
+      "email": "bedrich.schindler@gmail.com",
+      "name": "Bedřich Schindler"
+    }
+  ],
+  "main": "src/electron.esm.js",
+  "build": {
+    "appId": "com.schindler.e-osvc",
+    "productName": "e-OSVČ",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  },
   "engines": {
     "node": ">=12.16.1",
     "npm": ">=6.13.4"
   },
-  "main": "index.js",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
@@ -27,6 +60,8 @@
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.4",
     "css-loader": "^3.4.2",
+    "electron": "^8.1.1",
+    "electron-builder": "^22.4.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
@@ -37,6 +72,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "esm": "^3.2.25",
     "fetch-mock": "^9.2.1",
     "file-loader": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
@@ -55,10 +91,13 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --config webpack.config.web.js --mode production",
+    "build-electron": "webpack --config webpack.config.electron.js --mode production",
+    "build-and-pack-electron": "npm run build-electron && electron-builder -mlw",
     "eslint": "eslint --ext js,jsx src",
     "jest": "jest  --passWithNoTests",
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --config webpack.config.web.js --mode development",
+    "start-electron": "electron .",
     "stylelint": "stylelint \"src/**/*.scss\" \"public/css/*.css\" --config stylelint.config.js",
     "test": "npm run eslint && npm run stylelint && npm run jest"
   },

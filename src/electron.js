@@ -1,17 +1,18 @@
+// eslint-disable-next-line
 import {
   app,
-  BrowserWindow
+  BrowserWindow,
 } from 'electron';
 
-let mainWindow ;
+let mainWindow;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 1024,
     height: 768,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
+    width: 1024,
   });
 
   mainWindow.loadFile('./public/index.electron.html');

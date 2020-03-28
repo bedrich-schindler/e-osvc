@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering renders correctly 1`] = `
+<WithStyles(ForwardRef(AppBar))
+  className=""
+  position="static"
+>
+  <WithStyles(ForwardRef(Toolbar))
+    disableGutters={true}
+  >
+    <div
+      className="menuButton"
+    >
+      <WithStyles(ForwardRef(IconButton))
+        color="inherit"
+        onClick={[Function]}
+      >
+        <MenuIcon />
+      </WithStyles(ForwardRef(IconButton))>
+    </div>
+    <span
+      className="title"
+    >
+      Title
+    </span>
+    <div
+      className="accountMenuButton"
+    >
+      <span
+        className="userName"
+      >
+        Name
+      </span>
+      <WithStyles(ForwardRef(IconButton))
+        color="inherit"
+        onClick={[Function]}
+      >
+        <AccountCircleIcon />
+      </WithStyles(ForwardRef(IconButton))>
+      <WithStyles(ForwardRef(Menu))
+        anchorEl={null}
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(MenuItem))
+          onClick={[Function]}
+        >
+          Odhlásit se
+        </WithStyles(ForwardRef(MenuItem))>
+      </WithStyles(ForwardRef(Menu))>
+    </div>
+  </WithStyles(ForwardRef(Toolbar))>
+</WithStyles(ForwardRef(AppBar))>
+`;
+
+exports[`rendering renders correctly with opened menu 1`] = `
+<WithStyles(ForwardRef(AppBar))
+  className="undefined"
+  position="static"
+>
+  <WithStyles(ForwardRef(Toolbar))
+    disableGutters={false}
+  >
+    <span
+      className="title"
+    >
+      Title
+    </span>
+    <div
+      className="accountMenuButton"
+    >
+      <span
+        className="userName"
+      >
+        Name
+      </span>
+      <WithStyles(ForwardRef(IconButton))
+        color="inherit"
+        onClick={[Function]}
+      >
+        <AccountCircleIcon />
+      </WithStyles(ForwardRef(IconButton))>
+      <WithStyles(ForwardRef(Menu))
+        anchorEl={null}
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(MenuItem))
+          onClick={[Function]}
+        >
+          Odhlásit se
+        </WithStyles(ForwardRef(MenuItem))>
+      </WithStyles(ForwardRef(Menu))>
+    </div>
+  </WithStyles(ForwardRef(Toolbar))>
+</WithStyles(ForwardRef(AppBar))>
+`;

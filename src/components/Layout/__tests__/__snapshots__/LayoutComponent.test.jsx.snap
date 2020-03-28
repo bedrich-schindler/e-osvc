@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering renders correctly 1`] = `
+<div>
+  <div
+    className="root"
+  >
+    <WithStyles(Header)
+      isMenuOpened={false}
+      onLogout={[Function]}
+      onOpenMenu={[Function]}
+      title="eOSVČ"
+      user={
+        Object {
+          "name": "Name",
+        }
+      }
+    />
+    <WithStyles(withRouter(Menu))
+      isMenuOpened={false}
+      onCloseMenu={[Function]}
+    />
+  </div>
+  <main
+    className="content"
+  >
+    <p>
+      Content
+    </p>
+  </main>
+</div>
+`;

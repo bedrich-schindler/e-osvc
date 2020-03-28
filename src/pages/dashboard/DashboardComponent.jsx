@@ -1,18 +1,9 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withTranslation } from 'react-i18next';
-import styles from './styles.scss';
+import { Layout } from '../../components/Layout';
 
-const DashboardComponent = ({ t }) => (
-  <div>
-    <h1 className={styles.title}>
-      {t('general:title')}
-    </h1>
-  </div>
+const DashboardComponent = () => (
+  <Layout />
 );
 
-DashboardComponent.propTypes = {
-  t: PropTypes.func.isRequired,
-};
+export default DashboardComponent;
 
-export default withTranslation()(DashboardComponent);

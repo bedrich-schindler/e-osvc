@@ -1,0 +1,21 @@
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 3.5rem;
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+h2 {
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+h2 + hr {
+  margin-bottom: 2.5rem;
+  border-top: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}

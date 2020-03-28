@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering renders correctly 1`] = `
+<WithStyles(ForwardRef(Drawer))
+  className="undefined"
+  classes={
+    Object {
+      "paper": "undefined",
+    }
+  }
+  open={false}
+  variant="permanent"
+>
+  <div>
+    <WithStyles(ForwardRef(IconButton))
+      onClick={[Function]}
+    >
+      <ChevronLeftIcon />
+    </WithStyles(ForwardRef(IconButton))>
+  </div>
+  <WithStyles(ForwardRef(Divider)) />
+  <WithStyles(ForwardRef(List))>
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <DashboardIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Přehled"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+  </WithStyles(ForwardRef(List))>
+</WithStyles(ForwardRef(Drawer))>
+`;
+
+exports[`rendering renders correctly with opened menu 1`] = `
+<WithStyles(ForwardRef(Drawer))
+  className=""
+  classes={
+    Object {
+      "paper": "",
+    }
+  }
+  open={true}
+  variant="permanent"
+>
+  <div>
+    <WithStyles(ForwardRef(IconButton))
+      onClick={[Function]}
+    >
+      <ChevronLeftIcon />
+    </WithStyles(ForwardRef(IconButton))>
+  </div>
+  <WithStyles(ForwardRef(Divider)) />
+  <WithStyles(ForwardRef(List))>
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <DashboardIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Přehled"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+  </WithStyles(ForwardRef(List))>
+</WithStyles(ForwardRef(Drawer))>
+`;

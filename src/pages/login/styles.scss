@@ -1,0 +1,33 @@
+$layout-spacing: 2.5rem;
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 2.5em;
+}
+
+.loginBox {
+  max-width: 400px;
+  padding: $layout-spacing;
+}
+
+.title {
+  margin-bottom: $layout-spacing / 2;
+}
+
+.alert {
+  margin-bottom: $layout-spacing / 4;
+}
+
+.form {
+  width: 100%;
+}
+
+.loginButton {
+  margin: $layout-spacing / 3 0;
+}

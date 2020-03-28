@@ -1,0 +1,21 @@
+@import '../../styles/variables';
+
+.root {
+  display: flex;
+}
+
+.content {
+  padding: 2rem 2rem 2rem 6rem;
+}
+
+@media screen and (max-width: 767px) {
+  .content {
+    padding: 2rem;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .content {
+    padding: 1rem;
+  }
+}

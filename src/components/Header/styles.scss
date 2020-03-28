@@ -1,0 +1,45 @@
+.accountMenuButton {
+  position: absolute;
+  right: 12px;
+}
+
+.menuButton {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.title {
+  max-width: 20rem;
+  margin-left: 2.5rem;
+  font-weight: 500;
+  font-size: 1.25rem;
+  transform: scale(1);
+  transition: max-width linear 0.1s, transform linear 0.1s;
+}
+
+.userName {
+  position: relative;
+  top: 0.1rem;
+  margin-right: 1rem;
+  font-weight: 500;
+}
+
+@media all and (max-width: 767px) {
+  [class*="Header-appBarWithOpenedMenu"] .title {
+    max-width: 0;
+    overflow: hidden;
+    transform: scale(0);
+  }
+}
+
+@media all and (max-width: 374px) {
+  .title {
+    display: none;
+  }
+}
+
+@media all and (max-width: 599px) {
+  .userName {
+    display: none;
+  }
+}

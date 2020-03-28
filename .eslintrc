@@ -5,10 +5,15 @@
     "jest": true,
     "serviceworker": true
   },
+  "rules": {
+    "react/forbid-prop-types": "off"
+  },
   "overrides": [
     {
       "files": [
-        "**/index.js"
+        "**/index.js",
+        "**/resources/*/*.js",
+        "**/services/*.js"
       ],
       "rules": {
         "import/prefer-default-export": "off"

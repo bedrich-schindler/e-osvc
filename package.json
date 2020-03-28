@@ -17,7 +17,7 @@
   "main": "src/electron.esm.js",
   "build": {
     "appId": "com.schindler.e-osvc",
-    "productName": "e-OSVČ",
+    "productName": "eOSVČ",
     "dmg": {
       "contents": [
         {
@@ -102,15 +102,21 @@
     "test": "npm run eslint && npm run stylelint && npm run jest"
   },
   "dependencies": {
+    "@material-ui/core": "^4.9.7",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.47",
+    "classnames": "^2.2.6",
     "history": "^4.10.1",
     "i18next": "^19.3.3",
     "immutable": "^4.0.0-rc.12",
+    "is-electron": "^2.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.3.4",
     "react-immutable": "^0.1.3",
     "react-redux": "^7.2.0",
+    "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
     "redux-api-middleware": "^3.2.1",
@@ -118,6 +124,7 @@
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
+    "shortid": "^2.2.15",
     "validator": "^13.0.0"
   }
 }

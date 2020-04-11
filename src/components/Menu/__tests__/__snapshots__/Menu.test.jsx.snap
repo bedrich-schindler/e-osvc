@@ -31,6 +31,18 @@ exports[`rendering renders correctly 1`] = `
         primary="Přehled"
       />
     </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <PeopleIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Klienti"
+      />
+    </WithStyles(ForwardRef(ListItem))>
   </WithStyles(ForwardRef(List))>
 </WithStyles(ForwardRef(Drawer))>
 `;
@@ -64,6 +76,18 @@ exports[`rendering renders correctly with opened menu 1`] = `
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Přehled"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <PeopleIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Klienti"
       />
     </WithStyles(ForwardRef(ListItem))>
   </WithStyles(ForwardRef(List))>

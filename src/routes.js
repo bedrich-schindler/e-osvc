@@ -4,6 +4,11 @@ const getComponent = (
 ) => require(`./pages/${folderName}`)[`${componentName}Page`]; // eslint-disable-line
 
 export default {
+  clients: {
+    component: () => getComponent('client', 'Clients'),
+    path: '/klienti',
+    title: 'Klienti',
+  },
   dashboard: {
     component: () => getComponent('dashboard', 'Dashboard'),
     path: '/',

@@ -20,6 +20,11 @@ export default {
     path: '/prihlaseni',
     title: 'Přihlášení',
   },
+  projects: {
+    component: () => getComponent('project', 'Projects'),
+    path: '/projekty',
+    title: 'Projekty',
+  },
   registration: {
     component: () => getComponent('registration', 'Registration'),
     isAnonymous: true,

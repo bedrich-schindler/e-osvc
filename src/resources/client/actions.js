@@ -4,7 +4,12 @@ import { selectToken } from '../auth';
 import * as actionTypes from './actionTypes';
 
 export const addClient = (data) => createApiAction({
-  body: data,
+  body: {
+    ...data,
+    cidNumber: data.cidNumber.length > 0 ? parseInt(data.cidNumber, 10) : null,
+    postalCode: parseInt(data.postalCode, 10),
+    taxNumber: data.taxNumber.length > 0 ? parseInt(data.taxNumber, 10) : null,
+  },
   endpoint: '/clients',
   method: 'POST',
   types: [
@@ -25,7 +30,12 @@ export const deleteClient = (clientId) => createApiAction({
 });
 
 export const editClient = (clientId, data) => createApiAction({
-  body: data,
+  body: {
+    ...data,
+    cidNumber: data.cidNumber.length > 0 ? parseInt(data.cidNumber, 10) : null,
+    postalCode: parseInt(data.postalCode, 10),
+    taxNumber: data.taxNumber.length > 0 ? parseInt(data.taxNumber, 10) : null,
+  },
   endpoint: `/clients/${clientId}`,
   method: 'PUT',
   types: [

@@ -52,8 +52,10 @@ const ClientsComponent = ({
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Jméno</TableCell>
+                <TableCell>Adresa</TableCell>
+                <TableCell>IČ</TableCell>
+                <TableCell>DIČ</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -67,8 +69,18 @@ const ClientsComponent = ({
               )}
               {clients.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell>{row.id}</TableCell>
                   <TableCell>{row.name}</TableCell>
+                  <TableCell>
+                    {row.street}
+                    ,
+                    {' '}
+                    {row.city}
+                    ,
+                    {' '}
+                    {row.postalCode}
+                  </TableCell>
+                  <TableCell>{row.cidNumber || '-'}</TableCell>
+                  <TableCell>{row.taxNumber || '-'}</TableCell>
                   <TableCell align="right">
                     <IconButton
                       onClick={() => {

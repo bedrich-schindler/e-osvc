@@ -69,9 +69,8 @@ const InvoicesComponent = ({
                       <DetailIcon />
                     </IconButton>
                     <IconButton
-                      disabled
                       onClick={() => {
-                        // TODO: Implement invoice edit
+                        history.push(routes.invoiceEdit.path.replace(':id', row.id));
                       }}
                     >
                       <EditIcon />

@@ -14,9 +14,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect } from 'react';
 import { Layout } from '../../components/Layout';
+import routes from '../../routes';
 import styles from './styles.scss';
 
 const InvoicesComponent = ({
+  history,
   invoice,
   getInvoice,
   getInvoiceIsPending,
@@ -60,9 +62,10 @@ const InvoicesComponent = ({
             >
               <Grid item>
                 <Button
-                  color="primary"
-                  // TODO: Implement invoice edit
-                  disabled={!invoice || getInvoiceIsPending || true}
+                  disabled={!invoice || getInvoiceIsPending}
+                  onClick={() => {
+                    history.push(routes.invoiceEdit.path.replace(':id', match.params.id));
+                  }}
                   startIcon={<EditIcon />}
                   variant="contained"
                 >
@@ -264,6 +267,9 @@ InvoicesComponent.defaultProps = {
 InvoicesComponent.propTypes = {
   getInvoice: PropTypes.func.isRequired,
   getInvoiceIsPending: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   invoice: PropTypes.shape({
     clientInfo: PropTypes.shape({
       cidNumber: PropTypes.number,

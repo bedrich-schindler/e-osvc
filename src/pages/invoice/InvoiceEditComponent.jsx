@@ -50,6 +50,7 @@ const initialFormData = {
       quantityUnit: null,
     },
   ],
+  invoicePaymentDate: null,
   paymentVariableSymbol: null,
   projectInfo: {
     name: null,
@@ -67,7 +68,7 @@ const initialFormData = {
   },
 };
 
-class InvoiceAddComponent extends React.Component {
+class InvoiceEditComponent extends React.Component {
   constructor(props) {
     super(props);
 
@@ -85,6 +86,7 @@ class InvoiceAddComponent extends React.Component {
     this.changeProjectHandler = this.changeProjectHandler.bind(this);
     this.changeInvoiceDateHandler = this.changeInvoiceDateHandler.bind(this);
     this.changeInvoiceDueDateHandler = this.changeInvoiceDueDateHandler.bind(this);
+    this.changeInvoicePaymentDateHandler = this.changeInvoicePaymentDateHandler.bind(this);
     this.saveHandler = this.saveHandler.bind(this);
   }
 
@@ -149,31 +151,44 @@ class InvoiceAddComponent extends React.Component {
   componentDidMount() {
     const {
       getClients,
+      getInvoice,
       getProjects,
       getUser,
+      match,
     } = this.props;
 
-    getClients();
-    getProjects();
-    getUser().then((response) => {
+    getInvoice(match.params.id).then((response) => {
       const { payload } = response;
 
       this.setState((prevState) => ({
         formData: {
-          ...prevState.formData,
-          userInfo: {
-            bankAccount: payload.bankAccount,
-            cidNumber: payload.cidNumber,
-            city: payload.city,
-            firstName: payload.firstName,
-            lastName: payload.lastName,
-            postalCode: payload.postalCode,
-            street: payload.street,
-            taxNumber: payload.taxNumber,
+          ...payload,
+          clientInfo: {
+            ...payload.clientInfo,
+            original: payload.clientInfo.original.id,
+          },
+          invoiceDate: payload.invoiceDate ? new Date(payload.invoiceDate) : null,
+          invoiceDueDate: payload.invoiceDueDate ? new Date(payload.invoiceDueDate) : null,
+          invoicePaymentDate: payload.invoicePaymentDate ? new Date(payload.invoicePaymentDate) : null,
+          projectInfo: {
+            ...payload.projectInfo,
+            original: payload.projectInfo.original.id,
+          },
+        },
+        formValidity: {
+          ...prevState.formValidity,
+          elements: {
+            ...prevState.formValidity.elements,
+            invoiceItems: payload.invoiceItems.map(
+              () => cloneDeep(initialFormData.invoiceItems[0]),
+            ),
           }
         }
       }))
-    });
+    })
+    getClients();
+    getProjects();
+    getUser();
   }
 
   changeHandler(e) {
@@ -237,10 +252,20 @@ class InvoiceAddComponent extends React.Component {
     })
   }
 
+  changeInvoicePaymentDateHandler(value) {
+    return this.changeHandler({
+      target: {
+        name: 'invoicePaymentDate',
+        value: value ? new Date(value) : null,
+      },
+    })
+  }
+
   async saveHandler() {
     const {
-      addInvoice,
+      editInvoice,
       history,
+      match,
     } = this.props;
     const { formData } = this.state;
 
@@ -265,7 +290,7 @@ class InvoiceAddComponent extends React.Component {
       return;
     }
 
-    const response = await addInvoice(formData);
+    const response = await editInvoice(match.params.id, formData);
 
     if (response.error) {
       const { violations } = response.payload.response;
@@ -289,11 +314,13 @@ class InvoiceAddComponent extends React.Component {
 
   render() {
     const {
-      addInvoiceIsPending,
       clients,
       getClientsIsPending,
+      getInvoiceIsPending,
       getProjectsIsPending,
       getUserIsPending,
+      editInvoiceIsPending,
+      invoice,
       projects,
       user,
     } = this.props;
@@ -321,19 +348,39 @@ class InvoiceAddComponent extends React.Component {
           >
             <Grid item>
               <h1 style={{ margin: 0 }}>
-                Přidat fakturu
+                Upravit fakturu
               </h1>
             </Grid>
             <Grid item>
-              <Button
-                color="primary"
-                disabled={addInvoiceIsPending}
-                onClick={this.saveHandler}
-                startIcon={<SaveIcon />}
-                variant="contained"
+              <Grid
+                alignItems="center"
+                container
+                direction="row"
+                justify="space-between"
+                spacing={1}
               >
-                Uložit
-              </Button>
+                <Grid item>
+                  <Button
+                    color="primary"
+                    disabled={!invoice || getInvoiceIsPending || editInvoiceIsPending}
+                    onClick={this.saveHandler}
+                    startIcon={<SaveIcon />}
+                    variant="contained"
+                  >
+                    Uložit
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    // TODO: Implement invoice remove
+                    disabled={!invoice || getInvoiceIsPending || true}
+                    startIcon={<DeleteIcon />}
+                    variant="contained"
+                  >
+                    Smazat
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
@@ -702,6 +749,22 @@ class InvoiceAddComponent extends React.Component {
                       'aria-label': 'Změnit datum',
                     }}
                   />
+                  <KeyboardDatePicker
+                    disableToolbar
+                    error={Boolean(formValidity.elements.invoicePaymentDate)}
+                    fullWidth
+                    helperText={formValidity.elements.invoicePaymentDate}
+                    variant="inline"
+                    format="dd. MM. yyyy"
+                    margin="normal"
+                    id="invoicePaymentDate"
+                    label="Datum zaplacení"
+                    value={formData.invoicePaymentDate}
+                    onChange={this.changeInvoicePaymentDateHandler}
+                    KeyboardButtonProps={{
+                      'aria-label': 'Změnit datum',
+                    }}
+                  />
                 </Box>
               </Paper>
             </Grid>
@@ -833,15 +896,14 @@ class InvoiceAddComponent extends React.Component {
   }
 }
 
-InvoiceAddComponent.defaultProps = {
+InvoiceEditComponent.defaultProps = {
   clients: null,
+  invoice: null,
   projects: null,
   user: null,
 };
 
-InvoiceAddComponent.propTypes = {
-  addInvoice: PropTypes.func.isRequired,
-  addInvoiceIsPending: PropTypes.bool.isRequired,
+InvoiceEditComponent.propTypes = {
   clients: PropTypes.arrayOf(PropTypes.shape({
     cidNumber: PropTypes.number,
     city: PropTypes.string.isRequired,
@@ -851,14 +913,55 @@ InvoiceAddComponent.propTypes = {
     street: PropTypes.string.isRequired,
     taxNumber: PropTypes.number,
   })),
+  editInvoice: PropTypes.func.isRequired,
+  editInvoiceIsPending: PropTypes.bool.isRequired,
   getClients: PropTypes.func.isRequired,
   getClientsIsPending: PropTypes.bool.isRequired,
+  getInvoice: PropTypes.func.isRequired,
+  getInvoiceIsPending: PropTypes.bool.isRequired,
   getProjects: PropTypes.func.isRequired,
   getProjectsIsPending: PropTypes.bool.isRequired,
   getUser: PropTypes.func.isRequired,
   getUserIsPending: PropTypes.bool.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
+  }).isRequired,
+  invoice: PropTypes.shape({
+    clientInfo: PropTypes.shape({
+      cidNumber: PropTypes.number,
+      city: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      postalCode: PropTypes.number.isRequired,
+      street: PropTypes.string.isRequired,
+      taxNumber: PropTypes.number,
+    }).isRequired,
+    id: PropTypes.number.isRequired,
+    invoiceDate: PropTypes.object.isRequired,
+    invoiceDueDate: PropTypes.object.isRequired,
+    invoiceIdentifier: PropTypes.string.isRequired,
+    invoiceItems: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      pricePerQuantityUnit: PropTypes.number.isRequired,
+      quantity: PropTypes.number.isRequired,
+      quantityUnit: PropTypes.string,
+    })).isRequired,
+    invoicePaymentDate: PropTypes.object,
+    paymentVariableSymbol: PropTypes.number.isRequired,
+    userInfo: PropTypes.shape({
+      bankAccount: PropTypes.string.isRequired,
+      cidNumber: PropTypes.number.isRequired,
+      city: PropTypes.string.isRequired,
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      postalCode: PropTypes.number.isRequired,
+      street: PropTypes.string.isRequired,
+      taxNumber: PropTypes.number,
+    }).isRequired,
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -877,5 +980,5 @@ InvoiceAddComponent.propTypes = {
   }),
 };
 
-export default InvoiceAddComponent;
+export default InvoiceEditComponent;
 

@@ -315,12 +315,16 @@ class InvoiceEditComponent extends React.Component {
   render() {
     const {
       clients,
+      deleteInvoice,
+      deleteInvoiceIsPending,
       getClientsIsPending,
       getInvoiceIsPending,
       getProjectsIsPending,
       getUserIsPending,
       editInvoiceIsPending,
+      history,
       invoice,
+      match,
       projects,
       user,
     } = this.props;
@@ -372,8 +376,12 @@ class InvoiceEditComponent extends React.Component {
                 </Grid>
                 <Grid item>
                   <Button
-                    // TODO: Implement invoice remove
-                    disabled={!invoice || getInvoiceIsPending || true}
+                    disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
+                    onClick={() => {
+                      deleteInvoice(match.params.id).then(() => {
+                        history.push(routes.invoices.path);
+                      });
+                    }}
                     startIcon={<DeleteIcon />}
                     variant="contained"
                   >
@@ -913,6 +921,8 @@ InvoiceEditComponent.propTypes = {
     street: PropTypes.string.isRequired,
     taxNumber: PropTypes.number,
   })),
+  deleteInvoice: PropTypes.func.isRequired,
+  deleteInvoiceIsPending: PropTypes.bool.isRequired,
   editInvoice: PropTypes.func.isRequired,
   editInvoiceIsPending: PropTypes.bool.isRequired,
   getClients: PropTypes.func.isRequired,

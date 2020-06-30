@@ -5,8 +5,10 @@ import {
   selectGetClientsIsPending,
 } from '../../resources/client';
 import {
+  deleteInvoice,
   editInvoice,
   getInvoice,
+  selectDeleteInvoiceIsPending,
   selectEditInvoiceIsPending,
   selectGetInvoice,
   selectGetInvoiceIsPending,
@@ -25,6 +27,7 @@ import Component from './InvoiceEditComponent';
 
 const mapStateToProps = (state) => ({
   clients: selectGetClients(state),
+  deleteInvoiceIsPending: selectDeleteInvoiceIsPending(state),
   editInvoiceIsPending: selectEditInvoiceIsPending(state),
   getClientsIsPending: selectGetClientsIsPending(state),
   getInvoiceIsPending: selectGetInvoiceIsPending(state),
@@ -36,6 +39,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  deleteInvoice: (invoiceId) => dispatch(deleteInvoice(invoiceId)),
   editInvoice: (invoiceId, data) => dispatch(editInvoice(invoiceId, data)),
   getClients: () => dispatch(getClients()),
   getInvoice: (invoiceId) => dispatch(getInvoice(invoiceId)),

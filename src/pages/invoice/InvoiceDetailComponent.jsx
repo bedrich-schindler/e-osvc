@@ -17,7 +17,9 @@ import { Layout } from '../../components/Layout';
 import routes from '../../routes';
 import styles from './styles.scss';
 
-const InvoicesComponent = ({
+const InvoiceDetailComponent = ({
+  deleteInvoice,
+  deleteInvoiceIsPending,
   history,
   invoice,
   getInvoice,
@@ -74,8 +76,14 @@ const InvoicesComponent = ({
               </Grid>
               <Grid item>
                 <Button
-                  // TODO: Implement invoice remove
-                  disabled={!invoice || getInvoiceIsPending || true}
+                  disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
+                  onClick={() => {
+                    deleteInvoice(match.params.id).then((response) => {
+                      history.push(routes.invoices.path);
+
+                      return response;
+                    });
+                  }}
                   startIcon={<DeleteIcon />}
                   variant="contained"
                 >
@@ -260,11 +268,13 @@ const InvoicesComponent = ({
   );
 };
 
-InvoicesComponent.defaultProps = {
+InvoiceDetailComponent.defaultProps = {
   invoice: null,
 };
 
-InvoicesComponent.propTypes = {
+InvoiceDetailComponent.propTypes = {
+  deleteInvoice: PropTypes.func.isRequired,
+  deleteInvoiceIsPending: PropTypes.bool.isRequired,
   getInvoice: PropTypes.func.isRequired,
   getInvoiceIsPending: PropTypes.bool.isRequired,
   history: PropTypes.shape({
@@ -309,5 +319,5 @@ InvoicesComponent.propTypes = {
   }).isRequired,
 };
 
-export default InvoicesComponent;
+export default InvoiceDetailComponent;
 

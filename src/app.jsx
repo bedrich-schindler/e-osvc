@@ -11,6 +11,8 @@ import {
   Switch,
 } from 'react-router-dom';
 import teal from '@material-ui/core/colors/teal';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import {
   AuthorizedRoute,
   UnauthorizedRoute,
@@ -41,31 +43,33 @@ export default (store, history, isWebVersion = true) => {
     <Provider store={store}>
       <RouterComponent history={history}>
         <MuiThemeProvider theme={theme}>
-          <StylesProvider injectFirst>
-            <Switch>
-              {Object.values(routes).map((routeItem) => {
-                if (routeItem.isAnonymous) {
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <StylesProvider injectFirst>
+              <Switch>
+                {Object.values(routes).map((routeItem) => {
+                  if (routeItem.isAnonymous) {
+                    return (
+                      <UnauthorizedRoute
+                        component={routeItem.component()}
+                        exact
+                        key={routeItem.path}
+                        path={routeItem.path}
+                      />
+                    );
+                  }
+
                   return (
-                    <UnauthorizedRoute
+                    <AuthorizedRoute
                       component={routeItem.component()}
                       exact
                       key={routeItem.path}
                       path={routeItem.path}
                     />
                   );
-                }
-
-                return (
-                  <AuthorizedRoute
-                    component={routeItem.component()}
-                    exact
-                    key={routeItem.path}
-                    path={routeItem.path}
-                  />
-                );
-              })}
-            </Switch>
-          </StylesProvider>
+                })}
+              </Switch>
+            </StylesProvider>
+          </MuiPickersUtilsProvider>
         </MuiThemeProvider>
       </RouterComponent>
     </Provider>

@@ -43,6 +43,29 @@ exports[`rendering renders correctly 1`] = `
         primary="Klienti"
       />
     </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <BusinessIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Projekty"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <DescriptionIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Faktury"
+      />
+    </WithStyles(ForwardRef(ListItem))>
   </WithStyles(ForwardRef(List))>
 </WithStyles(ForwardRef(Drawer))>
 `;
@@ -88,6 +111,29 @@ exports[`rendering renders correctly with opened menu 1`] = `
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Klienti"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <BusinessIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Projekty"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <DescriptionIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Faktury"
       />
     </WithStyles(ForwardRef(ListItem))>
   </WithStyles(ForwardRef(List))>

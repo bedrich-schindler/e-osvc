@@ -1,0 +1,881 @@
+import AddIcon from '@material-ui/icons/Add';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import PropTypes from 'prop-types';
+import React  from 'react';
+import Select from '@material-ui/core/Select';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
+import { cloneDeep } from 'lodash';
+import { KeyboardDatePicker } from '@material-ui/pickers';
+import { Layout } from '../../components/Layout';
+import { validateUser } from '../../resources/invoice/validator';
+import { updateData } from '../../services/dataService';
+import routes from '../../routes';
+import styles from './styles.scss';
+import EditIcon from "@material-ui/icons/Edit";
+
+const initialFormData = {
+  clientInfo: {
+    cidNumber: null,
+    city: null,
+    name: null,
+    original: null,
+    postalCode: null,
+    street: null,
+    taxNumber: null,
+  },
+  invoiceDate: null,
+  invoiceDueDate: null,
+  invoiceIdentifier: null,
+  invoiceItems: [
+    {
+      note: null,
+      pricePerQuantityUnit: null,
+      quantity: null,
+      quantityUnit: null,
+    },
+  ],
+  paymentVariableSymbol: null,
+  projectInfo: {
+    name: null,
+    original: null,
+  },
+  userInfo: {
+    bankAccount: null,
+    cidNumber: null,
+    city: null,
+    firstName: null,
+    lastName: null,
+    postalCode: null,
+    street: null,
+    taxNumber: null,
+  },
+};
+
+class InvoiceAddComponent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formData: cloneDeep(initialFormData),
+      formValidity: {
+        elements: cloneDeep(initialFormData),
+        isValid: true,
+      },
+      isFailed: false,
+    };
+
+    this.addInvoiceItem = this.addInvoiceItem.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
+    this.changeProjectHandler = this.changeProjectHandler.bind(this);
+    this.changeInvoiceDateHandler = this.changeInvoiceDateHandler.bind(this);
+    this.changeInvoiceDueDateHandler = this.changeInvoiceDueDateHandler.bind(this);
+    this.saveHandler = this.saveHandler.bind(this);
+  }
+
+  addInvoiceItem() {
+    this.setState((prevState) => {
+      const {
+        formData,
+        formValidity,
+      } = prevState;
+
+      return {
+        formData: {
+          ...formData,
+          invoiceItems: [
+            ...formData.invoiceItems,
+            cloneDeep(initialFormData.invoiceItems[0]),
+          ],
+        },
+        formValidity: {
+          ...formValidity,
+          elements: {
+            ...formValidity.elements,
+            invoiceItems: [
+              ...formValidity.elements.invoiceItems,
+              cloneDeep(initialFormData.invoiceItems[0]),
+            ],
+          }
+        },
+      };
+    })
+  }
+
+  deleteInvoiceItem(index) {
+    this.setState((prevState) => {
+      const {
+        formData,
+        formValidity,
+      } = prevState;
+
+      const invoiceItems = formData.invoiceItems.slice();
+      const invoiceItemsErrors = formValidity.elements.invoiceItems.slice();
+
+      invoiceItems.splice(index, 1);
+      invoiceItemsErrors.splice(index, 1);
+
+      return {
+        formData: {
+          ...formData,
+          invoiceItems,
+        },
+        formValidity: {
+          ...formValidity,
+          elements: {
+            ...formValidity.elements,
+            invoiceItems: invoiceItemsErrors,
+          },
+        },
+      };
+    })
+  }
+
+  componentDidMount() {
+    const {
+      getClients,
+      getProjects,
+      getUser,
+    } = this.props;
+
+    getClients();
+    getProjects();
+    getUser().then((response) => {
+      const { payload } = response;
+
+      this.setState((prevState) => ({
+        formData: {
+          ...prevState.formData,
+          userInfo: {
+            bankAccount: payload.bankAccount,
+            cidNumber: payload.cidNumber,
+            city: payload.city,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            postalCode: payload.postalCode,
+            street: payload.street,
+            taxNumber: payload.taxNumber,
+          }
+        }
+      }))
+    });
+  }
+
+  changeHandler(e) {
+    const eventTarget = e.target;
+    let {
+      name,
+      value,
+    } = eventTarget;
+
+    this.setState((prevState) => ({
+      formData: updateData(prevState.formData, name, value),
+    }));
+  }
+
+  changeProjectHandler(e) {
+    const eventTarget = e.target;
+    let { value } = eventTarget;
+    const {
+      clients,
+      projects,
+    } = this.props;
+
+    const project = projects.find((p) => p.id === value);
+    const client = clients.find((c) => c.id === project.client.id);
+
+    this.setState((prevState) => ({
+      formData: {
+        ...prevState.formData,
+        clientInfo: {
+          cidNumber: client.cidNumber,
+          city: client.city,
+          name: client.name,
+          original: client.id,
+          postalCode: client.postalCode,
+          street: client.street,
+          taxNumber: client.taxNumber,
+        },
+        projectInfo: {
+          name: project.name,
+          original: value,
+        },
+      },
+    }));
+  }
+
+  changeInvoiceDateHandler(value) {
+    return this.changeHandler({
+      target: {
+        name: 'invoiceDate',
+        value: new Date(value),
+      },
+    })
+  }
+
+  changeInvoiceDueDateHandler(value) {
+    return this.changeHandler({
+      target: {
+        name: 'invoiceDueDate',
+        value: new Date(value),
+      },
+    })
+  }
+
+  async saveHandler() {
+    const {
+      addInvoice,
+      history,
+    } = this.props;
+    const { formData } = this.state;
+
+    const elements = cloneDeep(initialFormData);
+    const invoiceItem = elements.invoiceItems[0];
+
+    for (let i = 0; i < formData.invoiceItems.length; i += 1) {
+      elements.invoiceItems[i] = cloneDeep(invoiceItem);
+    }
+
+    const formValidity = validateUser(formData, {
+      elements,
+      isValid: true,
+    });
+
+    this.setState({
+      formValidity,
+      isFailed: false,
+    });
+
+    if (!formValidity.isValid) {
+      return;
+    }
+
+    const response = await addInvoice(formData);
+
+    if (response.error) {
+      const { violations } = response.payload.response;
+
+      if (violations) {
+        violations.forEach((violation) => {
+          formValidity.elements = updateData(formValidity.elements, violation.propertyPath, violation.message)
+        })
+      }
+
+      this.setState({
+        formValidity,
+        isFailed: true,
+      });
+
+      return;
+    }
+
+    history.push(routes.invoices.path);
+  }
+
+  render() {
+    const {
+      addInvoiceIsPending,
+      clients,
+      getClientsIsPending,
+      getProjectsIsPending,
+      getUserIsPending,
+      projects,
+      user,
+    } = this.props;
+    const {
+      formData,
+      formValidity,
+    } = this.state;
+
+    let totalPrice = 0;
+    if (formData && formData.invoiceItems) {
+      totalPrice = formData.invoiceItems.reduce((total, invoiceItem) => {
+        return total + invoiceItem.pricePerQuantityUnit * invoiceItem.quantity;
+      }, 0);
+    }
+
+    return (
+      <Layout>
+        <Box mb={5} mt={2}>
+          <Grid
+            alignItems="center"
+            container
+            direction="row"
+            justify="space-between"
+            spacing={5}
+          >
+            <Grid item>
+              <h1 style={{ margin: 0 }}>
+                Přidat fakturu
+              </h1>
+            </Grid>
+            <Grid item>
+              <Button
+                color="primary"
+                disabled={addInvoiceIsPending}
+                onClick={this.saveHandler}
+                startIcon={<EditIcon />}
+                variant="contained"
+              >
+                Uložit
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+        {(getClientsIsPending || getProjectsIsPending || getUserIsPending) && (
+          <CircularProgress />
+        )}
+        {clients && !getClientsIsPending && !getProjectsIsPending && !getUserIsPending && projects && user && (
+          <Grid
+            container
+            spacing={5}
+            style={{ gridAutoRows: '1fr' }}
+          >
+            <Grid item xs={12}>
+              <Paper style={{ height: '100%' }}>
+                <Box p={3}>
+                  <FormControl
+                    error={Boolean(formValidity.elements.projectInfo.original)}
+                    fullWidth
+                    required
+                  >
+                    <InputLabel htmlFor="projectInfo.original">
+                      Projekt
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      id="projectInfo.original"
+                      margin="dense"
+                      name="projectInfo.original"
+                      onChange={this.changeProjectHandler}
+                      required
+                      value={formData.projectInfo.original ?? ''}
+                    >
+                      {projects.map((project) => (
+                        <MenuItem
+                          key={project.id}
+                          value={project.id}
+                        >
+                          {project.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {Boolean(formValidity.elements.projectInfo.original) && (
+                      <FormHelperText>{formValidity.elements.projectInfo.original}</FormHelperText>
+                    )}
+                  </FormControl>
+                  <TextField
+                    autoFocus
+                    error={Boolean(formValidity.elements.invoiceIdentifier)}
+                    fullWidth
+                    helperText={formValidity.elements.invoiceIdentifier}
+                    id="invoiceIdentifier"
+                    label="Číslo faktury"
+                    margin="dense"
+                    name="invoiceIdentifier"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.invoiceIdentifier ?? ''}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item md={4} sm={6} xs={12}>
+              <Paper style={{ height: '100%' }}>
+                <Box p={3}>
+                  <h2 className={styles.subheading}>
+                    Dodavatel
+                  </h2>
+                  <TextField
+                    autoFocus
+                    error={Boolean(formValidity.elements.userInfo.firstName)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.firstName}
+                    id="userInfo.firstName"
+                    label="Jméno"
+                    margin="dense"
+                    name="userInfo.firstName"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.userInfo.firstName ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.lastName)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.lastName}
+                    id="userInfo.lastName"
+                    label="Přijmení"
+                    margin="dense"
+                    name="userInfo.lastName"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.userInfo.lastName ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.street)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.street}
+                    id="userInfo.street"
+                    label="Ulice"
+                    margin="dense"
+                    name="userInfo.street"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.userInfo.street ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.city)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.city}
+                    id="userInfo.city"
+                    label="Město"
+                    margin="dense"
+                    name="userInfo.city"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.userInfo.city ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.postalCode)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.postalCode}
+                    id="userInfo.postalCode"
+                    label="PSČ"
+                    margin="dense"
+                    name="userInfo.postalCode"
+                    onChange={this.changeHandler}
+                    required
+                    type="number"
+                    value={formData.userInfo.postalCode ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.cidNumber)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.cidNumber}
+                    id="userInfo.cidNumber"
+                    label="IČ"
+                    margin="dense"
+                    name="userInfo.cidNumber"
+                    onChange={this.changeHandler}
+                    required
+                    type="number"
+                    value={formData.userInfo.cidNumber ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.taxNumber)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.taxNumber}
+                    id="userInfo.taxNumber"
+                    label="DIČ"
+                    margin="dense"
+                    name="userInfo.taxNumber"
+                    onChange={this.changeHandler}
+                    type="number"
+                    value={formData.userInfo.taxNumber ?? ''}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item md={4} sm={6} xs={12} >
+              <Paper style={{ height: '100%' }}>
+                <Box p={3}>
+                  <h2 className={styles.subheading}>
+                    Odběratel
+                  </h2>
+                  <FormControl
+                    disabled
+                    error={Boolean(formValidity.elements.clientInfo.original)}
+                    fullWidth
+                    required
+                  >
+                    <InputLabel htmlFor="clientInfo.original">
+                      Klient
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      id="clientInfo.ororiginaligin"
+                      margin="dense"
+                      name="clientInfo.original"
+                      onChange={this.changeHandler}
+                      required
+                      value={formData.clientInfo.original ?? ''}
+                    >
+                      {clients.map((client) => (
+                        <MenuItem
+                          key={client.id}
+                          value={client.id}
+                        >
+                          {client.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {Boolean(formValidity.elements.clientInfo.original) && (
+                      <FormHelperText>{formValidity.elements.clientInfo.original}</FormHelperText>
+                    )}
+                  </FormControl>
+                  <TextField
+                    autoFocus
+                    error={Boolean(formValidity.elements.clientInfo.name)}
+                    fullWidth
+                    helperText={formValidity.elements.clientInfo.name}
+                    id="clientInfo.name"
+                    label="Jméno"
+                    margin="dense"
+                    name="clientInfo.name"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.clientInfo.name ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.clientInfo.street)}
+                    fullWidth
+                    helperText={formValidity.elements.clientInfo.street}
+                    id="clientInfo.street"
+                    label="Ulice"
+                    margin="dense"
+                    name="clientInfo.street"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.clientInfo.street ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.clientInfo.city)}
+                    fullWidth
+                    helperText={formValidity.elements.clientInfo.city}
+                    id="clientInfo.city"
+                    label="Město"
+                    margin="dense"
+                    name="clientInfo.city"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.clientInfo.city ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.clientInfo.postalCode)}
+                    fullWidth
+                    helperText={formValidity.elements.clientInfo.postalCode}
+                    id="clientInfo.postalCode"
+                    label="PSČ"
+                    margin="dense"
+                    name="clientInfo.postalCode"
+                    onChange={this.changeHandler}
+                    required
+                    type="number"
+                    value={formData.clientInfo.postalCode ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.clientInfo.cidNumber)}
+                    fullWidth
+                    helperText={formValidity.elements.clientInfo.cidNumber}
+                    id="clientInfo.cidNumber"
+                    label="IČ"
+                    margin="dense"
+                    name="clientInfo.cidNumber"
+                    onChange={this.changeHandler}
+                    type="number"
+                    value={formData.clientInfo.cidNumber ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.clientInfo.taxNumber)}
+                    fullWidth
+                    helperText={formValidity.elements.clientInfo.taxNumber}
+                    id="clientInfo.taxNumber"
+                    label="DIČ"
+                    margin="dense"
+                    name="clientInfo.taxNumber"
+                    onChange={this.changeHandler}
+                    type="number"
+                    value={formData.clientInfo.taxNumber ?? ''}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Paper style={{ height: '100%' }}>
+                <Box p={3}>
+                  <h2 className={styles.subheading}>
+                    Platební údaje
+                  </h2>
+                  <FormControl
+                    disabled
+                    fullWidth
+                    required
+                  >
+                    <InputLabel htmlFor="paymentType">
+                      Způsob platby
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      id="paymentType"
+                      margin="dense"
+                      name="paymentType"
+                      onChange={this.changeHandler}
+                      required
+                      value={0}
+                    >
+                      <MenuItem value={0}>
+                        Převodem na účet
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    error={Boolean(formValidity.elements.userInfo.bankAccount)}
+                    fullWidth
+                    helperText={formValidity.elements.userInfo.bankAccount}
+                    id="userInfo.bankAccount"
+                    label="Číslo účtu"
+                    margin="dense"
+                    name="userInfo.bankAccount"
+                    onChange={this.changeHandler}
+                    required
+                    type="text"
+                    value={formData.userInfo.bankAccount ?? ''}
+                  />
+                  <TextField
+                    error={Boolean(formValidity.elements.paymentVariableSymbol)}
+                    fullWidth
+                    helperText={formValidity.elements.paymentVariableSymbol}
+                    id="paymentVariableSymbol"
+                    label="Variabilní symbol"
+                    margin="dense"
+                    name="paymentVariableSymbol"
+                    onChange={this.changeHandler}
+                    required
+                    type="number"
+                    value={formData.paymentVariableSymbol ?? ''}
+                  />
+                  <Box mb={5} />
+                  <KeyboardDatePicker
+                    disableToolbar
+                    error={Boolean(formValidity.elements.invoiceDate)}
+                    fullWidth
+                    helperText={formValidity.elements.invoiceDate}
+                    variant="inline"
+                    format="dd. MM. yyyy"
+                    margin="normal"
+                    id="invoiceDate"
+                    label="Datum vystavení"
+                    value={formData.invoiceDate}
+                    onChange={this.changeInvoiceDateHandler}
+                    required
+                    KeyboardButtonProps={{
+                      'aria-label': 'Změnit datum',
+                    }}
+                  />
+                  <KeyboardDatePicker
+                    disableToolbar
+                    error={Boolean(formValidity.elements.invoiceDueDate)}
+                    fullWidth
+                    helperText={formValidity.elements.invoiceDueDate}
+                    variant="inline"
+                    format="dd. MM. yyyy"
+                    margin="normal"
+                    id="invoiceDueDate"
+                    label="Datum splatnosti"
+                    value={formData.invoiceDueDate}
+                    onChange={this.changeInvoiceDueDateHandler}
+                    required
+                    KeyboardButtonProps={{
+                      'aria-label': 'Změnit datum',
+                    }}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <TableContainer component={Paper}>
+                <Table
+                  aria-label="spanning table"
+                  style={{ minWidth: 740 }}
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Množství</TableCell>
+                      <TableCell>Množstevní jednotka</TableCell>
+                      <TableCell>Popis</TableCell>
+                      <TableCell>Cena za MJ</TableCell>
+                      <TableCell>Cena celkem</TableCell>
+                      <TableCell />
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {formData.invoiceItems.map((invoiceItem, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <TextField
+                            error={Boolean(formValidity.elements.invoiceItems[index].quantity)}
+                            fullWidth
+                            helperText={formValidity.elements.invoiceItems[index].quantity}
+                            id={`invoiceItems[${index}].quantity`}
+                            label="Množství"
+                            margin="dense"
+                            name={`invoiceItems[${index}].quantity`}
+                            onChange={this.changeHandler}
+                            required
+                            type="number"
+                            value={invoiceItem.quantity ?? ''}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            error={Boolean(formValidity.elements.invoiceItems[index].quantityUnit)}
+                            fullWidth
+                            helperText={formValidity.elements.invoiceItems[index].quantityUnit}
+                            id={`invoiceItems[${index}].quantityUnit`}
+                            label="Jednotka"
+                            margin="dense"
+                            name={`invoiceItems[${index}].quantityUnit`}
+                            onChange={this.changeHandler}
+                            type="text"
+                            value={invoiceItem.quantityUnit ?? ''}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            error={Boolean(formValidity.elements.invoiceItems[index].note)}
+                            fullWidth
+                            helperText={formValidity.elements.invoiceItems[index].note}
+                            id={`invoiceItems[${index}].note`}
+                            label="Popis"
+                            margin="dense"
+                            name={`invoiceItems[${index}].note`}
+                            onChange={this.changeHandler}
+                            required
+                            type="text"
+                            value={invoiceItem.note ?? ''}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            error={Boolean(formValidity.elements.invoiceItems[index].pricePerQuantityUnit)}
+                            fullWidth
+                            helperText={formValidity.elements.invoiceItems[index].pricePerQuantityUnit}
+                            id={`invoiceItems[${index}].pricePerQuantityUnit`}
+                            label="Cena za MJ"
+                            margin="dense"
+                            name={`invoiceItems[${index}].pricePerQuantityUnit`}
+                            onChange={this.changeHandler}
+                            required
+                            type="number"
+                            value={invoiceItem.pricePerQuantityUnit ?? ''}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            disabled
+                            fullWidth
+                            id={`invoiceItems[${index}].price`}
+                            label="Cena celkem"
+                            margin="dense"
+                            name={`invoiceItems[${index}].price`}
+                            type="number"
+                            value={
+                              ((invoiceItem.quantity ?? 0) * (invoiceItem.pricePerQuantityUnit ?? 0)).toFixed(2)
+                            }
+                          />
+                        </TableCell>
+                        <TableCell padding="none" size="small">
+                          <IconButton
+                            aria-label="Smazat"
+                            disabled={formData.invoiceItems.length === 1}
+                            onClick={() => this.deleteInvoiceItem(index)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow>
+                      <TableCell colSpan={4}>
+                        <Button
+                          onClick={this.addInvoiceItem}
+                          variant="contained"
+                          startIcon={<AddIcon />}
+                        >
+                          Přidat
+                        </Button>
+                      </TableCell>
+                      <TableCell align="right" variant="head">
+                        Celkem {totalPrice.toFixed(2)} CZK
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </Grid>
+        )}
+      </Layout>
+    );
+  }
+}
+
+InvoiceAddComponent.defaultProps = {
+  clients: null,
+  projects: null,
+  user: null,
+};
+
+InvoiceAddComponent.propTypes = {
+  addInvoice: PropTypes.func.isRequired,
+  addInvoiceIsPending: PropTypes.bool.isRequired,
+  clients: PropTypes.arrayOf(PropTypes.shape({
+    cidNumber: PropTypes.number,
+    city: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    postalCode: PropTypes.number.isRequired,
+    street: PropTypes.string.isRequired,
+    taxNumber: PropTypes.number,
+  })),
+  getClients: PropTypes.func.isRequired,
+  getClientsIsPending: PropTypes.bool.isRequired,
+  getProjects: PropTypes.func.isRequired,
+  getProjectsIsPending: PropTypes.bool.isRequired,
+  getUser: PropTypes.func.isRequired,
+  getUserIsPending: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  projects: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })),
+  user: PropTypes.shape({
+    bankAccount: PropTypes.string.isRequired,
+    cidNumber: PropTypes.number.isRequired,
+    city: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    lastName: PropTypes.string.isRequired,
+    postalCode: PropTypes.number.isRequired,
+    street: PropTypes.string.isRequired,
+    taxNumber: PropTypes.number,
+  }),
+};
+
+export default InvoiceAddComponent;
+

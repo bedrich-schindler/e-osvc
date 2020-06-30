@@ -14,6 +14,21 @@ export default {
     path: '/',
     title: 'Přehled',
   },
+  invoiceAdd: {
+    component: () => getComponent('invoice', 'InvoiceAdd'),
+    path: '/faktury/pridat',
+    title: 'Přidat fakturu',
+  },
+  invoiceDetail: {
+    component: () => getComponent('invoice', 'InvoiceDetail'),
+    path: '/faktury/:id/detail',
+    title: 'Detail faktury',
+  },
+  invoices: {
+    component: () => getComponent('invoice', 'Invoices'),
+    path: '/faktury',
+    title: 'Faktury',
+  },
   login: {
     component: () => getComponent('login', 'Login'),
     isAnonymous: true,

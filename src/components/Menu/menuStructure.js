@@ -1,5 +1,6 @@
 import IconDashboard from '@material-ui/icons/Dashboard';
 import IconClients from '@material-ui/icons/People';
+import IconInvoices from '@material-ui/icons/Description';
 import IconProjects from '@material-ui/icons/Business';
 import routes from '../../routes';
 
@@ -19,5 +20,11 @@ export default [
     icon: IconProjects,
     path: routes.projects.path,
     title: routes.projects.title,
+  },
+  { isDivider: true },
+  {
+    icon: IconInvoices,
+    path: routes.invoices.path,
+    title: routes.invoices.title,
   },
 ];

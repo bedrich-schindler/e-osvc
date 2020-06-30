@@ -1,0 +1,18 @@
+$layout-spacing: 2.5rem;
+
+.floatingButton {
+  position: fixed;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  margin: 0;
+}
+
+.alert {
+  margin-bottom: $layout-spacing / 4;
+}
+
+.infoLine {
+  margin: $layout-spacing / 8 0;
+}

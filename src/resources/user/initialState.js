@@ -5,8 +5,12 @@ export default () => fromJS({
     addUser: {
       isPending: false,
     },
+    getUser: {
+      isPending: false,
+    },
   },
   data: {
     addUser: null,
+    getUser: null,
   },
 });

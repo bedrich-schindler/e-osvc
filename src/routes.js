@@ -56,6 +56,11 @@ export default {
     path: '/vytvoreni-uctu',
     title: 'Vytvoření účtu',
   },
+  sicknessInsurance: {
+    component: () => getComponent('sicknessInsurance', 'SicknessInsurance'),
+    path: '/nemocenske-pojisteni',
+    title: 'Nemocenské pojištění',
+  },
   socialInsurance: {
     component: () => getComponent('socialInsurance', 'SocialInsurance'),
     path: '/socialni-pojisteni',

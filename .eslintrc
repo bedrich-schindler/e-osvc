@@ -12,8 +12,10 @@
     {
       "files": [
         "**/index.js",
+        "**/constants/*.js",
         "**/resources/*/*.js",
-        "**/services/*.js"
+        "**/services/*.js",
+        "**/validators/*.js"
       ],
       "rules": {
         "import/prefer-default-export": "off"

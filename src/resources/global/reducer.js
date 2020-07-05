@@ -18,7 +18,10 @@ export default (state, action) => {
 
     if (actionStatus === 'success') {
       const newState = meta && meta.dataPath
-        ? state.setIn([actionNamespace, 'data'].concat(meta.dataPath), fromJS(payload))
+        ? state.setIn(
+          [actionNamespace, 'data'].concat(meta.dataPath),
+          meta.dataTransformer ? meta.dataTransformer(payload) : fromJS(payload),
+        )
         : state;
 
       return newState.setIn(isPendingPath, false);
@@ -34,7 +37,7 @@ export default (state, action) => {
       if (meta && meta.dataPath) {
         return state.setIn(
           [actionNamespace, 'data'].concat(meta.dataPath),
-          fromJS(payload.result),
+          meta.dataTransformer ? meta.dataTransformer(payload) : fromJS(payload),
         );
       }
     }

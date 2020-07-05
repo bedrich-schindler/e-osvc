@@ -51,4 +51,9 @@ export default {
     path: '/vytvoreni-uctu',
     title: 'Vytvoření účtu',
   },
+  socialInsurance: {
+    component: () => getComponent('socialInsurance', 'SocialInsurance'),
+    path: '/socialni-pojisteni',
+    title: 'Sociální pojištění',
+  },
 };

@@ -34,4 +34,9 @@ export default [
     path: routes.socialInsurance.path,
     title: routes.socialInsurance.title,
   },
+  {
+    icon: IconPayments,
+    path: routes.healthInsurance.path,
+    title: routes.healthInsurance.title,
+  },
 ];

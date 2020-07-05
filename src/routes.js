@@ -14,6 +14,11 @@ export default {
     path: '/',
     title: 'Přehled',
   },
+  healthInsurance: {
+    component: () => getComponent('healthInsurance', 'HealthInsurance'),
+    path: '/zdravotní-pojisteni',
+    title: 'Zdravotní pojištění',
+  },
   invoiceAdd: {
     component: () => getComponent('invoice', 'InvoiceAdd'),
     path: '/faktury/pridat',

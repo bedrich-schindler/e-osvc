@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Header } from '../Header';
 import { Menu } from '../Menu';
+import { NotificationCenter } from '../NotificationCenter';
 import styles from './styles.scss';
 
 class LayoutComponent extends React.Component {
@@ -48,6 +49,7 @@ class LayoutComponent extends React.Component {
           />
         </div>
         <main className={styles.content}>
+          <NotificationCenter />
           {children}
         </main>
       </div>

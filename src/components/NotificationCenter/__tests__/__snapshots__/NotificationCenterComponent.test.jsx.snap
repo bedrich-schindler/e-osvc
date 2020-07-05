@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering renders all types of error notification 1`] = `
+<div
+  className="root"
+>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="error"
+      variant="filled"
+    >
+      Error message - Auto-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="error"
+      variant="filled"
+    >
+      Error message - Removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={6}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={null}
+      severity="error"
+      variant="filled"
+    >
+      Error message - Non-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+</div>
+`;
+
+exports[`rendering renders all types of info notification 1`] = `
+<div
+  className="root"
+>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="info"
+      variant="filled"
+    >
+      Info message - Auto-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="info"
+      variant="filled"
+    >
+      Info message - Removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={6}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={null}
+      severity="info"
+      variant="filled"
+    >
+      Info message - Non-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+</div>
+`;
+
+exports[`rendering renders all types of success notification 1`] = `
+<div
+  className="root"
+>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="success"
+      variant="filled"
+    >
+      Success message - Auto-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="success"
+      variant="filled"
+    >
+      Success message - Removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={6}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={null}
+      severity="success"
+      variant="filled"
+    >
+      Success message - Non-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+</div>
+`;
+
+exports[`rendering renders all types of warning notification 1`] = `
+<div
+  className="root"
+>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="warning"
+      variant="filled"
+    >
+      Warning message - Auto-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={2}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={[Function]}
+      severity="warning"
+      variant="filled"
+    >
+      Warning message - Removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+  <Styled(MuiBox)
+    mb={6}
+  >
+    <WithStyles(ForwardRef(Alert))
+      onClose={null}
+      severity="warning"
+      variant="filled"
+    >
+      Warning message - Non-removable
+    </WithStyles(ForwardRef(Alert))>
+  </Styled(MuiBox)>
+</div>
+`;

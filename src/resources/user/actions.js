@@ -23,7 +23,7 @@ export const getUser = () => (dispatch, getState) => {
   const token = selectToken(getState());
   const { uid } = jwtDecode(token);
 
-  return dispatch(createApiAction({
+  return createApiAction({
     endpoint: `/users/${uid}`,
     method: 'GET',
     types: [
@@ -36,5 +36,5 @@ export const getUser = () => (dispatch, getState) => {
       },
       actionTypes.API_USER_ADD_FAILURE,
     ],
-  }));
+  })(dispatch, getState);
 };

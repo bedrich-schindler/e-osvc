@@ -95,7 +95,7 @@
     "build-electron": "webpack --config webpack.config.electron.js --mode production",
     "build-and-pack-electron": "npm run build-electron && electron-builder -mlw",
     "eslint": "eslint --ext js,jsx src",
-    "jest": "jest  --passWithNoTests",
+    "jest": "jest",
     "start": "webpack-dev-server --config webpack.config.web.js --mode development",
     "start-electron": "electron .",
     "stylelint": "stylelint \"src/**/*.scss\" \"public/css/*.css\" --config stylelint.config.js",

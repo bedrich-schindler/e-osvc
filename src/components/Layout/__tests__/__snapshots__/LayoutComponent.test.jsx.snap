@@ -24,6 +24,7 @@ exports[`rendering renders correctly 1`] = `
   <main
     className="content"
   >
+    <Connect(NotificationCenterComponent) />
     <p>
       Content
     </p>

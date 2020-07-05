@@ -29,5 +29,29 @@ export default (state, action) => {
     }
   }
 
+  if (actionType === 'local') {
+    if (actionStatus === 'set') {
+      if (meta && meta.dataPath) {
+        return state.setIn(
+          [actionNamespace, 'data'].concat(meta.dataPath),
+          fromJS(payload.result),
+        );
+      }
+    }
+
+    if (actionStatus === 'reset') {
+      if (meta && meta.dataPath) {
+        // eslint-disable-next-line
+        const module = require(`../${actionNamespace}/initialState`);
+        const getInitialState = module.default;
+
+        return state.setIn(
+          [actionNamespace, 'data'].concat(meta.dataPath),
+          getInitialState(false).getIn(['data'].concat(meta.dataPath)),
+        );
+      }
+    }
+  }
+
   return state;
 };

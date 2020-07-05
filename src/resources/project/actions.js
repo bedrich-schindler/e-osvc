@@ -10,6 +10,10 @@ export const addProject = (data) => createApiAction({
   },
   endpoint: '/projects',
   method: 'POST',
+  notificationMessages: {
+    failure: 'Přidání projektu se nezdařilo.',
+    success: 'Projekt byl úspěšně přidán.',
+  },
   types: [
     actionTypes.API_PROJECT_ADD_REQUEST,
     actionTypes.API_PROJECT_ADD_SUCCESS,
@@ -20,6 +24,10 @@ export const addProject = (data) => createApiAction({
 export const deleteProject = (projectId) => createApiAction({
   endpoint: `/projects/${projectId}`,
   method: 'DELETE',
+  notificationMessages: {
+    failure: 'Smazání projektu se nezdařilo.',
+    success: 'Projekt byl úspěšně smazán.',
+  },
   types: [
     actionTypes.API_PROJECT_DELETE_REQUEST,
     actionTypes.API_PROJECT_DELETE_SUCCESS,
@@ -34,6 +42,10 @@ export const editProject = (projectId, data) => createApiAction({
   },
   endpoint: `/projects/${projectId}`,
   method: 'PUT',
+  notificationMessages: {
+    failure: 'Úprava projektu se nezdařila.',
+    success: 'Projekt byl úspěšně upraven.',
+  },
   types: [
     actionTypes.API_PROJECT_EDIT_REQUEST,
     actionTypes.API_PROJECT_EDIT_SUCCESS,
@@ -44,6 +56,9 @@ export const editProject = (projectId, data) => createApiAction({
 export const getProject = (projectId) => createApiAction({
   endpoint: `/projects/${projectId}`,
   method: 'GET',
+  notificationMessages: {
+    failure: 'Získání detailu projektu se nezdařilo.',
+  },
   types: [
     actionTypes.API_PROJECT_GET_REQUEST,
     actionTypes.API_PROJECT_GET_SUCCESS,
@@ -55,9 +70,12 @@ export const getProjects = () => (dispatch, getState) => {
   const token = selectToken(getState());
   const { uid } = jwtDecode(token);
 
-  return dispatch(createApiAction({
+  return createApiAction({
     endpoint: `/users/${uid}/projects`,
     method: 'GET',
+    notificationMessages: {
+      failure: 'Získání výpisu projektů se nezdařilo.',
+    },
     types: [
       actionTypes.API_PROJECTS_GET_REQUEST,
       {
@@ -68,5 +86,5 @@ export const getProjects = () => (dispatch, getState) => {
       },
       actionTypes.API_PROJECTS_GET_FAILURE,
     ],
-  }));
+  })(dispatch, getState);
 };

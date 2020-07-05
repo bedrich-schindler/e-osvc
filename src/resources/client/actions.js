@@ -12,6 +12,10 @@ export const addClient = (data) => createApiAction({
   },
   endpoint: '/clients',
   method: 'POST',
+  notificationMessages: {
+    failure: 'Přidání klienta se nezdařilo.',
+    success: 'Klient byl úspěšně přidán.',
+  },
   types: [
     actionTypes.API_CLIENT_ADD_REQUEST,
     actionTypes.API_CLIENT_ADD_SUCCESS,
@@ -22,6 +26,10 @@ export const addClient = (data) => createApiAction({
 export const deleteClient = (clientId) => createApiAction({
   endpoint: `/clients/${clientId}`,
   method: 'DELETE',
+  notificationMessages: {
+    failure: 'Smazání klienta se nezdařilo.',
+    success: 'Klient byl úspěšně smazán.',
+  },
   types: [
     actionTypes.API_CLIENT_DELETE_REQUEST,
     actionTypes.API_CLIENT_DELETE_SUCCESS,
@@ -38,6 +46,10 @@ export const editClient = (clientId, data) => createApiAction({
   },
   endpoint: `/clients/${clientId}`,
   method: 'PUT',
+  notificationMessages: {
+    failure: 'Úprava klienta se nezdařila.',
+    success: 'Klient byl úspěšně upraven.',
+  },
   types: [
     actionTypes.API_CLIENT_EDIT_REQUEST,
     actionTypes.API_CLIENT_EDIT_SUCCESS,
@@ -48,6 +60,9 @@ export const editClient = (clientId, data) => createApiAction({
 export const getClient = (clientId) => createApiAction({
   endpoint: `/clients/${clientId}`,
   method: 'GET',
+  notificationMessages: {
+    failure: 'Získání detailu klienta se nezdařilo.',
+  },
   types: [
     actionTypes.API_CLIENT_GET_REQUEST,
     actionTypes.API_CLIENT_GET_SUCCESS,
@@ -59,9 +74,12 @@ export const getClients = () => (dispatch, getState) => {
   const token = selectToken(getState());
   const { uid } = jwtDecode(token);
 
-  return dispatch(createApiAction({
+  return createApiAction({
     endpoint: `/users/${uid}/clients`,
     method: 'GET',
+    notificationMessages: {
+      failure: 'Získání výpisu klientů se nezdařilo.',
+    },
     types: [
       actionTypes.API_CLIENTS_GET_REQUEST,
       {
@@ -72,5 +90,5 @@ export const getClients = () => (dispatch, getState) => {
       },
       actionTypes.API_CLIENTS_GET_FAILURE,
     ],
-  }));
+  })(dispatch, getState);
 };

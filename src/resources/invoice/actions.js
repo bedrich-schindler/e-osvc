@@ -38,6 +38,10 @@ export const addInvoice = (data) => createApiAction({
   body: prepareInvoiceBody(data),
   endpoint: '/invoices',
   method: 'POST',
+  notificationMessages: {
+    failure: 'Přidání faktury se nezdařilo.',
+    success: 'Faktura byla úspěšně přidána.',
+  },
   types: [
     actionTypes.API_INVOICE_ADD_REQUEST,
     actionTypes.API_INVOICE_ADD_SUCCESS,
@@ -48,6 +52,10 @@ export const addInvoice = (data) => createApiAction({
 export const deleteInvoice = (invoiceId) => createApiAction({
   endpoint: `/invoices/${invoiceId}`,
   method: 'DELETE',
+  notificationMessages: {
+    failure: 'Smazání faktury se nezdařilo.',
+    success: 'Faktura byla úspěšně smazána.',
+  },
   types: [
     actionTypes.API_INVOICE_DELETE_REQUEST,
     actionTypes.API_INVOICE_DELETE_SUCCESS,
@@ -59,6 +67,10 @@ export const editInvoice = (invoiceId, data) => createApiAction({
   body: prepareInvoiceBody(data),
   endpoint: `/invoices/${invoiceId}`,
   method: 'PUT',
+  notificationMessages: {
+    failure: 'Úprava faktury se nezdařila.',
+    success: 'Faktura byla úspěšně upravena.',
+  },
   types: [
     actionTypes.API_INVOICE_EDIT_REQUEST,
     actionTypes.API_INVOICE_EDIT_SUCCESS,
@@ -70,6 +82,9 @@ export const getInvoice = (invoiceId) => createApiAction({
   dataPath: ['getInvoice'],
   endpoint: `/invoices/${invoiceId}`,
   method: 'GET',
+  notificationMessages: {
+    failure: 'Získání detailu faktury se nezdařilo.',
+  },
   types: [
     actionTypes.API_INVOICE_GET_REQUEST,
     actionTypes.API_INVOICE_GET_SUCCESS,
@@ -81,9 +96,12 @@ export const getInvoices = () => (dispatch, getState) => {
   const token = selectToken(getState());
   const { uid } = jwtDecode(token);
 
-  return dispatch(createApiAction({
+  return createApiAction({
     endpoint: `/users/${uid}/invoices`,
     method: 'GET',
+    notificationMessages: {
+      failure: 'Získání výpisu faktur se nezdařilo.',
+    },
     types: [
       actionTypes.API_INVOICES_GET_REQUEST,
       {
@@ -94,5 +112,5 @@ export const getInvoices = () => (dispatch, getState) => {
       },
       actionTypes.API_INVOICES_GET_FAILURE,
     ],
-  }));
+  })(dispatch, getState);
 };

@@ -1,3 +1,4 @@
+import { notificationsReset } from '../notification';
 import { createApiAction } from '../../services/apiService';
 import { selectToken } from './selectors';
 import {
@@ -7,7 +8,7 @@ import {
 import * as actionTypes from './actionTypes';
 
 export const login = (username, password) => async (dispatch, getState) => {
-  const action = await dispatch(createApiAction({
+  const action = await createApiAction({
     body: {
       password,
       username,
@@ -19,7 +20,10 @@ export const login = (username, password) => async (dispatch, getState) => {
       actionTypes.API_LOGIN_SUCCESS,
       actionTypes.API_LOGIN_FAILURE,
     ],
-  }));
+  })(dispatch, getState);
+
+  // Reset notifications
+  dispatch(notificationsReset());
 
   if (action.type === actionTypes.API_LOGIN_SUCCESS) {
     storeTokenToStorage(selectToken(getState()));
@@ -34,6 +38,9 @@ export const logout = () => async (dispatch) => {
   const action = await dispatch({
     type: actionTypes.LOCAL_LOGOUT,
   });
+
+  // Reset notifications
+  dispatch(notificationsReset());
 
   removeTokenFromStorage();
 

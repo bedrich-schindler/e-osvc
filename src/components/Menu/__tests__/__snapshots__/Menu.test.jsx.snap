@@ -72,6 +72,18 @@ exports[`rendering renders correctly 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
+        <TimerIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Odpracovaný čas"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
         <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
@@ -179,6 +191,18 @@ exports[`rendering renders correctly with opened menu 1`] = `
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Faktury"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <TimerIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Odpracovaný čas"
       />
     </WithStyles(ForwardRef(ListItem))>
     <WithStyles(ForwardRef(Divider)) />

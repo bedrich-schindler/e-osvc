@@ -71,4 +71,9 @@ export default {
     path: '/dane',
     title: 'Daně',
   },
+  timeRecords: {
+    component: () => getComponent('timeRecord', 'TimeRecords'),
+    path: '/odpracovany-cas',
+    title: 'Odpracovaný čas',
+  },
 };

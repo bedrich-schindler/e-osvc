@@ -4,6 +4,7 @@ import IconClients from '@material-ui/icons/People';
 import IconInvoices from '@material-ui/icons/Description';
 import IconPayments from '@material-ui/icons/Payment';
 import IconProjects from '@material-ui/icons/Business';
+import IconTimeRecords from '@material-ui/icons/Timer';
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import routes from '../../routes';
@@ -40,6 +41,12 @@ export default [
     icon: IconInvoices,
     path: routes.invoices.path,
     title: routes.invoices.title,
+  },
+  { isDivider: true },
+  {
+    icon: IconTimeRecords,
+    path: routes.timeRecords.path,
+    title: routes.timeRecords.title,
   },
   { isDivider: true },
   {

@@ -72,7 +72,18 @@ exports[`rendering renders correctly 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
-        <PaymentIcon />
+        <icon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Daně"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Sociální pojištění"
@@ -83,7 +94,7 @@ exports[`rendering renders correctly 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
-        <PaymentIcon />
+        <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Zdravotní pojištění"
@@ -94,7 +105,7 @@ exports[`rendering renders correctly 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
-        <PaymentIcon />
+        <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Nemocenské pojištění"
@@ -176,7 +187,18 @@ exports[`rendering renders correctly with opened menu 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
-        <PaymentIcon />
+        <icon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Daně"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Sociální pojištění"
@@ -187,7 +209,7 @@ exports[`rendering renders correctly with opened menu 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
-        <PaymentIcon />
+        <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Zdravotní pojištění"
@@ -198,7 +220,7 @@ exports[`rendering renders correctly with opened menu 1`] = `
       onClick={[Function]}
     >
       <WithStyles(ForwardRef(ListItemIcon))>
-        <PaymentIcon />
+        <icon />
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Nemocenské pojištění"

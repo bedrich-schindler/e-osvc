@@ -66,4 +66,9 @@ export default {
     path: '/socialni-pojisteni',
     title: 'Sociální pojištění',
   },
+  taxes: {
+    component: () => getComponent('tax', 'Taxes'),
+    path: '/dane',
+    title: 'Daně',
+  },
 };

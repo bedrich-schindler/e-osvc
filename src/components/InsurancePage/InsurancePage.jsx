@@ -1,8 +1,8 @@
 import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
@@ -16,10 +16,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { Layout } from '../Layout';
 import { getTranslatedInsuranceVariant } from '../../constants/insuranceVariants';
 import { validateInsurance } from '../../validators/insuranceValidator';
 import { InsuranceDialog } from '../InsuranceDialog';
-import styles from './styles.scss';
 
 const InsuranceComponent = ({
   addInsurance,
@@ -45,8 +45,19 @@ const InsuranceComponent = ({
   }, [getInsurances]);
 
   return (
-    <>
-      <h1>{title}</h1>
+    <Layout
+      actions={[
+        <Button
+          color="primary"
+          onClick={() => setIsAddDialogOpened(true)}
+          startIcon={<AddIcon />}
+          variant="contained"
+        >
+          Přidat
+        </Button>,
+      ]}
+      title={title}
+    >
       {isTableLoading && (
         <CircularProgress />
       )}
@@ -146,14 +157,7 @@ const InsuranceComponent = ({
           validateInsurance={validateInsurance}
         />
       )}
-      <Fab
-        className={styles.floatingButton}
-        color="primary"
-        onClick={() => setIsAddDialogOpened(true)}
-      >
-        <AddIcon />
-      </Fab>
-    </>
+    </Layout>
   );
 };
 

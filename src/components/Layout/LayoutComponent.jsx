@@ -1,5 +1,8 @@
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { generate } from 'shortid';
 import { Header } from '../Header';
 import { Menu } from '../Menu';
 import { NotificationCenter } from '../NotificationCenter';
@@ -28,8 +31,10 @@ class LayoutComponent extends React.Component {
 
   render() {
     const {
+      actions,
       children,
       logout,
+      title,
       user,
     } = this.props;
     const { isMenuOpened } = this.state;
@@ -51,6 +56,41 @@ class LayoutComponent extends React.Component {
         </div>
         <main className={styles.content}>
           <NotificationCenter />
+          <Box mb={5} mt={2}>
+            <Grid
+              alignItems="center"
+              container
+              direction="row"
+              justify="space-between"
+              spacing={5}
+            >
+              <Grid item>
+                <h1 style={{ margin: 0 }}>
+                  {title}
+                </h1>
+              </Grid>
+              {actions && (
+                <Grid item>
+                  <Grid
+                    alignItems="center"
+                    container
+                    direction="row"
+                    justify="space-between"
+                    spacing={1}
+                  >
+                    {actions.map((action) => (
+                      <Grid
+                        item
+                        key={generate()}
+                      >
+                        {action}
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
+          </Box>
           {children}
           <Timer />
         </main>
@@ -60,16 +100,18 @@ class LayoutComponent extends React.Component {
 }
 
 LayoutComponent.defaultProps = {
+  actions: null,
   children: null,
-  floatingActions: null,
 };
 
 LayoutComponent.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.node),
   children: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.element,
   ]),
   logout: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,

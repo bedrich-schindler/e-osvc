@@ -341,57 +341,32 @@ class InvoiceEditComponent extends React.Component {
     }
 
     return (
-      <Layout>
-        <Box mb={5} mt={2}>
-          <Grid
-            alignItems="center"
-            container
-            direction="row"
-            justify="space-between"
-            spacing={5}
+      <Layout
+        actions={[
+          <Button
+            color="primary"
+            disabled={!invoice || getInvoiceIsPending || editInvoiceIsPending}
+            onClick={this.saveHandler}
+            startIcon={<SaveIcon />}
+            variant="contained"
           >
-            <Grid item>
-              <h1 style={{ margin: 0 }}>
-                Upravit fakturu
-              </h1>
-            </Grid>
-            <Grid item>
-              <Grid
-                alignItems="center"
-                container
-                direction="row"
-                justify="space-between"
-                spacing={1}
-              >
-                <Grid item>
-                  <Button
-                    color="primary"
-                    disabled={!invoice || getInvoiceIsPending || editInvoiceIsPending}
-                    onClick={this.saveHandler}
-                    startIcon={<SaveIcon />}
-                    variant="contained"
-                  >
-                    Uložit
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
-                    onClick={() => {
-                      deleteInvoice(match.params.id).then(() => {
-                        history.push(routes.invoices.path);
-                      });
-                    }}
-                    startIcon={<DeleteIcon />}
-                    variant="contained"
-                  >
-                    Smazat
-                  </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Box>
+            Uložit
+          </Button>,
+          <Button
+            disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
+            onClick={() => {
+              deleteInvoice(match.params.id).then(() => {
+                history.push(routes.invoices.path);
+              });
+            }}
+            startIcon={<DeleteIcon />}
+            variant="contained"
+          >
+            Smazat
+          </Button>,
+        ]}
+        title="Upravit fakturu"
+      >
         {(getClientsIsPending || getProjectsIsPending || getUserIsPending) && (
           <CircularProgress />
         )}

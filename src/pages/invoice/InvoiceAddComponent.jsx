@@ -310,33 +310,20 @@ class InvoiceAddComponent extends React.Component {
     }
 
     return (
-      <Layout>
-        <Box mb={5} mt={2}>
-          <Grid
-            alignItems="center"
-            container
-            direction="row"
-            justify="space-between"
-            spacing={5}
+      <Layout
+        actions={[
+          <Button
+            color="primary"
+            disabled={addInvoiceIsPending}
+            onClick={this.saveHandler}
+            startIcon={<SaveIcon />}
+            variant="contained"
           >
-            <Grid item>
-              <h1 style={{ margin: 0 }}>
-                Přidat fakturu
-              </h1>
-            </Grid>
-            <Grid item>
-              <Button
-                color="primary"
-                disabled={addInvoiceIsPending}
-                onClick={this.saveHandler}
-                startIcon={<SaveIcon />}
-                variant="contained"
-              >
-                Uložit
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
+            Uložit
+          </Button>,
+        ]}
+        title="Přidat fakturu"
+      >
         {(getClientsIsPending || getProjectsIsPending || getUserIsPending) && (
           <CircularProgress />
         )}

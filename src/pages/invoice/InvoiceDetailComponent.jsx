@@ -39,61 +39,35 @@ const InvoiceDetailComponent = ({
   }
 
   return (
-    <Layout>
-      <Box mb={5} mt={2}>
-        <Grid
-          alignItems="center"
-          container
-          direction="row"
-          justify="space-between"
-          spacing={5}
+    <Layout
+      actions={[
+        <Button
+          disabled={!invoice || getInvoiceIsPending}
+          onClick={() => {
+            history.push(routes.invoiceEdit.path.replace(':id', match.params.id));
+          }}
+          startIcon={<EditIcon />}
+          variant="contained"
         >
-          <Grid item>
-            <h1 style={{ margin: 0 }}>
-              Detail faktury
-              {invoice ? ` – ${invoice.invoiceIdentifier}` : ''}
-            </h1>
-          </Grid>
-          <Grid item>
-            <Grid
-              alignItems="center"
-              container
-              direction="row"
-              justify="space-between"
-              spacing={1}
-            >
-              <Grid item>
-                <Button
-                  disabled={!invoice || getInvoiceIsPending}
-                  onClick={() => {
-                    history.push(routes.invoiceEdit.path.replace(':id', match.params.id));
-                  }}
-                  startIcon={<EditIcon />}
-                  variant="contained"
-                >
-                  Upravit
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
-                  onClick={() => {
-                    deleteInvoice(match.params.id).then((response) => {
-                      history.push(routes.invoices.path);
+          Upravit
+        </Button>,
+        <Button
+          disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
+          onClick={() => {
+            deleteInvoice(match.params.id).then((response) => {
+              history.push(routes.invoices.path);
 
-                      return response;
-                    });
-                  }}
-                  startIcon={<DeleteIcon />}
-                  variant="contained"
-                >
-                  Smazat
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Box>
+              return response;
+            });
+          }}
+          startIcon={<DeleteIcon />}
+          variant="contained"
+        >
+          Smazat
+        </Button>,
+      ]}
+      title={invoice ? 'Detail faktury' : `Detail faktury – ${invoice.invoiceIdentifier}`}
+    >
       {getInvoiceIsPending && (
         <CircularProgress />
       )}

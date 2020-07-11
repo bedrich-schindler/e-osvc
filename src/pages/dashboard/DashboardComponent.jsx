@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout } from '../../components/Layout';
 
 const DashboardComponent = () => (
-  <Layout />
+  <Layout title="Přehled" />
 );
 
 export default DashboardComponent;

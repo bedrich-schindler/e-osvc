@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Layout } from '../../components/Layout';
 import { InsurancePage } from '../../components/InsurancePage';
 import { validateSocialInsurance } from '../../resources/socialInsurance';
 
@@ -15,23 +14,21 @@ const SocialInsuranceComponent = ({
   getSocialInsurancesIsPending,
   socialInsurances,
 }) => (
-  <Layout>
-    <InsurancePage
-      addTitle="Přidat sociální pojištění"
-      addInsurance={addSocialInsurance}
-      addInsuranceIsPending={addSocialInsuranceIsPending}
-      deleteInsurance={deleteSocialInsurance}
-      deleteInsuranceIsPending={deleteSocialInsuranceIsPending}
-      editInsurance={editSocialInsurance}
-      editInsuranceIsPending={editSocialInsuranceIsPending}
-      editTitle="Upravit sociální pojištění"
-      getInsurances={getSocialInsurances}
-      getInsurancesIsPending={getSocialInsurancesIsPending}
-      insurances={socialInsurances}
-      title="Sociální pojištění"
-      validateInsurance={validateSocialInsurance}
-    />
-  </Layout>
+  <InsurancePage
+    addTitle="Přidat sociální pojištění"
+    addInsurance={addSocialInsurance}
+    addInsuranceIsPending={addSocialInsuranceIsPending}
+    deleteInsurance={deleteSocialInsurance}
+    deleteInsuranceIsPending={deleteSocialInsuranceIsPending}
+    editInsurance={editSocialInsurance}
+    editInsuranceIsPending={editSocialInsuranceIsPending}
+    editTitle="Upravit sociální pojištění"
+    getInsurances={getSocialInsurances}
+    getInsurancesIsPending={getSocialInsurancesIsPending}
+    insurances={socialInsurances}
+    title="Sociální pojištění"
+    validateInsurance={validateSocialInsurance}
+  />
 );
 
 SocialInsuranceComponent.defaultProps = {

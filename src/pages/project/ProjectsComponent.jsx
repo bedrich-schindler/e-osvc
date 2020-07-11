@@ -1,8 +1,8 @@
 import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
@@ -19,7 +19,6 @@ import React, {
 import { Layout } from '../../components/Layout';
 import { AddProjectDialog } from './components/AddProjectDialog';
 import { EditProjectDialog } from './components/EditProjectDialog';
-import styles from './styles.scss';
 
 const ProjectsComponent = ({
   addProject,
@@ -46,8 +45,20 @@ const ProjectsComponent = ({
   }, [getClients, getProjects]);
 
   return (
-    <Layout>
-      <h1>Projekty</h1>
+    <Layout
+      actions={[
+        <Button
+          color="primary"
+          disabled={clients === null || clients.length === 0}
+          onClick={() => setIsAddDialogOpened(true)}
+          startIcon={<AddIcon />}
+          variant="contained"
+        >
+          Přidat
+        </Button>,
+      ]}
+      title="Projekty"
+    >
       {isTableLoading && (
         <CircularProgress />
       )}
@@ -129,14 +140,6 @@ const ProjectsComponent = ({
           }}
         />
       )}
-      <Fab
-        className={styles.floatingButton}
-        color="primary"
-        disabled={clients === null || clients.length === 0}
-        onClick={() => setIsAddDialogOpened(true)}
-      >
-        <AddIcon />
-      </Fab>
     </Layout>
   );
 };

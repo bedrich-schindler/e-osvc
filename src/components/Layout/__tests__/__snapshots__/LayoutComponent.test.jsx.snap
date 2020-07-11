@@ -25,6 +25,32 @@ exports[`rendering renders correctly 1`] = `
     className="content"
   >
     <Connect(NotificationCenterComponent) />
+    <Styled(MuiBox)
+      mb={5}
+      mt={2}
+    >
+      <WithStyles(ForwardRef(Grid))
+        alignItems="center"
+        container={true}
+        direction="row"
+        justify="space-between"
+        spacing={5}
+      >
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        >
+          <h1
+            style={
+              Object {
+                "margin": 0,
+              }
+            }
+          >
+            Title
+          </h1>
+        </WithStyles(ForwardRef(Grid))>
+      </WithStyles(ForwardRef(Grid))>
+    </Styled(MuiBox)>
     <p>
       Content
     </p>

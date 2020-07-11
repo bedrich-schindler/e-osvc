@@ -6,6 +6,7 @@ describe('rendering', () => {
   it('renders correctly', () => {
     const tree = shallow(
       <LayoutComponent
+        title="Title"
         user={{ name: 'Name' }}
         logout={() => {}}
       >

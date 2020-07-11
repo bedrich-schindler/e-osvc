@@ -17,3 +17,9 @@ export const API_TIME_RECORD_GET_FAILURE = 'api/timeRecord/getTimeRecord/failure
 export const API_TIME_RECORDS_GET_REQUEST = 'api/timeRecord/getTimeRecords/request';
 export const API_TIME_RECORDS_GET_SUCCESS = 'api/timeRecord/getTimeRecords/success';
 export const API_TIME_RECORDS_GET_FAILURE = 'api/timeRecord/getTimeRecords/failure';
+
+export const LOCAL_IS_TIMER_VISIBLE_SET = 'local/timeRecord/isTimerVisible/set';
+export const LOCAL_IS_TIMER_VISIBLE_RESET = 'local/timeRecord/isTimerVisible/reset';
+
+export const LOCAL_TIMER_SET = 'local/timeRecord/timer/set';
+export const LOCAL_TIMER_RESET = 'local/timeRecord/timer/reset';

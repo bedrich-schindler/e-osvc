@@ -28,6 +28,7 @@ exports[`rendering renders correctly 1`] = `
     <p>
       Content
     </p>
+    <Connect(TimerComponent) />
   </main>
 </div>
 `;

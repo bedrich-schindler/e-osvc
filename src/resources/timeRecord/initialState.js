@@ -1,6 +1,10 @@
 import { fromJS } from 'immutable';
+import {
+  retrieveIsTimerVisibleFromStorage,
+  retrieveTimerFromStorage,
+} from './storage';
 
-export default () => fromJS({
+export default (usePersistentStorage = true) => fromJS({
   apiActions: {
     addTimeRecord: {
       isPending: false,
@@ -24,5 +28,11 @@ export default () => fromJS({
     editTimeRecord: null,
     getTimeRecord: null,
     getTimeRecords: null,
+    isTimerVisible: usePersistentStorage
+      ? (retrieveIsTimerVisibleFromStorage() || false)
+      : false,
+    timer: usePersistentStorage
+      ? (retrieveTimerFromStorage() || null)
+      : null,
   },
 });

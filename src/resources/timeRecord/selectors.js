@@ -11,6 +11,8 @@ export const selectDeleteTimeRecord = getDataSelector(getData, 'deleteTimeRecord
 export const selectEditTimeRecord = getDataSelector(getData, 'editTimeRecord');
 export const selectGetTimeRecord = getDataSelector(getData, 'getTimeRecord');
 export const selectGetTimeRecords = getDataSelector(getData, 'getTimeRecords');
+export const selectIsTimerVisible = getDataSelector(getData, 'isTimerVisible');
+export const selectTimer = getDataSelector(getData, 'timer');
 
 export const selectAddTimeRecordIsPending = getIsPendingSelector(getApiActions, 'addTimeRecord');
 export const selectDeleteTimeRecordIsPending = getIsPendingSelector(getApiActions, 'deleteTimeRecord');

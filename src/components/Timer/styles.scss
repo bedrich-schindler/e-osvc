@@ -1,0 +1,37 @@
+@import '../../styles/variables';
+
+.root {
+  position: fixed;
+  top: auto;
+  right: 50px;
+  bottom: 25px;
+  left: auto;
+  display: flex;
+}
+
+.rootButton {
+  position: fixed;
+  top: auto;
+  right: 25px;
+  bottom: 25px;
+  left: auto;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  transform: translateX(25px);
+}
+
+.startStopIcon {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+.removeIcon {
+  display: inline-block;
+  margin: 0 0 0 1em;
+}

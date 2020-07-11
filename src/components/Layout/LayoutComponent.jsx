@@ -3,6 +3,7 @@ import React from 'react';
 import { Header } from '../Header';
 import { Menu } from '../Menu';
 import { NotificationCenter } from '../NotificationCenter';
+import { Timer } from '../Timer';
 import styles from './styles.scss';
 
 class LayoutComponent extends React.Component {
@@ -51,6 +52,7 @@ class LayoutComponent extends React.Component {
         <main className={styles.content}>
           <NotificationCenter />
           {children}
+          <Timer />
         </main>
       </div>
     );
@@ -59,6 +61,7 @@ class LayoutComponent extends React.Component {
 
 LayoutComponent.defaultProps = {
   children: null,
+  floatingActions: null,
 };
 
 LayoutComponent.propTypes = {

@@ -2,6 +2,12 @@ import jwtDecode from 'jwt-decode';
 import { createApiAction } from '../../services/apiService';
 import { selectToken } from '../auth';
 import * as actionTypes from './actionTypes';
+import {
+  removeIsTimerVisibleFromStorage,
+  removeTimerFromStorage,
+  storeIsTimerVisibleToStorage,
+  storeTimerToStorage,
+} from './storage';
 
 const prepareTimeRecordBody = (data) => ({
   ...data,
@@ -94,3 +100,61 @@ export const getTimeRecords = () => (dispatch, getState) => {
     ],
   })(dispatch, getState);
 };
+
+export const resetIsTimerVisible = () => (dispatch) => new Promise((resolve) => {
+  const request = {
+    meta: { dataPath: ['isTimerVisible'] },
+    type: actionTypes.LOCAL_IS_TIMER_VISIBLE_RESET,
+  };
+
+  dispatch(request);
+  resolve(request);
+}).then((response) => {
+  removeIsTimerVisibleFromStorage();
+
+  return response;
+});
+
+export const resetTimer = () => (dispatch) => new Promise((resolve) => {
+  const request = {
+    meta: { dataPath: ['timer'] },
+    type: actionTypes.LOCAL_TIMER_RESET,
+  };
+
+  dispatch(request);
+  resolve(request);
+}).then((response) => {
+  removeTimerFromStorage();
+
+  return response;
+});
+
+export const setIsTimerVisible = (data) => (dispatch) => new Promise((resolve) => {
+  const request = {
+    meta: { dataPath: ['isTimerVisible'] },
+    payload: data,
+    type: actionTypes.LOCAL_IS_TIMER_VISIBLE_SET,
+  };
+
+  dispatch(request);
+  resolve(request);
+}).then((response) => {
+  storeIsTimerVisibleToStorage(data);
+
+  return response;
+});
+
+export const setTimer = (data) => (dispatch) => new Promise((resolve) => {
+  const request = {
+    meta: { dataPath: ['timer'] },
+    payload: data,
+    type: actionTypes.LOCAL_TIMER_SET,
+  };
+
+  dispatch(request);
+  resolve(request);
+}).then((response) => {
+  storeTimerToStorage(data);
+
+  return response;
+});

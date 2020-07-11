@@ -1,4 +1,8 @@
 import { notificationsReset } from '../notification';
+import {
+  resetIsTimerVisible,
+  resetTimer,
+} from '../timeRecord';
 import { createApiAction } from '../../services/apiService';
 import { selectToken } from './selectors';
 import {
@@ -41,6 +45,10 @@ export const logout = () => async (dispatch) => {
 
   // Reset notifications
   dispatch(notificationsReset());
+
+  // Reset other resources
+  dispatch(resetIsTimerVisible());
+  dispatch(resetTimer());
 
   removeTokenFromStorage();
 

@@ -4,6 +4,10 @@ export {
   editTimeRecord,
   getTimeRecord,
   getTimeRecords,
+  resetIsTimerVisible,
+  resetTimer,
+  setIsTimerVisible,
+  setTimer,
 } from './actions';
 
 export { default as timeRecordReducer } from './reducer';
@@ -19,6 +23,8 @@ export {
   selectGetTimeRecordIsPending,
   selectGetTimeRecords,
   selectGetTimeRecordsIsPending,
+  selectIsTimerVisible,
+  selectTimer,
 } from './selectors';
 
 export { validateTimeRecord } from './validator';

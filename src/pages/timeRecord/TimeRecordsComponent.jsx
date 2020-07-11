@@ -17,7 +17,8 @@ import React, {
   useState,
 } from 'react';
 import { Layout } from '../../components/Layout';
-import { TimeRecordDialog } from './components/TimeRecordDialog';
+import { TimeRecordDialog } from '../../components/TimeRecordDialog';
+import { getTimeDifferenceString } from '../../services/dateTimeService';
 import styles from './styles.scss';
 
 const TimeRecordsComponent = ({
@@ -59,6 +60,7 @@ const TimeRecordsComponent = ({
               <TableRow>
                 <TableCell>Od</TableCell>
                 <TableCell>Do</TableCell>
+                <TableCell>Čas</TableCell>
                 <TableCell>Projekt</TableCell>
                 <TableCell>Poznámka</TableCell>
                 <TableCell />
@@ -76,6 +78,9 @@ const TimeRecordsComponent = ({
                 <TableRow key={row.id}>
                   <TableCell>{row.startDateTime.toLocaleString()}</TableCell>
                   <TableCell>{row.endDateTime.toLocaleString()}</TableCell>
+                  <TableCell>
+                    {getTimeDifferenceString(row.startDateTime, row.endDateTime)}
+                  </TableCell>
                   <TableCell>{row.project.name}</TableCell>
                   <TableCell>{row.note || '-'}</TableCell>
                   <TableCell align="right">

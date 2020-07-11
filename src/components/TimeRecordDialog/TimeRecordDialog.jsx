@@ -14,8 +14,8 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import { cloneDeep } from 'lodash';
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
-import { validateTimeRecord } from '../../../../resources/timeRecord';
-import { updateData } from '../../../../services/dataService';
+import { validateTimeRecord } from '../../resources/timeRecord';
+import { updateData } from '../../services/dataService';
 
 const initialFormData = {
   endDateTime: null,
@@ -263,7 +263,7 @@ TimeRecordDialog.propTypes = {
     endDateTime: PropTypes.object.isRequired,
     note: PropTypes.string,
     project: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.number,
     }),
     startDateTime: PropTypes.object.isRequired,
   }),

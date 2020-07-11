@@ -111,7 +111,7 @@ LayoutComponent.propTypes = {
     PropTypes.element,
   ]),
   logout: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,

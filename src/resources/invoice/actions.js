@@ -21,10 +21,10 @@ const prepareInvoiceBody = (data) => ({
   })),
   invoicePaymentDate: data.invoicePaymentDate ? data.invoicePaymentDate.toJSON() : null,
   paymentVariableSymbol: parseInt(data.paymentVariableSymbol, 10),
-  projectInfo: {
-    ...data.projectInfo,
-    original: `/projects/${data.projectInfo.original}`,
-  },
+  projectInfoItems: data.projectInfoItems.map((projectInfo) => ({
+    ...projectInfo,
+    original: `/projects/${projectInfo.original}`,
+  })),
   userInfo: {
     ...data.userInfo,
     cidNumber: parseInt(data.userInfo.cidNumber, 10),

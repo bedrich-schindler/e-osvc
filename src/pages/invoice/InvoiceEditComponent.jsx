@@ -52,10 +52,7 @@ const initialFormData = {
   ],
   invoicePaymentDate: null,
   paymentVariableSymbol: null,
-  projectInfo: {
-    name: null,
-    original: null,
-  },
+  projectInfoItems: [],
   userInfo: {
     bankAccount: null,
     cidNumber: null,
@@ -82,6 +79,7 @@ class InvoiceEditComponent extends React.Component {
     };
 
     this.addInvoiceItem = this.addInvoiceItem.bind(this);
+    this.changeClientHandler = this.changeClientHandler.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
     this.changeProjectHandler = this.changeProjectHandler.bind(this);
     this.changeInvoiceDateHandler = this.changeInvoiceDateHandler.bind(this);
@@ -170,10 +168,10 @@ class InvoiceEditComponent extends React.Component {
           invoiceDate: payload.invoiceDate ? new Date(payload.invoiceDate) : null,
           invoiceDueDate: payload.invoiceDueDate ? new Date(payload.invoiceDueDate) : null,
           invoicePaymentDate: payload.invoicePaymentDate ? new Date(payload.invoicePaymentDate) : null,
-          projectInfo: {
-            ...payload.projectInfo,
-            original: payload.projectInfo.original.id,
-          },
+          projectInfoItems: payload.projectInfoItems.map((projectInfo) => ({
+            ...projectInfo,
+            original: projectInfo.original.id,
+          })),
         },
         formValidity: {
           ...prevState.formValidity,
@@ -203,16 +201,12 @@ class InvoiceEditComponent extends React.Component {
     }));
   }
 
-  changeProjectHandler(e) {
+  changeClientHandler(e) {
     const eventTarget = e.target;
     let { value } = eventTarget;
-    const {
-      clients,
-      projects,
-    } = this.props;
+    const { clients } = this.props;
 
-    const project = projects.find((p) => p.id === value);
-    const client = clients.find((c) => c.id === project.client.id);
+    const client = clients.find((p) => p.id === value);
 
     this.setState((prevState) => ({
       formData: {
@@ -226,10 +220,27 @@ class InvoiceEditComponent extends React.Component {
           street: client.street,
           taxNumber: client.taxNumber,
         },
-        projectInfo: {
-          name: project.name,
-          original: value,
-        },
+        projectInfoItems: [],
+      },
+    }));
+  }
+
+  changeProjectHandler(e) {
+    const eventTarget = e.target;
+    let { value } = eventTarget;
+    const { projects } = this.props;
+
+    this.setState((prevState) => ({
+      formData: {
+        ...prevState.formData,
+        projectInfoItems: value.map((id) => {
+          const { name } = projects.find((p) => p.id === id);
+
+          return {
+            name,
+            original: id,
+          }
+        }),
       },
     }));
   }
@@ -379,36 +390,6 @@ class InvoiceEditComponent extends React.Component {
             <Grid item xs={12}>
               <Paper style={{ height: '100%' }}>
                 <Box p={3}>
-                  <FormControl
-                    error={Boolean(formValidity.elements.projectInfo.original)}
-                    fullWidth
-                    required
-                  >
-                    <InputLabel htmlFor="projectInfo.original">
-                      Projekt
-                    </InputLabel>
-                    <Select
-                      fullWidth
-                      id="projectInfo.original"
-                      margin="dense"
-                      name="projectInfo.original"
-                      onChange={this.changeProjectHandler}
-                      required
-                      value={formData.projectInfo.original ?? ''}
-                    >
-                      {projects.map((project) => (
-                        <MenuItem
-                          key={project.id}
-                          value={project.id}
-                        >
-                          {project.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {Boolean(formValidity.elements.projectInfo.original) && (
-                      <FormHelperText>{formValidity.elements.projectInfo.original}</FormHelperText>
-                    )}
-                  </FormControl>
                   <TextField
                     autoFocus
                     error={Boolean(formValidity.elements.invoiceIdentifier)}
@@ -533,7 +514,6 @@ class InvoiceEditComponent extends React.Component {
                     Odběratel
                   </h2>
                   <FormControl
-                    disabled
                     error={Boolean(formValidity.elements.clientInfo.original)}
                     fullWidth
                     required
@@ -543,10 +523,10 @@ class InvoiceEditComponent extends React.Component {
                     </InputLabel>
                     <Select
                       fullWidth
-                      id="clientInfo.ororiginaligin"
+                      id="clientInfo.original"
                       margin="dense"
                       name="clientInfo.original"
-                      onChange={this.changeHandler}
+                      onChange={this.changeClientHandler}
                       required
                       value={formData.clientInfo.original ?? ''}
                     >
@@ -752,6 +732,44 @@ class InvoiceEditComponent extends React.Component {
               </Paper>
             </Grid>
             <Grid item xs={12}>
+              <Paper style={{ height: '100%' }}>
+                <Box p={3}>
+                  <FormControl
+                    disabled={projects.filter((p) => p.client.id === formData.clientInfo.original).length === 0}
+                    error={typeof formValidity.elements.projectInfoItems === 'string'}
+                    fullWidth
+                    required
+                  >
+                    <InputLabel htmlFor="projectInfoItems">
+                      Projekt
+                    </InputLabel>
+                    <Select
+                      fullWidth
+                      id="projectInfoItems"
+                      margin="dense"
+                      name="projectInfoItems"
+                      multiple
+                      onChange={this.changeProjectHandler}
+                      required
+                      value={formData.projectInfoItems.map((item) => item.original) ?? []}
+                    >
+                      {projects.filter((p) => p.client.id === formData.clientInfo.original).map((project) => (
+                        <MenuItem
+                          key={project.id}
+                          value={project.id}
+                        >
+                          {project.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {Boolean(formValidity.elements.projectInfoItems) && (
+                      <FormHelperText>{formValidity.elements.projectInfoItems}</FormHelperText>
+                    )}
+                  </FormControl>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
               <TableContainer component={Paper}>
                 <Table
                   aria-label="spanning table"
@@ -932,6 +950,12 @@ InvoiceEditComponent.propTypes = {
     })).isRequired,
     invoicePaymentDate: PropTypes.object,
     paymentVariableSymbol: PropTypes.number.isRequired,
+    projectInfoItems: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      original: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired,
+    })).isRequired,
     userInfo: PropTypes.shape({
       bankAccount: PropTypes.string.isRequired,
       cidNumber: PropTypes.number.isRequired,

@@ -1,4 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Box from '@material-ui/core/Box';
@@ -66,7 +67,23 @@ const InvoiceDetailComponent = ({
           Smazat
         </Button>,
       ]}
-      title={invoice ? 'Detail faktury' : `Detail faktury – ${invoice.invoiceIdentifier}`}
+      title={
+        invoice
+          ? (
+            <>
+              {`Detail faktury – ${invoice.invoiceIdentifier}`}
+              <br />
+              {invoice.projectInfoItems.map((projectInfo) => (
+                <Chip
+                  key={projectInfo.name}
+                  label={projectInfo.name}
+                  size="small"
+                />
+              ))}
+            </>
+          )
+          : 'Detail faktury'
+      }
     >
       {getInvoiceIsPending && (
         <CircularProgress />
@@ -275,6 +292,12 @@ InvoiceDetailComponent.propTypes = {
     })).isRequired,
     invoicePaymentDate: PropTypes.object,
     paymentVariableSymbol: PropTypes.number.isRequired,
+    projectInfoItems: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      original: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired,
+    })).isRequired,
     userInfo: PropTypes.shape({
       bankAccount: PropTypes.string.isRequired,
       cidNumber: PropTypes.number.isRequired,

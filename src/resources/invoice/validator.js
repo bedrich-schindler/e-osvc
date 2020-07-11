@@ -15,12 +15,10 @@ export const validateUser = (formData, initialFormValidity) => {
     }
   });
 
-  ['name', 'original'].forEach((element) => {
-    if (formData.projectInfo[element] === null || formData.projectInfo[element] === '') {
-      formValidity.elements.projectInfo[element] = 'Toto pole je povinné.';
-      formValidity.isValid = false;
-    }
-  });
+  if (formData.projectInfoItems === null || formData.projectInfoItems.length === 0) {
+    formValidity.elements.projectInfoItems = 'Musí být vybrát alespoň jeden projekt';
+    formValidity.isValid = false;
+  }
 
   ['bankAccount', 'cidNumber', 'city', 'firstName', 'lastName', 'postalCode', 'street']
     .forEach((element) => {
@@ -158,14 +156,6 @@ export const validateUser = (formData, initialFormValidity) => {
     && formData.userInfo.bankAccount.length > 64
   ) {
     formValidity.elements.userInfo.bankAccount = 'Toto pole musí být maximálně 64 znaků dlouhé.';
-    formValidity.isValid = false;
-  }
-
-  if (
-    formValidity.elements.projectInfo.name === null
-    && formData.projectInfo.name > 64
-  ) {
-    formValidity.elements.projectInfo.name = 'Toto pole musí být maximálně 64 znaků dlouhé.';
     formValidity.isValid = false;
   }
 

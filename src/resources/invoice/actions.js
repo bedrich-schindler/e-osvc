@@ -79,7 +79,6 @@ export const editInvoice = (invoiceId, data) => createApiAction({
 });
 
 export const getInvoice = (invoiceId) => createApiAction({
-  dataPath: ['getInvoice'],
   endpoint: `/invoices/${invoiceId}`,
   method: 'GET',
   notificationMessages: {

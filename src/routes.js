@@ -24,15 +24,15 @@ export default {
     path: '/faktury/pridat',
     title: 'Přidat fakturu',
   },
-  invoiceEdit: {
-    component: () => getComponent('invoice', 'InvoiceEdit'),
-    path: '/faktury/:id/upravit',
-    title: 'Upravit fakturu',
-  },
   invoiceDetail: {
     component: () => getComponent('invoice', 'InvoiceDetail'),
     path: '/faktury/:id/detail',
     title: 'Detail faktury',
+  },
+  invoiceEdit: {
+    component: () => getComponent('invoice', 'InvoiceEdit'),
+    path: '/faktury/:id/upravit',
+    title: 'Upravit fakturu',
   },
   invoices: {
     component: () => getComponent('invoice', 'Invoices'),

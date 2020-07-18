@@ -11,6 +11,7 @@
   "overrides": [
     {
       "files": [
+        "**/helpers.js",
         "**/index.js",
         "**/constants/*.js",
         "**/resources/*/*.js",

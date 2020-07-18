@@ -1,9 +1,13 @@
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
@@ -11,11 +15,14 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
+import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect } from 'react';
 import { Layout } from '../../components/Layout';
+import { getTimeDifferenceString } from '../../services/dateTimeService';
 import routes from '../../routes';
+import { getTotalTime } from './helpers';
 import styles from './styles.scss';
 
 const InvoiceDetailComponent = ({
@@ -207,7 +214,7 @@ const InvoiceDetailComponent = ({
           </Grid>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-              <Table aria-label="spanning table">
+              <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Množství</TableCell>
@@ -253,6 +260,54 @@ const InvoiceDetailComponent = ({
               </Table>
             </TableContainer>
           </Grid>
+          {invoice.timeRecords.length > 0 && (
+            <Grid item xs={12}>
+              <div styles={{ width: '100%' }}>
+                <ExpansionPanel>
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <h2 className={styles.timeRecordsSubheading}>
+                      Odpracovaný čas
+                    </h2>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <TableContainer component={Paper} style={{ maxHeight: 350 }}>
+                      <Table size="small" stickyHeader>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Datum a čas začátku</TableCell>
+                            <TableCell>Délka</TableCell>
+                            <TableCell>Projekt</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {invoice.timeRecords.map((row) => (
+                            <TableRow key={row.id}>
+                              <TableCell>{row.startDateTime.toLocaleString()}</TableCell>
+                              <TableCell>
+                                {getTimeDifferenceString(row.startDateTime, row.endDateTime)}
+                              </TableCell>
+                              <TableCell>{row.project.name}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                        <TableFooter>
+                          <TableRow>
+                            <TableCell>
+                              Odpracovaný čas celkem
+                            </TableCell>
+                            <TableCell>
+                              {getTotalTime(invoice.timeRecords)}
+                            </TableCell>
+                            <TableCell />
+                          </TableRow>
+                        </TableFooter>
+                      </Table>
+                    </TableContainer>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              </div>
+            </Grid>
+          )}
         </Grid>
       )}
     </Layout>
@@ -298,6 +353,13 @@ InvoiceDetailComponent.propTypes = {
         id: PropTypes.number.isRequired,
       }).isRequired,
     })).isRequired,
+    timeRecords: PropTypes.arrayOf(PropTypes.shape({
+      endDateTime: PropTypes.object.isRequired,
+      project: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }).isRequired,
+      startDateTime: PropTypes.object.isRequired,
+    })),
     userInfo: PropTypes.shape({
       bankAccount: PropTypes.string.isRequired,
       cidNumber: PropTypes.number.isRequired,

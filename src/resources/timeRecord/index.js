@@ -3,6 +3,7 @@ export {
   deleteTimeRecord,
   editTimeRecord,
   getTimeRecord,
+  getTimeRecordsFiltered,
   getTimeRecords,
   resetIsTimerVisible,
   resetTimer,

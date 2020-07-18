@@ -1,8 +1,13 @@
 import AddIcon from '@material-ui/icons/Add';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
@@ -18,6 +23,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
+import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
@@ -26,7 +32,9 @@ import { KeyboardDatePicker } from '@material-ui/pickers';
 import { Layout } from '../../components/Layout';
 import { validateUser } from '../../resources/invoice/validator';
 import { updateData } from '../../services/dataService';
+import { getTimeDifferenceString } from '../../services/dateTimeService';
 import routes from '../../routes';
+import { getTotalTime } from './helpers';
 import styles from './styles.scss';
 
 const initialFormData = {
@@ -53,6 +61,7 @@ const initialFormData = {
   invoicePaymentDate: null,
   paymentVariableSymbol: null,
   projectInfoItems: [],
+  timeRecordsIds: [],
   userInfo: {
     bankAccount: null,
     cidNumber: null,
@@ -86,6 +95,8 @@ class InvoiceEditComponent extends React.Component {
     this.changeInvoiceDueDateHandler = this.changeInvoiceDueDateHandler.bind(this);
     this.changeInvoicePaymentDateHandler = this.changeInvoicePaymentDateHandler.bind(this);
     this.saveHandler = this.saveHandler.bind(this);
+    this.toggleAllTimeRecord = this.toggleAllTimeRecord.bind(this);
+    this.toggleTimeRecord = this.toggleTimeRecord.bind(this);
   }
 
   addInvoiceItem() {
@@ -146,17 +157,67 @@ class InvoiceEditComponent extends React.Component {
     })
   }
 
+  toggleAllTimeRecord(e) {
+    const { timeRecords } = this.props;
+    let { checked } = e.target;
+
+    this.setState((prevState) => {
+      let timeRecordsIds = [];
+
+      if (checked) {
+        timeRecordsIds = timeRecords.map((timeRecord) => timeRecord.id);
+      } else {
+        timeRecordsIds = [];
+      }
+
+      return ({
+        formData: {
+          ...prevState.formData,
+          timeRecordsIds,
+        },
+      });
+    });
+  }
+
+  toggleTimeRecord(e) {
+    let { value } = e.target;
+    value = parseInt(value, 10);
+
+    this.setState((prevState) => {
+      let { timeRecordsIds} = prevState.formData;
+
+      if (timeRecordsIds.includes(value)) {
+        timeRecordsIds = timeRecordsIds.filter((id) => id !== value);
+      } else {
+        timeRecordsIds.push(value);
+      }
+
+      return ({
+        formData: {
+          ...prevState.formData,
+          timeRecordsIds,
+        },
+      });
+    });
+  }
+
   componentDidMount() {
     const {
       getClients,
       getInvoice,
       getProjects,
+      getTimeRecordsFiltered,
       getUser,
       match,
     } = this.props;
 
     getInvoice(match.params.id).then((response) => {
       const { payload } = response;
+
+      getTimeRecordsFiltered({
+        invoiceId: match.params.id,
+        projectIds: payload.projectInfoItems.map((projectInfo) => projectInfo.original.id),
+      });
 
       this.setState((prevState) => ({
         formData: {
@@ -172,6 +233,7 @@ class InvoiceEditComponent extends React.Component {
             ...projectInfo,
             original: projectInfo.original.id,
           })),
+          timeRecordsIds: payload.timeRecords.map((timeRecord) => timeRecord.id),
         },
         formValidity: {
           ...prevState.formValidity,
@@ -228,7 +290,11 @@ class InvoiceEditComponent extends React.Component {
   changeProjectHandler(e) {
     const eventTarget = e.target;
     let { value } = eventTarget;
-    const { projects } = this.props;
+    const {
+      getTimeRecordsFiltered,
+      match,
+      projects,
+    } = this.props;
 
     this.setState((prevState) => ({
       formData: {
@@ -241,8 +307,16 @@ class InvoiceEditComponent extends React.Component {
             original: id,
           }
         }),
+        timeRecordsIds: [],
       },
-    }));
+    }), () => {
+      const { formData } = this.state;
+
+      getTimeRecordsFiltered({
+        invoiceId: match.params.id,
+        projectIds: formData.projectInfoItems.map((projectInfo) => projectInfo.original),
+      });
+    });
   }
 
   changeInvoiceDateHandler(value) {
@@ -331,12 +405,14 @@ class InvoiceEditComponent extends React.Component {
       getClientsIsPending,
       getInvoiceIsPending,
       getProjectsIsPending,
+      getTimeRecordsIsPending,
       getUserIsPending,
       editInvoiceIsPending,
       history,
       invoice,
       match,
       projects,
+      timeRecords,
       user,
     } = this.props;
     const {
@@ -731,9 +807,12 @@ class InvoiceEditComponent extends React.Component {
                 </Box>
               </Paper>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item md={4} xs={12}>
               <Paper style={{ height: '100%' }}>
                 <Box p={3}>
+                  <h2 className={styles.subheading}>
+                    Projekty
+                  </h2>
                   <FormControl
                     disabled={projects.filter((p) => p.client.id === formData.clientInfo.original).length === 0}
                     error={typeof formValidity.elements.projectInfoItems === 'string'}
@@ -741,7 +820,7 @@ class InvoiceEditComponent extends React.Component {
                     required
                   >
                     <InputLabel htmlFor="projectInfoItems">
-                      Projekt
+                      Projekty
                     </InputLabel>
                     <Select
                       fullWidth
@@ -769,10 +848,89 @@ class InvoiceEditComponent extends React.Component {
                 </Box>
               </Paper>
             </Grid>
+            <Grid item md={8} xs={12}>
+              <div styles={{ width: '100%' }}>
+                <ExpansionPanel>
+                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <h2 className={styles.timeRecordsSubheading}>
+                      Odpracovaný čas
+                    </h2>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    {formData.projectInfoItems.length === 0 && (
+                      <p>
+                        Musíte zvolit minimálně jeden projekt pro zobrazení odpracovaných časů.
+                      </p>
+                    )}
+                    {getTimeRecordsIsPending && (
+                      <CircularProgress />
+                    )}
+                    {formData.projectInfoItems.length > 0 && timeRecords && !getTimeRecordsIsPending && (
+                      <TableContainer component={Paper} style={{ maxHeight: 350 }}>
+                        <Table size="small" stickyHeader>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell padding="checkbox">
+                                <Checkbox
+                                  checked={formData.timeRecordsIds.length === timeRecords.length}
+                                  onChange={this.toggleAllTimeRecord}
+                                  inputProps={{ 'aria-label': 'Vybrat vše' }}
+                                />
+                              </TableCell>
+                              <TableCell>Datum a čas začátku</TableCell>
+                              <TableCell>Délka</TableCell>
+                              <TableCell>Projekt</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {timeRecords.length === 0 && (
+                              <TableRow>
+                                <TableCell colSpan={4}>
+                                  Tabulka neobsahuje žádná data.
+                                </TableCell>
+                              </TableRow>
+                            )}
+                            {timeRecords.map((row) => (
+                              <TableRow key={row.id}>
+                                <TableCell padding="checkbox">
+                                  <Checkbox
+                                    checked={formData.timeRecordsIds.includes(row.id)}
+                                    inputProps={{ 'aria-labelledby': '' }}
+                                    name="timeRecordsIds"
+                                    onChange={this.toggleTimeRecord}
+                                    value={row.id}
+                                  />
+                                </TableCell>
+                                <TableCell>{row.startDateTime.toLocaleString()}</TableCell>
+                                <TableCell>
+                                  {getTimeDifferenceString(row.startDateTime, row.endDateTime)}
+                                </TableCell>
+                                <TableCell>{row.project.name}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                          <TableFooter>
+                            <TableRow>
+                              <TableCell />
+                              <TableCell>
+                                Odpracovaný čas celkem
+                              </TableCell>
+                              <TableCell>
+                                {getTotalTime(timeRecords, formData.timeRecordsIds)}
+                              </TableCell>
+                              <TableCell />
+                            </TableRow>
+                          </TableFooter>
+                        </Table>
+                      </TableContainer>
+                    )}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+              </div>
+            </Grid>
             <Grid item xs={12}>
               <TableContainer component={Paper}>
                 <Table
-                  aria-label="spanning table"
                   style={{ minWidth: 740 }}
                 >
                   <TableHead>

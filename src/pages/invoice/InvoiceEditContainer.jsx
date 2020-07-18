@@ -19,6 +19,11 @@ import {
   selectGetProjectsIsPending,
 } from '../../resources/project';
 import {
+  getTimeRecordsFiltered,
+  selectGetTimeRecords,
+  selectGetTimeRecordsIsPending,
+} from '../../resources/timeRecord';
+import {
   getUser,
   selectGetUser,
   selectGetUserIsPending,
@@ -32,9 +37,11 @@ const mapStateToProps = (state) => ({
   getClientsIsPending: selectGetClientsIsPending(state),
   getInvoiceIsPending: selectGetInvoiceIsPending(state),
   getProjectsIsPending: selectGetProjectsIsPending(state),
+  getTimeRecordsIsPending: selectGetTimeRecordsIsPending(state),
   getUserIsPending: selectGetUserIsPending(state),
   invoice: selectGetInvoice(state),
   projects: selectGetProjects(state),
+  timeRecords: selectGetTimeRecords(state),
   user: selectGetUser(state),
 });
 
@@ -44,6 +51,7 @@ const mapDispatchToProps = (dispatch) => ({
   getClients: () => dispatch(getClients()),
   getInvoice: (invoiceId) => dispatch(getInvoice(invoiceId)),
   getProjects: () => dispatch(getProjects()),
+  getTimeRecordsFiltered: (options) => dispatch(getTimeRecordsFiltered(options)),
   getUser: () => dispatch(getUser()),
 });
 

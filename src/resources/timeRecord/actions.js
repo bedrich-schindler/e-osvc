@@ -101,6 +101,56 @@ export const getTimeRecords = () => (dispatch, getState) => {
   })(dispatch, getState);
 };
 
+export const getTimeRecordsFiltered = (filter = null) => (dispatch, getState) => {
+  const token = selectToken(getState());
+  const { uid } = jwtDecode(token);
+
+  let queryString = '';
+  if (filter) {
+    let projectIdsString = '';
+    let invoiceIdString = '';
+
+    if (filter.projectIds) {
+      projectIdsString = filter.projectIds
+        .map((projectId) => `project.id[]=${projectId}`)
+        .join('&');
+    }
+
+    if (filter.invoiceId) {
+      invoiceIdString = `in_or_null_invoice[]=${filter.invoiceId}`;
+    } else {
+      invoiceIdString = 'in_or_null_invoice[]';
+    }
+
+    queryString = `?owner.id=${uid}&${projectIdsString}&${invoiceIdString}`;
+  } else {
+    queryString = `?owner.id=${uid}`;
+  }
+
+  return createApiAction({
+    endpoint: `/time_records${queryString}`,
+    method: 'GET',
+    notificationMessages: {
+      failure: 'Získání výpisu odpracovaných časů se nezdařilo.',
+    },
+    types: [
+      actionTypes.API_TIME_RECORDS_GET_REQUEST,
+      {
+        meta: {
+          dataPath: ['getTimeRecords'],
+          dataTransformer: (data) => data.map((item) => ({
+            ...item,
+            endDateTime: new Date(item.endDateTime),
+            startDateTime: new Date(item.startDateTime),
+          })),
+        },
+        type: actionTypes.API_TIME_RECORDS_GET_SUCCESS,
+      },
+      actionTypes.API_TIME_RECORDS_GET_FAILURE,
+    ],
+  })(dispatch, getState);
+};
+
 export const resetIsTimerVisible = () => (dispatch) => new Promise((resolve) => {
   const request = {
     meta: { dataPath: ['isTimerVisible'] },

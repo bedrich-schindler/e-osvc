@@ -1,5 +1,9 @@
 import React from 'react';
 import {
+  applyUpdate,
+  install,
+} from 'offline-plugin/runtime';
+import {
   StylesProvider,
   createMuiTheme,
   MuiThemeProvider,
@@ -17,10 +21,21 @@ import {
   AuthorizedRoute,
   UnauthorizedRoute,
 } from './resources/auth/components';
+import { setIsOnline } from './resources/settings';
 import routes from './routes';
 
 // Main styles
 import './styles/main.scss';
+
+// Install offline-plugin service worker
+install({
+  onUpdateReady: () => {
+    applyUpdate();
+  },
+  onUpdated: () => {
+    window.location.reload();
+  },
+});
 
 const theme = createMuiTheme({
   palette: {
@@ -38,6 +53,14 @@ export default (store, history, isWebVersion = true) => {
   if (!isWebVersion) {
     RouterComponent = HashRouter;
   }
+
+  // Detect if browser is online or not
+  const isOnlineChangedHandler = () => {
+    store.dispatch(setIsOnline(window.navigator.onLine));
+  };
+
+  window.addEventListener('online', isOnlineChangedHandler);
+  window.addEventListener('offline', isOnlineChangedHandler);
 
   return (
     <Provider store={store}>

@@ -10,6 +10,7 @@ describe('rendering', () => {
   it('renders all types of info notification', () => {
     const tree = shallow(
       <NotificationCenterComponent
+        isOnline
         notifications={[
           {
             id: '1',
@@ -40,6 +41,7 @@ describe('rendering', () => {
   it('renders all types of success notification', () => {
     const tree = shallow(
       <NotificationCenterComponent
+        isOnline
         notifications={[
           {
             id: '1',
@@ -70,6 +72,7 @@ describe('rendering', () => {
   it('renders all types of warning notification', () => {
     const tree = shallow(
       <NotificationCenterComponent
+        isOnline
         notifications={[
           {
             id: '1',
@@ -100,6 +103,7 @@ describe('rendering', () => {
   it('renders all types of error notification', () => {
     const tree = shallow(
       <NotificationCenterComponent
+        isOnline
         notifications={[
           {
             id: '1',
@@ -133,6 +137,7 @@ describe('functionality', () => {
     const spy = sinon.spy();
     const tree = mount(
       <NotificationCenterComponent
+        isOnline
         notifications={[
           {
             id: '1',

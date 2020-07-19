@@ -35,6 +35,7 @@ const InvoiceDetailComponent = ({
   invoice,
   getInvoice,
   getInvoiceIsPending,
+  isOnline,
   match,
 }) => {
   useEffect(() => {
@@ -76,7 +77,7 @@ const InvoiceDetailComponent = ({
           Stáhnout PDF
         </Button>,
         <Button
-          disabled={!invoice || getInvoiceIsPending}
+          disabled={!invoice || getInvoiceIsPending || !isOnline}
           onClick={() => {
             history.push(routes.invoiceEdit.path.replace(':id', match.params.id));
           }}
@@ -86,7 +87,7 @@ const InvoiceDetailComponent = ({
           Upravit
         </Button>,
         <Button
-          disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
+          disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending || !isOnline}
           onClick={() => {
             deleteInvoice(match.params.id).then((response) => {
               history.push(routes.invoices.path);
@@ -397,6 +398,7 @@ InvoiceDetailComponent.propTypes = {
       taxNumber: PropTypes.number,
     }).isRequired,
   }),
+  isOnline: PropTypes.bool.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,

@@ -102,6 +102,7 @@ class TimerComponent extends React.Component {
       addTimeRecordIsPending,
       getProjectsIsPending,
       getTimeRecords,
+      isOnline,
       isTimerVisible,
       projects,
       timer,
@@ -133,6 +134,7 @@ class TimerComponent extends React.Component {
                   ? (
                     <IconButton
                       aria-label="Zastavit"
+                      disabled={!isOnline}
                       onClick={this.stopTimer}
                       size="small"
                     >
@@ -178,6 +180,7 @@ class TimerComponent extends React.Component {
         </Paper>
         {isAddDialogOpened && (
           <TimeRecordDialog
+            isOnline={isOnline}
             onClose={() => {
               this.setState({ isAddDialogOpened: false });
             }}
@@ -211,6 +214,7 @@ TimerComponent.propTypes = {
   getProjects: PropTypes.func.isRequired,
   getProjectsIsPending: PropTypes.bool.isRequired,
   getTimeRecords: PropTypes.func.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   isTimerVisible: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,

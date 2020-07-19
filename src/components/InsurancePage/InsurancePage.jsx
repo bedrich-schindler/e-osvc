@@ -34,6 +34,7 @@ const InsuranceComponent = ({
   getInsurances,
   getInsurancesIsPending,
   insurances,
+  isOnline,
   title,
 }) => {
   const isTableLoading = getInsurancesIsPending || deleteInsuranceIsPending;
@@ -50,6 +51,7 @@ const InsuranceComponent = ({
       actions={[
         <Button
           color="primary"
+          disabled={!isOnline}
           onClick={() => setIsAddDialogOpened(true)}
           startIcon={<AddIcon />}
           variant="contained"
@@ -94,6 +96,7 @@ const InsuranceComponent = ({
                   <TableCell>{row.note || '-'}</TableCell>
                   <TableCell align="right">
                     <IconButton
+                      disabled={!isOnline}
                       onClick={() => {
                         setEditDialogData(row);
                         setIsEditDialogOpened(true);
@@ -102,6 +105,7 @@ const InsuranceComponent = ({
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      disabled={!isOnline}
                       onClick={async () => {
                         await deleteInsurance(row.id);
                         getInsurances();
@@ -118,6 +122,7 @@ const InsuranceComponent = ({
       )}
       {isAddDialogOpened && (
         <InsuranceDialog
+          isOnline={isOnline}
           saveInsurance={async (data) => {
             const response = await addInsurance(data);
             getInsurances();
@@ -138,6 +143,7 @@ const InsuranceComponent = ({
       )}
       {isEditDialogOpened && (
         <InsuranceDialog
+          isOnline={isOnline}
           saveInsurance={async (data) => {
             const response = await editInsurance(editDialogData.id, data);
             getInsurances();
@@ -178,6 +184,7 @@ InsuranceComponent.propTypes = {
   getInsurances: PropTypes.func.isRequired,
   getInsurancesIsPending: PropTypes.bool.isRequired,
   insurances: PropTypes.arrayOf(PropTypes.shape({})),
+  isOnline: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
 };
 

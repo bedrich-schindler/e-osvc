@@ -21,6 +21,14 @@
       "rules": {
         "import/prefer-default-export": "off"
       }
+    },
+    {
+      "files": [
+        "src/serviceWorker.js"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
     }
   ]
 }

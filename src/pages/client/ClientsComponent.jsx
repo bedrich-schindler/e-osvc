@@ -31,6 +31,7 @@ const ClientsComponent = ({
   editClientIsPending,
   getClients,
   getClientsIsPending,
+  isOnline,
 }) => {
   const isTableLoading = getClientsIsPending || deleteClientIsPending;
   const [isAddDialogOpened, setIsAddDialogOpened] = useState(false);
@@ -46,6 +47,7 @@ const ClientsComponent = ({
       actions={[
         <Button
           color="primary"
+          disabled={!isOnline}
           onClick={() => setIsAddDialogOpened(true)}
           startIcon={<AddIcon />}
           variant="contained"
@@ -94,6 +96,7 @@ const ClientsComponent = ({
                   <TableCell>{row.taxNumber || '-'}</TableCell>
                   <TableCell align="right">
                     <IconButton
+                      disabled={!isOnline}
                       onClick={() => {
                         setEditDialogData(row);
                         setIsEditDialogOpened(true);
@@ -102,6 +105,7 @@ const ClientsComponent = ({
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      disabled={!isOnline}
                       onClick={async () => {
                         await deleteClient(row.id);
                         getClients();
@@ -120,6 +124,7 @@ const ClientsComponent = ({
         <AddClientDialog
           addClient={addClient}
           addClientIsPending={addClientIsPending}
+          isOnline={isOnline}
           onClose={(shouldReload) => {
             if (shouldReload === true) {
               getClients();
@@ -134,6 +139,7 @@ const ClientsComponent = ({
           client={editDialogData}
           editClient={editClient}
           editClientIsPending={editClientIsPending}
+          isOnline={isOnline}
           onClose={(shouldReload) => {
             if (shouldReload === true) {
               getClients();
@@ -162,6 +168,7 @@ ClientsComponent.propTypes = {
   editClientIsPending: PropTypes.bool.isRequired,
   getClients: PropTypes.func.isRequired,
   getClientsIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
 };
 
 export default ClientsComponent;

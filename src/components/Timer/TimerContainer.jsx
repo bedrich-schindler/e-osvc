@@ -4,6 +4,7 @@ import {
   selectGetProjects,
   selectGetProjectsIsPending,
 } from '../../resources/project';
+import { selectIsOnline } from '../../resources/settings';
 import {
   addTimeRecord,
   getTimeRecords,
@@ -19,6 +20,7 @@ import Component from './TimerComponent';
 const mapStateToProps = (state) => ({
   addTimeRecordIsPending: selectAddTimeRecordIsPending(state),
   getProjectsIsPending: selectGetProjectsIsPending(state),
+  isOnline: selectIsOnline(state),
   isTimerVisible: selectIsTimerVisible(state),
   projects: selectGetProjects(state),
   timer: selectTimer(state),

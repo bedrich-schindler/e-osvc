@@ -104,6 +104,7 @@ class AddClientDialog extends React.Component {
   render() {
     const {
       addClientIsPending,
+      isOnline,
       onClose,
     } = this.props;
     const {
@@ -247,6 +248,7 @@ class AddClientDialog extends React.Component {
               || formData.street.length === 0
               || formData.city.length === 0
               || formData.postalCode.length === 0
+              || !isOnline
             }
             onClick={this.saveHandler}
             startIcon={addClientIsPending ? <CircularProgress size={14} /> : null}
@@ -262,6 +264,7 @@ class AddClientDialog extends React.Component {
 AddClientDialog.propTypes = {
   addClient: PropTypes.func.isRequired,
   addClientIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

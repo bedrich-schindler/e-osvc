@@ -13,6 +13,7 @@ const HealthInsuranceComponent = ({
   getHealthInsurances,
   getHealthInsurancesIsPending,
   healthInsurances,
+  isOnline,
 }) => (
   <InsurancePage
     addTitle="Přidat zdravotní pojištění"
@@ -26,6 +27,7 @@ const HealthInsuranceComponent = ({
     getInsurances={getHealthInsurances}
     getInsurancesIsPending={getHealthInsurancesIsPending}
     insurances={healthInsurances}
+    isOnline={isOnline}
     title="Zdravotní pojištění"
     validateInsurance={validateHealthInsurance}
   />
@@ -45,6 +47,7 @@ HealthInsuranceComponent.propTypes = {
   getHealthInsurances: PropTypes.func.isRequired,
   getHealthInsurancesIsPending: PropTypes.bool.isRequired,
   healthInsurances: PropTypes.arrayOf(PropTypes.shape({})),
+  isOnline: PropTypes.bool.isRequired,
 };
 
 export default HealthInsuranceComponent;

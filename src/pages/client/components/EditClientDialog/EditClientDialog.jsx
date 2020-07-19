@@ -123,6 +123,7 @@ class EditClientDialog extends React.Component {
   render() {
     const {
       editClientIsPending,
+      isOnline,
       onClose,
     } = this.props;
     const {
@@ -263,6 +264,7 @@ class EditClientDialog extends React.Component {
             disabled={
               editClientIsPending
               || formData.name.length === 0
+              || !isOnline
             }
             onClick={this.saveHandler}
             startIcon={editClientIsPending ? <CircularProgress size={14} /> : null}
@@ -289,6 +291,7 @@ EditClientDialog.propTypes = {
   }).isRequired,
   editClient: PropTypes.func.isRequired,
   editClientIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

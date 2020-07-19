@@ -371,6 +371,7 @@ class InvoiceAddComponent extends React.Component {
       getProjectsIsPending,
       getTimeRecordsIsPending,
       getUserIsPending,
+      isOnline,
       projects,
       timeRecords,
       user,
@@ -392,7 +393,7 @@ class InvoiceAddComponent extends React.Component {
         actions={[
           <Button
             color="primary"
-            disabled={addInvoiceIsPending}
+            disabled={addInvoiceIsPending || !isOnline}
             onClick={this.saveHandler}
             startIcon={<SaveIcon />}
             variant="contained"
@@ -1014,6 +1015,7 @@ InvoiceAddComponent.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  isOnline: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

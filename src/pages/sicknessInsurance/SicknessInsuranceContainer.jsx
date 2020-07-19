@@ -10,6 +10,7 @@ import {
   selectGetSicknessInsurances,
   selectGetSicknessInsurancesIsPending,
 } from '../../resources/sicknessInsurance';
+import { selectIsOnline } from '../../resources/settings';
 import Component from './SicknessInsuranceComponent';
 
 const mapStateToProps = (state) => ({
@@ -17,6 +18,7 @@ const mapStateToProps = (state) => ({
   deleteSicknessInsuranceIsPending: selectDeleteSicknessInsuranceIsPending(state),
   editSicknessInsuranceIsPending: selectEditSicknessInsuranceIsPending(state),
   getSicknessInsurancesIsPending: selectGetSicknessInsurancesIsPending(state),
+  isOnline: selectIsOnline(state),
   sicknessInsurances: selectGetSicknessInsurances(state),
 });
 

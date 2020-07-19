@@ -34,6 +34,7 @@ const ProjectsComponent = ({
   getClientsIsPending,
   getProjects,
   getProjectsIsPending,
+  isOnline,
 }) => {
   const isTableLoading = getClientsIsPending || getProjectsIsPending || deleteProjectIsPending;
   const [isAddDialogOpened, setIsAddDialogOpened] = useState(false);
@@ -50,7 +51,7 @@ const ProjectsComponent = ({
       actions={[
         <Button
           color="primary"
-          disabled={clients === null || clients.length === 0}
+          disabled={clients === null || clients.length === 0 || !isOnline}
           onClick={() => setIsAddDialogOpened(true)}
           startIcon={<AddIcon />}
           variant="contained"
@@ -87,6 +88,7 @@ const ProjectsComponent = ({
                   <TableCell>{row.client.name}</TableCell>
                   <TableCell align="right">
                     <IconButton
+                      disabled={!isOnline}
                       onClick={() => {
                         setEditDialogData(row);
                         setIsEditDialogOpened(true);
@@ -95,6 +97,7 @@ const ProjectsComponent = ({
                       <EditIcon />
                     </IconButton>
                     <IconButton
+                      disabled={!isOnline}
                       onClick={async () => {
                         await deleteProject(row.id);
                         getProjects();
@@ -114,6 +117,7 @@ const ProjectsComponent = ({
           addProject={addProject}
           addProjectIsPending={addProjectIsPending}
           clients={clients}
+          isOnline={isOnline}
           onClose={(shouldReload) => {
             if (shouldReload === true) {
               getProjects();
@@ -129,6 +133,7 @@ const ProjectsComponent = ({
           project={editDialogData}
           editProject={editProject}
           editProjectIsPending={editProjectIsPending}
+          isOnline={isOnline}
           onClose={(shouldReload) => {
             if (shouldReload === true) {
               getProjects();
@@ -163,6 +168,7 @@ ProjectsComponent.propTypes = {
   getClientsIsPending: PropTypes.bool.isRequired,
   getProjects: PropTypes.func.isRequired,
   getProjectsIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     client: PropTypes.shape({
       id: PropTypes.number.isRequired,

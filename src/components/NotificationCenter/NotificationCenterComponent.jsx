@@ -4,8 +4,10 @@ import React from 'react';
 import Alert from '@material-ui/lab/Alert';
 import {
   NOTIFICATION_TYPE_AUTO_REMOVABLE,
+  NOTIFICATION_TYPE_NON_REMOVABLE,
   NOTIFICATION_TYPE_REMOVABLE,
   NOTIFICATION_TYPES,
+  NOTIFICATION_VARIANT_WARNING,
   NOTIFICATION_VARIANTS,
 } from '../../resources/notification';
 import styles from './styles.scss';
@@ -17,20 +19,35 @@ const isRemovable = (notification) => [
 
 export const NotificationCenterComponent = (props) => {
   const {
+    isOnline,
     notifications,
     notificationRemove,
   } = props;
 
-  if (notifications.length === 0) {
+  let modifiedNotifications = notifications;
+
+  if (!isOnline) {
+    modifiedNotifications = [
+      {
+        id: 'offline',
+        message: 'Jste offline. K dispozici je pouze omezená funkcionalita.',
+        type: NOTIFICATION_TYPE_NON_REMOVABLE,
+        variant: NOTIFICATION_VARIANT_WARNING,
+      },
+      ...modifiedNotifications,
+    ];
+  }
+
+  if (modifiedNotifications.length === 0) {
     return null;
   }
 
   return (
     <div className={styles.root}>
-      {notifications.map((notification, index) => (
+      {modifiedNotifications.map((notification, index) => (
         <Box
           key={notification.id}
-          mb={(notifications.length - 1) !== index ? 2 : 6}
+          mb={(modifiedNotifications.length - 1) !== index ? 2 : 6}
         >
           <Alert
             onClose={
@@ -54,6 +71,7 @@ NotificationCenterComponent.defaultProps = {
 };
 
 NotificationCenterComponent.propTypes = {
+  isOnline: PropTypes.bool.isRequired,
   notificationRemove: PropTypes.func.isRequired,
   notifications: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,

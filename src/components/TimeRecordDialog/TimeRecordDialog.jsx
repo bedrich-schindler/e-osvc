@@ -127,6 +127,7 @@ class TimeRecordDialog extends React.Component {
 
   render() {
     const {
+      isOnline,
       onClose,
       projects,
       saveTimeRecordIsPending,
@@ -234,7 +235,7 @@ class TimeRecordDialog extends React.Component {
           </Button>
           <Button
             color="primary"
-            disabled={saveTimeRecordIsPending}
+            disabled={saveTimeRecordIsPending || !isOnline}
             onClick={this.saveHandler}
             startIcon={saveTimeRecordIsPending ? <CircularProgress size={14} /> : null}
           >
@@ -253,6 +254,7 @@ TimeRecordDialog.defaultProps = {
 
 TimeRecordDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

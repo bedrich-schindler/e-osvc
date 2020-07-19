@@ -13,6 +13,7 @@ import {
   selectGetProjects,
   selectGetProjectsIsPending,
 } from '../../resources/project';
+import { selectIsOnline } from '../../resources/settings';
 import {
   getTimeRecordsFiltered,
   selectGetTimeRecords,
@@ -32,6 +33,7 @@ const mapStateToProps = (state) => ({
   getProjectsIsPending: selectGetProjectsIsPending(state),
   getTimeRecordsIsPending: selectGetTimeRecordsIsPending(state),
   getUserIsPending: selectGetUserIsPending(state),
+  isOnline: selectIsOnline(state),
   projects: selectGetProjects(state),
   timeRecords: selectGetTimeRecords(state),
   user: selectGetUser(state),

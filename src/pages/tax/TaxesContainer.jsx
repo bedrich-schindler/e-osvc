@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { selectIsOnline } from '../../resources/settings';
 import {
   addTax,
   deleteTax,
@@ -17,6 +18,7 @@ const mapStateToProps = (state) => ({
   deleteTaxIsPending: selectDeleteTaxIsPending(state),
   editTaxIsPending: selectEditTaxIsPending(state),
   getTaxesIsPending: selectGetTaxesIsPending(state),
+  isOnline: selectIsOnline(state),
   taxes: selectGetTaxes(state),
 });
 

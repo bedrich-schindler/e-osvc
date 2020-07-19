@@ -1,4 +1,7 @@
 /dist
 /node_modules
-/public/generated
+/public/appcache
+/public/bundle.js
+/public/bundle.electron.js
+/public/sw.js
 .gitkeep

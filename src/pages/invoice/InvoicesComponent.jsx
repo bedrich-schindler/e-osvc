@@ -25,6 +25,7 @@ const InvoicesComponent = ({
   getInvoicesIsPending,
   history,
   invoices,
+  isOnline,
 }) => {
   const isTableLoading = getInvoicesIsPending || deleteInvoiceIsPending;
 
@@ -37,6 +38,7 @@ const InvoicesComponent = ({
       actions={[
         <Button
           color="primary"
+          disabled={!isOnline}
           onClick={() => history.push(routes.invoiceAdd.path)}
           startIcon={<AddIcon />}
           variant="contained"
@@ -106,6 +108,7 @@ const InvoicesComponent = ({
                         <DetailIcon />
                       </IconButton>
                       <IconButton
+                        disabled={!isOnline}
                         onClick={() => {
                           history.push(routes.invoiceEdit.path.replace(':id', row.id));
                         }}
@@ -113,6 +116,7 @@ const InvoicesComponent = ({
                         <EditIcon />
                       </IconButton>
                       <IconButton
+                        disabled={!isOnline}
                         onClick={async () => {
                           await deleteInvoice(row.id);
                           getInvoices();
@@ -148,6 +152,7 @@ InvoicesComponent.propTypes = {
     id: PropTypes.number.isRequired,
     invoiceIdentifier: PropTypes.string.isRequired,
   })),
+  isOnline: PropTypes.bool.isRequired,
 };
 
 export default InvoicesComponent;

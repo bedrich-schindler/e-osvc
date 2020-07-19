@@ -15,6 +15,7 @@ import {
   selectGetProjects,
   selectGetProjectsIsPending,
 } from '../../resources/project';
+import { selectIsOnline } from '../../resources/settings';
 import Component from './ProjectsComponent';
 
 const mapStateToProps = (state) => ({
@@ -24,6 +25,7 @@ const mapStateToProps = (state) => ({
   editProjectIsPending: selectEditProjectIsPending(state),
   getClientsIsPending: selectGetClientsIsPending(state),
   getProjectsIsPending: selectGetProjectsIsPending(state),
+  isOnline: selectIsOnline(state),
   projects: selectGetProjects(state),
 });
 

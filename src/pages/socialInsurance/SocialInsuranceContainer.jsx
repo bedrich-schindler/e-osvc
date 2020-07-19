@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { selectIsOnline } from '../../resources/settings';
 import {
   addSocialInsurance,
   deleteSocialInsurance,
@@ -17,6 +18,7 @@ const mapStateToProps = (state) => ({
   deleteSocialInsuranceIsPending: selectDeleteSocialInsuranceIsPending(state),
   editSocialInsuranceIsPending: selectEditSocialInsuranceIsPending(state),
   getSocialInsurancesIsPending: selectGetSocialInsurancesIsPending(state),
+  isOnline: selectIsOnline(state),
   socialInsurances: selectGetSocialInsurances(state),
 });
 

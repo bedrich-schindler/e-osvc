@@ -12,6 +12,7 @@ const SocialInsuranceComponent = ({
   editSocialInsuranceIsPending,
   getSocialInsurances,
   getSocialInsurancesIsPending,
+  isOnline,
   socialInsurances,
 }) => (
   <InsurancePage
@@ -26,6 +27,7 @@ const SocialInsuranceComponent = ({
     getInsurances={getSocialInsurances}
     getInsurancesIsPending={getSocialInsurancesIsPending}
     insurances={socialInsurances}
+    isOnline={isOnline}
     title="Sociální pojištění"
     validateInsurance={validateSocialInsurance}
   />
@@ -44,6 +46,7 @@ SocialInsuranceComponent.propTypes = {
   editSocialInsuranceIsPending: PropTypes.bool.isRequired,
   getSocialInsurances: PropTypes.func.isRequired,
   getSocialInsurancesIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   socialInsurances: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

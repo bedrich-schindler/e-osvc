@@ -112,6 +112,7 @@ class AddProjectDialog extends React.Component {
     const {
       addProjectIsPending,
       clients,
+      isOnline,
       onClose,
     } = this.props;
     const {
@@ -198,6 +199,7 @@ class AddProjectDialog extends React.Component {
             disabled={
               addProjectIsPending
               || formData.name.length === 0
+              || !isOnline
             }
             onClick={this.saveHandler}
             startIcon={addProjectIsPending ? <CircularProgress size={14} /> : null}
@@ -217,6 +219,7 @@ AddProjectDialog.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   })).isRequired,
+  isOnline: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

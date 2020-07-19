@@ -10,6 +10,7 @@ import {
   selectGetClients,
   selectGetClientsIsPending,
 } from '../../resources/client';
+import { selectIsOnline } from '../../resources/settings';
 import Component from './ClientsComponent';
 
 const mapStateToProps = (state) => ({
@@ -18,6 +19,7 @@ const mapStateToProps = (state) => ({
   deleteClientIsPending: selectDeleteClientIsPending(state),
   editClientIsPending: selectEditClientIsPending(state),
   getClientsIsPending: selectGetClientsIsPending(state),
+  isOnline: selectIsOnline(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

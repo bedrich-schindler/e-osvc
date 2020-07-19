@@ -35,6 +35,7 @@ const TimeRecordsComponent = ({
   getTimeRecords,
   getTimeRecordsIsPending,
   history,
+  isOnline,
   projects,
   timeRecords,
 }) => {
@@ -55,7 +56,7 @@ const TimeRecordsComponent = ({
       actions={[
         <Button
           color="primary"
-          disabled={projects === null || projects.length === 0}
+          disabled={projects === null || projects.length === 0 || !isOnline}
           onClick={() => setIsAddDialogOpened(true)}
           startIcon={<AddIcon />}
           variant="contained"
@@ -104,6 +105,7 @@ const TimeRecordsComponent = ({
                         ? (
                           <>
                             <IconButton
+                              disabled={!isOnline}
                               onClick={() => {
                                 setEditDialogData(row);
                                 setIsEditDialogOpened(true);
@@ -112,6 +114,7 @@ const TimeRecordsComponent = ({
                               <EditIcon />
                             </IconButton>
                             <IconButton
+                              disabled={!isOnline}
                               onClick={async () => {
                                 await deleteTimeRecord(row.id);
                                 getTimeRecords();
@@ -139,6 +142,7 @@ const TimeRecordsComponent = ({
       )}
       {isAddDialogOpened && (
         <TimeRecordDialog
+          isOnline={isOnline}
           onClose={(shouldReload) => {
             if (shouldReload === true) {
               getTimeRecords();
@@ -160,6 +164,7 @@ const TimeRecordsComponent = ({
       )}
       {isEditDialogOpened && (
         <TimeRecordDialog
+          isOnline={isOnline}
           onClose={(shouldReload) => {
             if (shouldReload === true) {
               getTimeRecords();
@@ -204,6 +209,7 @@ TimeRecordsComponent.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  isOnline: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})),
   timeRecords: PropTypes.arrayOf(PropTypes.shape({})),
 };

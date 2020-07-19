@@ -5,6 +5,7 @@ import { healthInsuranceReducer } from './resources/healthInsurance';
 import { invoiceReducer } from './resources/invoice';
 import { notificationReducer } from './resources/notification';
 import { projectReducer } from './resources/project';
+import { settingsReducer } from './resources/settings';
 import { sicknessInsuranceReducer } from './resources/sicknessInsurance';
 import { socialInsuranceReducer } from './resources/socialInsurance';
 import { taxReducer } from './resources/tax';
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   invoice: invoiceReducer,
   notification: notificationReducer,
   project: projectReducer,
+  settings: settingsReducer,
   sicknessInsurance: sicknessInsuranceReducer,
   socialInsurance: socialInsuranceReducer,
   tax: taxReducer,

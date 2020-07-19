@@ -56,7 +56,10 @@ class LoginComponent extends React.Component {
   }
 
   render() {
-    const { loginIsPending } = this.props;
+    const {
+      isOnline,
+      loginIsPending,
+    } = this.props;
     const {
       formData,
       isLoginFailed,
@@ -72,6 +75,15 @@ class LoginComponent extends React.Component {
           >
             eOSVČ – Přihlášení
           </Typography>
+          {!isOnline && (
+            <Alert
+              className={styles.alert}
+              severity="warning"
+              variant="filled"
+            >
+              Pro přihlášení se musíte připojit k internetu.
+            </Alert>
+          )}
           {isLoginFailed && (
             <Alert
               className={styles.alert}
@@ -115,6 +127,7 @@ class LoginComponent extends React.Component {
                 loginIsPending
                 || formData.username.length === 0
                 || formData.password.length === 0
+                || !isOnline
               }
               fullWidth
               onClick={this.loginHandler}
@@ -147,6 +160,7 @@ class LoginComponent extends React.Component {
 }
 
 LoginComponent.propTypes = {
+  isOnline: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
   loginIsPending: PropTypes.bool.isRequired,
 };

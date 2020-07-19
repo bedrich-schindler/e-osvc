@@ -121,6 +121,7 @@ class InsuranceDialog extends React.Component {
 
   render() {
     const {
+      isOnline,
       onClose,
       saveInsuranceIsPending,
       title,
@@ -223,7 +224,7 @@ class InsuranceDialog extends React.Component {
           </Button>
           <Button
             color="primary"
-            disabled={saveInsuranceIsPending}
+            disabled={saveInsuranceIsPending || !isOnline}
             onClick={this.saveHandler}
             startIcon={saveInsuranceIsPending ? <CircularProgress size={14} /> : null}
           >
@@ -246,6 +247,7 @@ InsuranceDialog.propTypes = {
     note: PropTypes.string,
     variant: PropTypes.oneOf(INSURANCE_VARIANTS).isRequired,
   }),
+  isOnline: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   saveInsurance: PropTypes.func.isRequired,
   saveInsuranceIsPending: PropTypes.bool.isRequired,

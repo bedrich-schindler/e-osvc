@@ -276,7 +276,10 @@ class RegistrationComponent extends React.Component {
   }
 
   getSecondStepAction() {
-    const { addUserIsPending } = this.props;
+    const {
+      addUserIsPending,
+      isOnline,
+    } = this.props;
     const { formData } = this.state;
 
     return (
@@ -291,6 +294,7 @@ class RegistrationComponent extends React.Component {
             || formData.city.length === 0
             || formData.postalCode.length === 0
             || formData.street.length === 0
+            || !isOnline
           }
           fullWidth
           onClick={this.registerHandler}
@@ -438,6 +442,7 @@ class RegistrationComponent extends React.Component {
   }
 
   render() {
+    const { isOnline } = this.props;
     const {
       activeStepIndex,
       isRegistrationFailed,
@@ -454,6 +459,15 @@ class RegistrationComponent extends React.Component {
           >
             eOSVČ – Vytvoření účtu
           </Typography>
+          {!isOnline && (
+            <Alert
+              className={styles.alert}
+              severity="warning"
+              variant="filled"
+            >
+              Pro vytvoření účtu se musíte připojit k internetu.
+            </Alert>
+          )}
           {isRegistrationFailed && (
             <Alert
               className={styles.alert}
@@ -503,6 +517,7 @@ class RegistrationComponent extends React.Component {
 RegistrationComponent.propTypes = {
   addUser: PropTypes.func.isRequired,
   addUserIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
 };
 
 export default RegistrationComponent;

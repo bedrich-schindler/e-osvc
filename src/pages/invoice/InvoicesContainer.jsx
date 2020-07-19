@@ -6,12 +6,14 @@ import {
   selectGetInvoices,
   selectGetInvoicesIsPending,
 } from '../../resources/invoice';
+import { selectIsOnline } from '../../resources/settings';
 import Component from './InvoicesComponent';
 
 const mapStateToProps = (state) => ({
   deleteInvoiceIsPending: selectDeleteInvoiceIsPending(state),
   getInvoicesIsPending: selectGetInvoicesIsPending(state),
   invoices: selectGetInvoices(state),
+  isOnline: selectIsOnline(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

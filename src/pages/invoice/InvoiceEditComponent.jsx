@@ -410,6 +410,7 @@ class InvoiceEditComponent extends React.Component {
       editInvoiceIsPending,
       history,
       invoice,
+      isOnline,
       match,
       projects,
       timeRecords,
@@ -432,7 +433,7 @@ class InvoiceEditComponent extends React.Component {
         actions={[
           <Button
             color="primary"
-            disabled={!invoice || getInvoiceIsPending || editInvoiceIsPending}
+            disabled={!invoice || getInvoiceIsPending || editInvoiceIsPending || !isOnline}
             onClick={this.saveHandler}
             startIcon={<SaveIcon />}
             variant="contained"
@@ -440,7 +441,7 @@ class InvoiceEditComponent extends React.Component {
             Uložit
           </Button>,
           <Button
-            disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending}
+            disabled={!invoice || getInvoiceIsPending || deleteInvoiceIsPending || !isOnline}
             onClick={() => {
               deleteInvoice(match.params.id).then(() => {
                 history.push(routes.invoices.path);
@@ -1125,6 +1126,7 @@ InvoiceEditComponent.propTypes = {
       taxNumber: PropTypes.number,
     }).isRequired,
   }),
+  isOnline: PropTypes.bool.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,

@@ -10,6 +10,7 @@ import {
   selectGetHealthInsurances,
   selectGetHealthInsurancesIsPending,
 } from '../../resources/healthInsurance';
+import { selectIsOnline } from '../../resources/settings';
 import Component from './HealthInsuranceComponent';
 
 const mapStateToProps = (state) => ({
@@ -18,6 +19,7 @@ const mapStateToProps = (state) => ({
   editHealthInsuranceIsPending: selectEditHealthInsuranceIsPending(state),
   getHealthInsurancesIsPending: selectGetHealthInsurancesIsPending(state),
   healthInsurances: selectGetHealthInsurances(state),
+  isOnline: selectIsOnline(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

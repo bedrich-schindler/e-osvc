@@ -43,6 +43,9 @@ export const logout = () => async (dispatch) => {
     type: actionTypes.LOCAL_LOGOUT,
   });
 
+  // Delete cached API requests
+  await window.caches.delete('webpack-offline:e-osvc-api');
+
   // Reset notifications
   dispatch(notificationsReset());
 

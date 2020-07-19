@@ -12,6 +12,7 @@ const TaxesComponent = ({
   editTaxIsPending,
   getTaxes,
   getTaxesIsPending,
+  isOnline,
   taxes,
 }) => (
   <InsurancePage
@@ -26,6 +27,7 @@ const TaxesComponent = ({
     getInsurances={getTaxes}
     getInsurancesIsPending={getTaxesIsPending}
     insurances={taxes}
+    isOnline={isOnline}
     title="Daně"
     validateInsurance={validateTax}
   />
@@ -44,6 +46,7 @@ TaxesComponent.propTypes = {
   editTaxIsPending: PropTypes.bool.isRequired,
   getTaxes: PropTypes.func.isRequired,
   getTaxesIsPending: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
   taxes: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

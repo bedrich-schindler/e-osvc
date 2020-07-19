@@ -23,22 +23,26 @@ const InvoicesComponent = ({
   deleteInvoiceIsPending,
   getInvoices,
   getInvoicesIsPending,
+  getProjects,
+  getProjectsIsPending,
   history,
   invoices,
   isOnline,
+  projects,
 }) => {
-  const isTableLoading = getInvoicesIsPending || deleteInvoiceIsPending;
+  const isTableLoading = getInvoicesIsPending || getProjectsIsPending || deleteInvoiceIsPending;
 
   useEffect(() => {
     getInvoices();
-  }, [getInvoices]);
+    getProjects();
+  }, [getInvoices, getProjects]);
 
   return (
     <Layout
       actions={[
         <Button
           color="primary"
-          disabled={!isOnline}
+          disabled={projects === null || projects.length === 0 || !isOnline}
           onClick={() => history.push(routes.invoiceAdd.path)}
           startIcon={<AddIcon />}
           variant="contained"
@@ -138,6 +142,7 @@ const InvoicesComponent = ({
 
 InvoicesComponent.defaultProps = {
   invoices: null,
+  projects: null,
 };
 
 InvoicesComponent.propTypes = {
@@ -145,6 +150,8 @@ InvoicesComponent.propTypes = {
   deleteInvoiceIsPending: PropTypes.bool.isRequired,
   getInvoices: PropTypes.func.isRequired,
   getInvoicesIsPending: PropTypes.bool.isRequired,
+  getProjects: PropTypes.func.isRequired,
+  getProjectsIsPending: PropTypes.bool.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -153,6 +160,7 @@ InvoicesComponent.propTypes = {
     invoiceIdentifier: PropTypes.string.isRequired,
   })),
   isOnline: PropTypes.bool.isRequired,
+  projects: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default InvoicesComponent;

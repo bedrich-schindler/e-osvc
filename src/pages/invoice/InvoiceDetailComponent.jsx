@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import EditIcon from '@material-ui/icons/Edit';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -18,10 +19,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { pdf } from '@react-pdf/renderer';
 import React, { useEffect } from 'react';
 import { Layout } from '../../components/Layout';
 import { getTimeDifferenceString } from '../../services/dateTimeService';
 import routes from '../../routes';
+import { InvoicePdf } from './components/InvoicePdf';
 import { getTotalTime } from './helpers';
 import styles from './styles.scss';
 
@@ -38,6 +41,21 @@ const InvoiceDetailComponent = ({
     getInvoice(match.params.id);
   }, [getInvoice, match.params.id]);
 
+  const saveData = () => {
+    pdf(<InvoicePdf invoice={invoice} />).toBlob().then((blob) => {
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Faktura ${invoice.invoiceIdentifier}.pdf`;
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+
+      return blob;
+    });
+  };
+
   let totalPrice = 0;
   if (invoice && invoice.invoiceItems) {
     totalPrice = invoice.invoiceItems.reduce(
@@ -49,6 +67,14 @@ const InvoiceDetailComponent = ({
   return (
     <Layout
       actions={[
+        <Button
+          disabled={!invoice || getInvoiceIsPending}
+          onClick={saveData}
+          startIcon={<CloudDownloadIcon />}
+          variant="contained"
+        >
+          Stáhnout PDF
+        </Button>,
         <Button
           disabled={!invoice || getInvoiceIsPending}
           onClick={() => {

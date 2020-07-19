@@ -124,7 +124,7 @@ const InvoiceDetailComponent = ({
       {invoice && !getInvoiceIsPending && (
         <Grid
           container
-          spacing={5}
+          spacing={2}
           style={{ gridAutoRows: '1fr' }}
         >
           <Grid item md={4} sm={6} xs={12}>
@@ -240,7 +240,7 @@ const InvoiceDetailComponent = ({
           </Grid>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-              <Table size="small">
+              <Table className={styles.invoiceItemsTable} size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Množství</TableCell>
@@ -297,7 +297,7 @@ const InvoiceDetailComponent = ({
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <TableContainer component={Paper} style={{ maxHeight: 350 }}>
-                      <Table size="small" stickyHeader>
+                      <Table className={styles.invoiceTimeRecordsTable} size="small" stickyHeader>
                         <TableHead>
                           <TableRow>
                             <TableCell>Datum a čas začátku</TableCell>

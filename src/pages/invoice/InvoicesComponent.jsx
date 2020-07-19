@@ -16,6 +16,7 @@ import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect } from 'react';
 import { Layout } from '../../components/Layout';
 import routes from '../../routes';
+import styles from './styles.scss';
 
 const InvoicesComponent = ({
   deleteInvoice,
@@ -50,11 +51,16 @@ const InvoicesComponent = ({
       )}
       {invoices && !isTableLoading && (
         <TableContainer component={Paper}>
-          <Table size="small">
+          <Table className={styles.invoiceTable} size="small">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Číslo faktury</TableCell>
+                <TableCell>Datum vystavení</TableCell>
+                <TableCell>Datum splatnosti</TableCell>
+                <TableCell>Datum zaplacení</TableCell>
+                <TableCell>Částka</TableCell>
+                <TableCell>Klient</TableCell>
+                <TableCell>Projekty</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -66,36 +72,58 @@ const InvoicesComponent = ({
                   </TableCell>
                 </TableRow>
               )}
-              {invoices.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.id}</TableCell>
-                  <TableCell>{row.invoiceIdentifier}</TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      onClick={() => {
-                        history.push(routes.invoiceDetail.path.replace(':id', row.id));
-                      }}
-                    >
-                      <DetailIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        history.push(routes.invoiceEdit.path.replace(':id', row.id));
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={async () => {
-                        await deleteInvoice(row.id);
-                        getInvoices();
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {invoices.map((row) => {
+                let totalPrice = 0;
+                if (row && row.invoiceItems) {
+                  totalPrice = row.invoiceItems.reduce(
+                    (total, invoiceItem) => total
+                      + invoiceItem.pricePerQuantityUnit * invoiceItem.quantity,
+                    0,
+                  );
+                }
+
+                return (
+                  <TableRow key={row.id}>
+                    <TableCell>{row.invoiceIdentifier}</TableCell>
+                    <TableCell>{row.invoiceDate.toLocaleDateString()}</TableCell>
+                    <TableCell>{row.invoiceDueDate.toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {row.invoicePaymentDate ? row.invoicePaymentDate.toLocaleDateString() : '-'}
+                    </TableCell>
+                    <TableCell>
+                      {totalPrice.toFixed(2)}
+                      {' '}
+                      CZK
+                    </TableCell>
+                    <TableCell>{row.clientInfo.name}</TableCell>
+                    <TableCell>{row.projectInfoItems.map((p) => p.name).join(', ')}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        onClick={() => {
+                          history.push(routes.invoiceDetail.path.replace(':id', row.id));
+                        }}
+                      >
+                        <DetailIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          history.push(routes.invoiceEdit.path.replace(':id', row.id));
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={async () => {
+                          await deleteInvoice(row.id);
+                          getInvoices();
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

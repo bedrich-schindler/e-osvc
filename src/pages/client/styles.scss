@@ -1,5 +1,28 @@
+@import '../../styles/breakpoints';
+
 $layout-spacing: 2.5rem;
 
 .alert {
   margin-bottom: $layout-spacing / 4;
+}
+
+@media (max-width: map_get($breakpoint-values, lg)) {
+  .clientTable td:nth-child(2),
+  .clientTable th:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (max-width: 840px) {
+  .clientTable td:nth-child(4),
+  .clientTable th:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .clientTable td:nth-child(3),
+  .clientTable th:nth-child(3) {
+    display: none;
+  }
 }

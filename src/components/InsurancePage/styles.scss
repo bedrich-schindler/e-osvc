@@ -1,0 +1,12 @@
+@import '../../styles/breakpoints';
+
+.insuranceTable {
+  min-width: 540px;
+}
+
+@media (max-width: map_get($breakpoint-values, md)) {
+  .insuranceTable td:nth-child(4),
+  .insuranceTable th:nth-child(4) {
+    display: none;
+  }
+}

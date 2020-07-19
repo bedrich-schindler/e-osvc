@@ -21,6 +21,7 @@ import { Layout } from '../../components/Layout';
 import { TimeRecordDialog } from '../../components/TimeRecordDialog';
 import { getTimeDifferenceString } from '../../services/dateTimeService';
 import routes from '../../routes';
+import styles from './styles.scss';
 
 const TimeRecordsComponent = ({
   addTimeRecord,
@@ -69,7 +70,7 @@ const TimeRecordsComponent = ({
       )}
       {timeRecords && projects && !isTableLoading && (
         <TableContainer component={Paper}>
-          <Table size="small">
+          <Table className={styles.timeRecordTable} size="small">
             <TableHead>
               <TableRow>
                 <TableCell>Od</TableCell>

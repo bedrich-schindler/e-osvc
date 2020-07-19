@@ -19,6 +19,7 @@ import React, {
 import { Layout } from '../../components/Layout';
 import { AddProjectDialog } from './components/AddProjectDialog';
 import { EditProjectDialog } from './components/EditProjectDialog';
+import styles from './styles.scss';
 
 const ProjectsComponent = ({
   addProject,
@@ -64,10 +65,9 @@ const ProjectsComponent = ({
       )}
       {projects && !isTableLoading && (
         <TableContainer component={Paper}>
-          <Table size="small">
+          <Table className={styles.projectTable} size="small">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Název</TableCell>
                 <TableCell>Klient</TableCell>
                 <TableCell />
@@ -83,7 +83,6 @@ const ProjectsComponent = ({
               )}
               {projects.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell>{row.id}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.client.name}</TableCell>
                   <TableCell align="right">

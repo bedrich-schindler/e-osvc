@@ -1,3 +1,5 @@
+@import '../../styles/breakpoints';
+
 $layout-spacing: 2.5rem;
 
 .alert {
@@ -10,4 +12,39 @@ $layout-spacing: 2.5rem;
 
 .timeRecordsSubheading {
   margin: 12px 0;
+}
+
+.invoiceTable {
+  min-width: 640px;
+}
+
+.invoiceItemsTable {
+  min-width: 540px;
+}
+
+.invoiceTimeRecordsTable {
+  min-width: 400px;
+}
+
+@media (max-width: 1440px) {
+  .invoiceTable td:nth-child(7),
+  .invoiceTable th:nth-child(7) {
+    display: none;
+  }
+}
+
+@media (max-width: map_get($breakpoint-values, lg)) {
+  .invoiceTable td:nth-child(4),
+  .invoiceTable th:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: map_get($breakpoint-values, md)) {
+  .invoiceTable td:nth-child(2),
+  .invoiceTable th:nth-child(2),
+  .invoiceTable td:nth-child(3),
+  .invoiceTable th:nth-child(3) {
+    display: none;
+  }
 }

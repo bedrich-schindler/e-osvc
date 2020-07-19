@@ -1,5 +1,25 @@
+@import '../../styles/breakpoints';
+
 $layout-spacing: 2.5rem;
 
 .alert {
   margin-bottom: $layout-spacing / 4;
+}
+
+.timeRecordTable {
+  min-width: 640px;
+}
+
+@media (max-width: map_get($breakpoint-values, lg)) {
+  .timeRecordTable td:nth-child(5),
+  .timeRecordTable th:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .timeRecordTable td:nth-child(2),
+  .timeRecordTable th:nth-child(2) {
+    display: none;
+  }
 }

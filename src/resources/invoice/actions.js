@@ -103,12 +103,7 @@ export const getInvoices = () => (dispatch, getState) => {
     },
     types: [
       actionTypes.API_INVOICES_GET_REQUEST,
-      {
-        meta: {
-          dataPath: ['getInvoices'],
-        },
-        type: actionTypes.API_INVOICES_GET_SUCCESS,
-      },
+      actionTypes.API_INVOICES_GET_SUCCESS,
       actionTypes.API_INVOICES_GET_FAILURE,
     ],
   })(dispatch, getState);

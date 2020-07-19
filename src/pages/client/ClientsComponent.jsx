@@ -19,6 +19,7 @@ import React, {
 import { Layout } from '../../components/Layout';
 import { AddClientDialog } from './components/AddClientDialog';
 import { EditClientDialog } from './components/EditClientDialog';
+import styles from './styles.scss';
 
 const ClientsComponent = ({
   addClient,
@@ -59,7 +60,7 @@ const ClientsComponent = ({
       )}
       {clients && !isTableLoading && (
         <TableContainer component={Paper}>
-          <Table size="small">
+          <Table className={styles.clientTable} size="small">
             <TableHead>
               <TableRow>
                 <TableCell>Jméno</TableCell>

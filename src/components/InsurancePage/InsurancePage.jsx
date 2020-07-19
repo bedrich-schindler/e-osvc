@@ -20,6 +20,7 @@ import { Layout } from '../Layout';
 import { getTranslatedInsuranceVariant } from '../../constants/insuranceVariants';
 import { validateInsurance } from '../../validators/insuranceValidator';
 import { InsuranceDialog } from '../InsuranceDialog';
+import styles from './styles.scss';
 
 const InsuranceComponent = ({
   addInsurance,
@@ -63,7 +64,7 @@ const InsuranceComponent = ({
       )}
       {insurances && !isTableLoading && (
         <TableContainer component={Paper}>
-          <Table size="small">
+          <Table className={styles.insuranceTable} size="small">
             <TableHead>
               <TableRow>
                 <TableCell>Datum</TableCell>

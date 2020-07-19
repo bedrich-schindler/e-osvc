@@ -408,7 +408,7 @@ class InvoiceAddComponent extends React.Component {
         {clients && !getClientsIsPending && !getProjectsIsPending && !getUserIsPending && projects && user && (
           <Grid
             container
-            spacing={5}
+            spacing={2}
             style={{ gridAutoRows: '1fr' }}
           >
             <Grid item xs={12}>
@@ -799,7 +799,7 @@ class InvoiceAddComponent extends React.Component {
                     )}
                     {formData.projectInfoItems.length > 0 && timeRecords && !getTimeRecordsIsPending && (
                       <TableContainer component={Paper} style={{ maxHeight: 350 }}>
-                        <Table size="small" stickyHeader>
+                        <Table className={styles.invoiceTimeRecordsTable} size="small" stickyHeader>
                           <TableHead>
                             <TableRow>
                               <TableCell padding="checkbox">

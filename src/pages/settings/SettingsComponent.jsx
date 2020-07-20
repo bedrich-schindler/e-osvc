@@ -107,6 +107,7 @@ const SettingsComponent = (props) => {
           }
           onClick={() => {
             editUserNotifications(userNotifications.id, userNotifications);
+            Notification.requestPermission();
           }}
           startIcon={editUserNotificationsIsPending ? <CircularProgress size={14} /> : <SaveIcon />}
           variant="contained"
@@ -117,7 +118,7 @@ const SettingsComponent = (props) => {
       title="Nastavení"
     >
       {
-        (getUserIsPending || userNotifications === null)
+        (getUserIsPending || !userNotifications)
           ? (
             <CircularProgress />
           ) : (
@@ -179,7 +180,7 @@ const SettingsComponent = (props) => {
                                 onChange={handleCheckboxChange}
                               />
                             </TableCell>
-                            <TableCell>Platba záloh na dani</TableCell>
+                            <TableCell>Platba záloh daně</TableCell>
                             <TableCell>
                               {renderDayOfMonth('taxDayOfMonth')}
                             </TableCell>

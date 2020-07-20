@@ -22,6 +22,7 @@ import {
   UnauthorizedRoute,
 } from './resources/auth/components';
 import { setIsOnline } from './resources/settings';
+import { registerNotificationService } from './services/notificationService';
 import routes from './routes';
 
 // Main styles
@@ -61,6 +62,9 @@ export default (store, history, isWebVersion = true) => {
 
   window.addEventListener('online', isOnlineChangedHandler);
   window.addEventListener('offline', isOnlineChangedHandler);
+
+  // Notification service registration
+  registerNotificationService(store);
 
   return (
     <Provider store={store}>

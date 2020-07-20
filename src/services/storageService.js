@@ -1,11 +1,11 @@
 import { STORAGE_PREFIX } from '../../config/config';
 
 export const removeFromStorage = (key) => {
-  sessionStorage.removeItem(`${STORAGE_PREFIX}_${key}`);
+  localStorage.removeItem(`${STORAGE_PREFIX}_${key}`);
 };
 
 export const retrieveFromStorage = (key) => {
-  let data = sessionStorage.getItem(`${STORAGE_PREFIX}_${key}`);
+  let data = localStorage.getItem(`${STORAGE_PREFIX}_${key}`);
 
   if (data) {
     try {
@@ -19,5 +19,5 @@ export const retrieveFromStorage = (key) => {
 };
 
 export const storeToStorage = (key, value) => {
-  sessionStorage.setItem(`${STORAGE_PREFIX}_${key}`, JSON.stringify(value));
+  localStorage.setItem(`${STORAGE_PREFIX}_${key}`, JSON.stringify(value));
 };

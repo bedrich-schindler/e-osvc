@@ -19,6 +19,21 @@ export const addUser = (data) => createApiAction({
   ],
 });
 
+export const editUserNotifications = (userNotificationsId, data) => createApiAction({
+  body: data,
+  endpoint: `/user_notifications/${userNotificationsId}`,
+  method: 'PUT',
+  notificationMessages: {
+    failure: 'Uložení nastavení se nezdařilo.',
+    success: 'Nastavení bylo úspěšně uloženo.',
+  },
+  types: [
+    actionTypes.API_USER_NOTIFICATIONS_EDIT_REQUEST,
+    actionTypes.API_USER_NOTIFICATIONS_EDIT_SUCCESS,
+    actionTypes.API_USER_NOTIFICATIONS_EDIT_FAILURE,
+  ],
+});
+
 export const getUser = () => (dispatch, getState) => {
   const token = selectToken(getState());
   const { uid } = jwtDecode(token);

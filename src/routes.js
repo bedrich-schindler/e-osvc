@@ -56,6 +56,11 @@ export default {
     path: '/vytvoreni-uctu',
     title: 'Vytvoření účtu',
   },
+  settings: {
+    component: () => getComponent('settings', 'Settings'),
+    path: '/nastaveni',
+    title: 'Nastavení',
+  },
   sicknessInsurance: {
     component: () => getComponent('sicknessInsurance', 'SicknessInsurance'),
     path: '/nemocenske-pojisteni',

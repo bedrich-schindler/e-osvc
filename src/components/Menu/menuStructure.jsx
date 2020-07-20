@@ -4,6 +4,7 @@ import IconClients from '@material-ui/icons/People';
 import IconInvoices from '@material-ui/icons/Description';
 import IconPayments from '@material-ui/icons/Payment';
 import IconProjects from '@material-ui/icons/Business';
+import IconSettings from '@material-ui/icons/Settings';
 import IconTimeRecords from '@material-ui/icons/Timer';
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
@@ -96,5 +97,11 @@ export default [
     ),
     path: routes.sicknessInsurance.path,
     title: routes.sicknessInsurance.title,
+  },
+  { isDivider: true },
+  {
+    icon: IconSettings,
+    path: routes.settings.path,
+    title: routes.settings.title,
   },
 ];

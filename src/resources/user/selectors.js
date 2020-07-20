@@ -10,4 +10,5 @@ export const selectAddUser = getDataSelector(getData, 'addUser');
 export const selectGetUser = getDataSelector(getData, 'getUser');
 
 export const selectAddUserIsPending = getIsPendingSelector(getApiActions, 'addUser');
+export const selectEditUserNotificationsIsPending = getIsPendingSelector(getApiActions, 'editUserNotifications');
 export const selectGetUserIsPending = getIsPendingSelector(getApiActions, 'getUser');

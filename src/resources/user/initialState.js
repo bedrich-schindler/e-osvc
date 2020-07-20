@@ -5,6 +5,9 @@ export default () => fromJS({
     addUser: {
       isPending: false,
     },
+    editUserNotifications: {
+      isPending: false,
+    },
     getUser: {
       isPending: false,
     },

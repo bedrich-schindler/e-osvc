@@ -1,1 +1,1 @@
-export { default as DashboardPage } from './DashboardComponent';
+export { default as DashboardPage } from './DashboardContainer';

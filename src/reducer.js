@@ -8,6 +8,7 @@ import { projectReducer } from './resources/project';
 import { settingsReducer } from './resources/settings';
 import { sicknessInsuranceReducer } from './resources/sicknessInsurance';
 import { socialInsuranceReducer } from './resources/socialInsurance';
+import { statisticsReducer } from './resources/statistics';
 import { taxReducer } from './resources/tax';
 import { timeRecordReducer } from './resources/timeRecord';
 import { userReducer } from './resources/user';
@@ -23,6 +24,7 @@ const reducers = combineReducers({
   settings: settingsReducer,
   sicknessInsurance: sicknessInsuranceReducer,
   socialInsurance: socialInsuranceReducer,
+  statistics: statisticsReducer,
   tax: taxReducer,
   timeRecord: timeRecordReducer,
   user: userReducer,

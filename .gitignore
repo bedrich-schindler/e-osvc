@@ -4,4 +4,5 @@
 /public/bundle.js
 /public/bundle.electron.js
 /public/sw.js
+/public/sw.electron.js
 .gitkeep

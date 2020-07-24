@@ -1,9 +1,5 @@
 import React from 'react';
 import {
-  applyUpdate,
-  install,
-} from 'offline-plugin/runtime';
-import {
   StylesProvider,
   createMuiTheme,
   MuiThemeProvider,
@@ -27,16 +23,6 @@ import routes from './routes';
 
 // Main styles
 import './styles/main.scss';
-
-// Install offline-plugin service worker
-install({
-  onUpdateReady: () => {
-    applyUpdate();
-  },
-  onUpdated: () => {
-    window.location.reload();
-  },
-});
 
 const theme = createMuiTheme({
   palette: {

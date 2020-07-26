@@ -24,11 +24,20 @@
     },
     {
       "files": [
+        "src/electron/**"
+      ],
+      "rules": {
+        "import/prefer-default-export": "off",
+        "no-param-reassign": "off"
+      }
+    },
+    {
+      "files": [
         "src/serviceWorker.js"
       ],
       "rules": {
         "no-restricted-globals": "off"
       }
-    }
+    },
   ]
 }

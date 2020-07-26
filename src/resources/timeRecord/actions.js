@@ -1,5 +1,10 @@
+import isElectron from 'is-electron';
 import jwtDecode from 'jwt-decode';
 import { createApiAction } from '../../services/apiService';
+import {
+  invokeResetTimer,
+  invokeSetTimer,
+} from '../../services/timerService';
 import { selectToken } from '../auth';
 import * as actionTypes from './actionTypes';
 import {
@@ -174,6 +179,10 @@ export const resetTimer = () => (dispatch) => new Promise((resolve) => {
   dispatch(request);
   resolve(request);
 }).then((response) => {
+  if (isElectron()) {
+    invokeResetTimer();
+  }
+
   removeTimerFromStorage();
 
   return response;
@@ -204,6 +213,10 @@ export const setTimer = (data) => (dispatch) => new Promise((resolve) => {
   dispatch(request);
   resolve(request);
 }).then((response) => {
+  if (isElectron()) {
+    invokeSetTimer(data);
+  }
+
   storeTimerToStorage(data);
 
   return response;

@@ -1,3 +1,4 @@
+import isElectron from 'is-electron';
 import React from 'react';
 import {
   StylesProvider,
@@ -19,6 +20,7 @@ import {
 } from './resources/auth/components';
 import { setIsOnline } from './resources/settings';
 import { registerNotificationService } from './services/notificationService';
+import { registerTimerService } from './services/timerService';
 import routes from './routes';
 
 // Main styles
@@ -51,6 +53,11 @@ export default (store, history, isWebVersion = true) => {
 
   // Notification service registration
   registerNotificationService(store);
+
+  if (isElectron()) {
+    // Timer service registration
+    registerTimerService(store);
+  }
 
   return (
     <Provider store={store}>

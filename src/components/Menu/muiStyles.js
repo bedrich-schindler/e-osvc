@@ -18,8 +18,10 @@ export default (theme) => ({
   },
   drawer: {
     flexShrink: 0,
+    position: 'fixed',
     whiteSpace: 'nowrap',
     width: SIDEBAR_WIDTH,
+    zIndex: 1000,
   },
   drawerClose: {
     overflowX: 'hidden',

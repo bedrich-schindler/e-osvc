@@ -93,7 +93,10 @@ class LoginComponent extends React.Component {
               Uživatelské jméno nebo heslo je špatně.
             </Alert>
           )}
-          <form className={styles.form}>
+          <form
+            className={styles.form}
+            onSubmit={(e) => e.preventDefault()}
+          >
             <TextField
               autoFocus
               autoComplete="username"
@@ -132,6 +135,7 @@ class LoginComponent extends React.Component {
               fullWidth
               onClick={this.loginHandler}
               startIcon={loginIsPending ? <CircularProgress size={14} /> : null}
+              type="submit"
               variant="contained"
             >
               Přihlásit se

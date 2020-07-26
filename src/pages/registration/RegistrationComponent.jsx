@@ -255,6 +255,7 @@ class RegistrationComponent extends React.Component {
           }
           fullWidth
           onClick={() => this.setState({ activeStepIndex: 1 })}
+          type="submit"
           variant="contained"
         >
           Pokračovat
@@ -299,6 +300,7 @@ class RegistrationComponent extends React.Component {
           fullWidth
           onClick={this.registerHandler}
           startIcon={addUserIsPending ? <CircularProgress size={14} /> : null}
+          type="submit"
           variant="contained"
         >
           Vytvořit účet
@@ -486,7 +488,10 @@ class RegistrationComponent extends React.Component {
               Váš účet byl vytvořen.
             </Alert>
           )}
-          <form className={styles.form}>
+          <form
+            className={styles.form}
+            onSubmit={(e) => e.preventDefault()}
+          >
             <Stepper
               activeStep={activeStepIndex}
               orientation="vertical"

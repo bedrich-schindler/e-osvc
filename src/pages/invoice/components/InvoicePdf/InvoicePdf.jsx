@@ -7,19 +7,19 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import {getTimeDifferenceString} from "../../../../services/dateTimeService";
-import {getTotalTime} from "../../helpers";
+import { getTimeDifferenceString } from '../../../../services/dateTimeService';
+import { getTotalTime } from '../../helpers';
 
 Font.register({
   family: 'Roboto',
   fonts: [
     {
       fontWeight: 'normal',
-      src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf',
+      src: `${IS_ELECTRON ? '.' : ''}/fonts/roboto-regular.ttf`,
     },
     {
       fontWeight: 'bold',
-      src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf',
+      src: `${IS_ELECTRON ? '.' : ''}/fonts/roboto-bold.ttf`,
     },
   ]
 });
@@ -171,7 +171,10 @@ const InvoicePdf = ({ invoice }) => {
             <Text style={styles.tableBodyCellNarrow}>Cena celkem</Text>
           </View>
           {invoice.invoiceItems.map((invoiceItem) => (
-            <View style={styles.tableLine}>
+            <View
+              key={invoiceItem.id}
+              style={styles.tableLine}
+            >
               <Text style={styles.tableBodyCellNarrow}>
                 {invoiceItem.quantity}
                 {' '}
@@ -221,7 +224,10 @@ const InvoicePdf = ({ invoice }) => {
                 <Text style={styles.tableBodyCellNarrow}>Délka</Text>
               </View>
               {invoice.timeRecords.map((timeRecord) => (
-                <View style={styles.tableLine}>
+                <View
+                  key={timeRecord.id}
+                  style={styles.tableLine}
+                >
                   <Text style={styles.tableBodyCellNarrow}>
                     {timeRecord.startDateTime.toLocaleString()}
                   </Text>

@@ -81,6 +81,8 @@ module.exports = (env, argv) => ({
         '/',
         '/index.html',
         '/manifest.json',
+        '/fonts/roboto-bold.ttf',
+        '/fonts/roboto-regular.ttf',
         '/images/android-icon-36x36.png',
         '/images/android-icon-48x48.png',
         '/images/android-icon-72x72.png',

@@ -230,6 +230,11 @@ const SettingsComponent = (props) => {
                         </TableBody>
                       </Table>
                     </TableContainer>
+                    {!('Notification' in window) && (
+                      <Box mt={3}>
+                        Upozornění nejsou v tomto prohlížeči podporovány.
+                      </Box>
+                    )}
                   </Box>
                 </Paper>
               </Grid>

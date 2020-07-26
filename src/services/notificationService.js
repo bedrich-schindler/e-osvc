@@ -2,6 +2,10 @@ import { getInvoices } from '../resources/invoice';
 import { getUser } from '../resources/user';
 
 export const showNotification = (message) => {
+  if (!('Notification' in window)) {
+    return;
+  }
+
   const showNotificationImpl = () => new Notification('eOSVČ', {
     body: message,
     icon: '/images/favicon-96x96.png',

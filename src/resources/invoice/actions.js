@@ -108,3 +108,47 @@ export const getInvoices = () => (dispatch, getState) => {
     ],
   })(dispatch, getState);
 };
+
+export const getInvoicesFiltered = (filter = null) => (dispatch, getState) => {
+  const token = selectToken(getState());
+  const { uid } = jwtDecode(token);
+
+  let queryString = '';
+  if (filter) {
+    let invoiceDateFromString = '';
+    let invoiceDateToString = '';
+    let clientIdsString = '';
+
+    if (filter.invoiceDateFrom) {
+      invoiceDateFromString = `&invoiceDate[after]=${filter.invoiceDateFrom.toJSON()}`;
+    }
+
+    if (filter.invoiceDateTo) {
+      invoiceDateToString = `&invoiceDate[before]=${filter.invoiceDateTo.toJSON()}`;
+    }
+
+    if (filter.clientIds) {
+      clientIdsString = filter.clientIds
+        .map((clientId) => `clientInfo.original.id[]=${clientId}`)
+        .join('&');
+      clientIdsString = `&${clientIdsString}`;
+    }
+
+    queryString = `?owner.id=${uid}${clientIdsString}${invoiceDateFromString}${invoiceDateToString}`;
+  } else {
+    queryString = `?owner.id=${uid}`;
+  }
+
+  return createApiAction({
+    endpoint: `/invoices${queryString}`,
+    method: 'GET',
+    notificationMessages: {
+      failure: 'Získání výpisu faktur se nezdařilo.',
+    },
+    types: [
+      actionTypes.API_INVOICES_GET_REQUEST,
+      actionTypes.API_INVOICES_GET_SUCCESS,
+      actionTypes.API_INVOICES_GET_FAILURE,
+    ],
+  })(dispatch, getState);
+};

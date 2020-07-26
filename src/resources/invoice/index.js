@@ -4,6 +4,7 @@ export {
   editInvoice,
   getInvoice,
   getInvoices,
+  getInvoicesFiltered,
 } from './actions';
 
 export { default as invoiceReducer } from './reducer';

@@ -107,22 +107,35 @@ export const getTimeRecordsFiltered = (filter = null) => (dispatch, getState) =>
 
   let queryString = '';
   if (filter) {
+    let startDateTimeString = '';
+    let endDateTimeString = '';
     let projectIdsString = '';
     let invoiceIdString = '';
+
+    if (filter.startDateTime) {
+      startDateTimeString = `&startDateTime[after]=${filter.startDateTime.toJSON()}`;
+    }
+
+    if (filter.endDateTime) {
+      endDateTimeString = `&endDateTime[before]=${filter.endDateTime.toJSON()}`;
+    }
 
     if (filter.projectIds) {
       projectIdsString = filter.projectIds
         .map((projectId) => `project.id[]=${projectId}`)
         .join('&');
+      projectIdsString = `&${projectIdsString}`;
     }
 
-    if (filter.invoiceId) {
-      invoiceIdString = `in_or_null_invoice[]=${filter.invoiceId}`;
-    } else {
-      invoiceIdString = 'in_or_null_invoice[]';
+    if (filter.enableInvoiceIdFilter) {
+      if (filter.invoiceId) {
+        invoiceIdString = `&in_or_null_invoice[]=${filter.invoiceId}`;
+      } else {
+        invoiceIdString = '&in_or_null_invoice[]';
+      }
     }
 
-    queryString = `?owner.id=${uid}&${projectIdsString}&${invoiceIdString}`;
+    queryString = `?owner.id=${uid}${projectIdsString}${invoiceIdString}${startDateTimeString}${endDateTimeString}`;
   } else {
     queryString = `?owner.id=${uid}`;
   }

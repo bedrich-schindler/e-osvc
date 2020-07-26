@@ -159,7 +159,7 @@ class TimeRecordDialog extends React.Component {
             format="dd. MM. yyyy HH:mm:ss"
             margin="normal"
             id="startDateTime"
-            label="Od"
+            label="Začátek"
             value={formData.startDateTime}
             onChange={this.changeStartDateTimeHandler}
             required
@@ -176,7 +176,7 @@ class TimeRecordDialog extends React.Component {
             format="dd. MM. yyyy HH:mm:ss"
             margin="normal"
             id="endDateTime"
-            label="Do"
+            label="Konec"
             value={formData.endDateTime}
             onChange={this.changeEndDateTimeHandler}
             required

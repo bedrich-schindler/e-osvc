@@ -290,6 +290,7 @@ class InvoiceAddComponent extends React.Component {
       const { formData } = this.state;
 
       getTimeRecordsFiltered({
+        enableInvoiceIdFilter: true,
         projectIds: formData.projectInfoItems.map((projectInfo) => projectInfo.original),
       });
     });

@@ -9,7 +9,7 @@ import {
   addTimeRecord,
   deleteTimeRecord,
   editTimeRecord,
-  getTimeRecords,
+  getTimeRecordsFiltered,
   selectAddTimeRecordIsPending,
   selectDeleteTimeRecordIsPending,
   selectEditTimeRecordIsPending,
@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteTimeRecord: (userId) => dispatch(deleteTimeRecord(userId)),
   editTimeRecord: (userId, data) => dispatch(editTimeRecord(userId, data)),
   getProjects: () => dispatch(getProjects()),
-  getTimeRecords: () => dispatch(getTimeRecords()),
+  getTimeRecordsFiltered: (options) => dispatch(getTimeRecordsFiltered(options)),
 });
 
 export default connect(

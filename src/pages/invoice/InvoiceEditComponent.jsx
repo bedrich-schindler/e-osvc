@@ -215,6 +215,7 @@ class InvoiceEditComponent extends React.Component {
       const { payload } = response;
 
       getTimeRecordsFiltered({
+        enableInvoiceIdFilter: true,
         invoiceId: match.params.id,
         projectIds: payload.projectInfoItems.map((projectInfo) => projectInfo.original.id),
       });
@@ -313,6 +314,7 @@ class InvoiceEditComponent extends React.Component {
       const { formData } = this.state;
 
       getTimeRecordsFiltered({
+        enableInvoiceIdFilter: true,
         invoiceId: match.params.id,
         projectIds: formData.projectInfoItems.map((projectInfo) => projectInfo.original),
       });

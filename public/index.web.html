@@ -40,31 +40,6 @@
         height: 100%;
         /* overflow: hidden; */
       }
-    </style>
-    <style>
-      @-webkit-keyframes spin {
-        from {
-          -webkit-transform: scale(3) rotate(0deg);
-          transform: scale(3) rotate(0deg);
-        }
-
-        to {
-          -webkit-transform: scale(3) rotate(360deg);
-          transform: scale(3) rotate(360deg);
-        }
-      }
-
-      @keyframes spin {
-        from {
-          -webkit-transform: scale(3) rotate(0deg);
-          transform: scale(3) rotate(0deg);
-        }
-
-        to {
-          -webkit-transform: scale(3) rotate(360deg);
-          transform: scale(3) rotate(360deg);
-        }
-      }
 
       .loader-container {
         position: absolute;
@@ -82,6 +57,39 @@
             -ms-flex-pack: center;
                 justify-content: center;
       }
+
+      .unsupportedBrowser {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f2f2f2;
+      }
+
+      .unsupportedBrowserTitle {
+        margin-bottom: 1rem;
+      }
+
+      .unsupportedBrowserMessage {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        .unsupportedBrowser {
+          display: flex;
+        }
+      }
+
+      .displayFlex {
+        display: flex;
+      }
     </style>
   </head>
 
@@ -91,6 +99,22 @@
         Načítání
       </div>
     </div>
+
+    <div class="unsupportedBrowser" aria-hidden="true">
+      <h2 class="unsupportedBrowserTitle">Nepodporovaný prohlížeč</h2>
+      <p class="unsupportedBrowserMessage">
+        Tento prohlížeč není podporován. Vyzkoušejte Chrome, Firefox, Safari nebo Edge.
+      </p>
+    </div>
+
+    <noscript>
+      <div class="unsupportedBrowser displayFlex" aria-hidden="true">
+        <h2 class="unsupportedBrowserTitle">Je vyžadován JavaScript</h2>
+        <p class="unsupportedBrowserMessage">
+          Zapněte JavaScript pro správnou funkci aplikace.
+        </p>
+      </div>
+    </noscript>
 
     <script src="/bundle.js?__ASSET_VERSION__"></script>
   </body>

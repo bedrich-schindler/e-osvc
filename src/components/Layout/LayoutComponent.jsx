@@ -35,7 +35,6 @@ class LayoutComponent extends React.Component {
       children,
       logout,
       title,
-      user,
     } = this.props;
     const { isMenuOpened } = this.state;
 
@@ -47,7 +46,7 @@ class LayoutComponent extends React.Component {
             onLogout={logout}
             onOpenMenu={this.handleOpenMenu}
             title="eOSVČ"
-            user={user}
+            user={{ name: '' }}
           />
           <Menu
             isMenuOpened={isMenuOpened}
@@ -112,9 +111,6 @@ LayoutComponent.propTypes = {
   ]),
   logout: PropTypes.func.isRequired,
   title: PropTypes.node.isRequired,
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default LayoutComponent;

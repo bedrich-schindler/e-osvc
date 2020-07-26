@@ -11,6 +11,7 @@ describe('rendering', () => {
     const tree = shallow(
       <Header
         classes={{}}
+        history={{ push: () => { }}}
         title="Title"
         isMenuOpened={false}
         user={{ name: 'Name' }}
@@ -26,6 +27,7 @@ describe('rendering', () => {
     const tree = shallow(
       <Header
         classes={{}}
+        history={{ push: () => { }}}
         title="Title"
         isMenuOpened
         user={{ name: 'Name' }}
@@ -44,6 +46,7 @@ describe('functionality', () => {
     const tree = mount(
       <Header
         classes={{}}
+        history={{ push: () => { }}}
         title="Title"
         isMenuOpened={false}
         user={{ name: 'Name' }}

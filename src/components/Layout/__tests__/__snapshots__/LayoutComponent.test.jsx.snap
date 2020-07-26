@@ -5,14 +5,14 @@ exports[`rendering renders correctly 1`] = `
   <div
     className="root"
   >
-    <WithStyles(Header)
+    <WithStyles(withRouter(Header))
       isMenuOpened={false}
       onLogout={[Function]}
       onOpenMenu={[Function]}
       title="eOSVČ"
       user={
         Object {
-          "name": "Name",
+          "name": "",
         }
       }
     />

@@ -123,6 +123,18 @@ exports[`rendering renders correctly 1`] = `
         primary="Nemocenské pojištění"
       />
     </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <SettingsIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Nastavení"
+      />
+    </WithStyles(ForwardRef(ListItem))>
   </WithStyles(ForwardRef(List))>
 </WithStyles(ForwardRef(Drawer))>
 `;
@@ -248,6 +260,18 @@ exports[`rendering renders correctly with opened menu 1`] = `
       </WithStyles(ForwardRef(ListItemIcon))>
       <WithStyles(ForwardRef(ListItemText))
         primary="Nemocenské pojištění"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(ListItem))
+      button={true}
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemIcon))>
+        <SettingsIcon />
+      </WithStyles(ForwardRef(ListItemIcon))>
+      <WithStyles(ForwardRef(ListItemText))
+        primary="Nastavení"
       />
     </WithStyles(ForwardRef(ListItem))>
   </WithStyles(ForwardRef(List))>

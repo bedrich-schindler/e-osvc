@@ -9,6 +9,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+import routes from '../../routes';
 import muiStyles from './muiStyles';
 import styles from './styles.scss';
 
@@ -34,6 +36,7 @@ export class Header extends React.Component {
 
   renderAccountMenu() {
     const {
+      history,
       user,
       onLogout,
     } = this.props;
@@ -55,6 +58,11 @@ export class Header extends React.Component {
           open={Boolean(accountMenuEl)}
           onClose={this.handleCloseAccountMenu}
         >
+          <MenuItem onClick={() => {
+            history.push(routes.account.path);
+          }}>
+            Můj účet
+          </MenuItem>
           <MenuItem onClick={onLogout}>
             Odhlásit se
           </MenuItem>
@@ -123,6 +131,9 @@ export class Header extends React.Component {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   isMenuOpened: PropTypes.bool.isRequired,
   onLogout: PropTypes.func.isRequired,
   onOpenMenu: PropTypes.func.isRequired,
@@ -132,4 +143,4 @@ Header.propTypes = {
   }).isRequired,
 };
 
-export default withStyles(muiStyles, { withTheme: true })(Header);
+export default withStyles(muiStyles, { withTheme: true })(withRouter(Header));

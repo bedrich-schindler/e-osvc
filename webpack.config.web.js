@@ -1,6 +1,7 @@
 const OfflinePlugin = require('offline-plugin');
 const Path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const Webpack = require('webpack');
 
 module.exports = (env, argv) => ({
   devServer: {
@@ -122,6 +123,12 @@ module.exports = (env, argv) => ({
         entry: './src/serviceWorker.js',
         events: true,
       }
+    }),
+    new Webpack.DefinePlugin({
+      IS_ELECTRON: false,
+    }),
+    new Webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
     }),
   ],
   resolve: {

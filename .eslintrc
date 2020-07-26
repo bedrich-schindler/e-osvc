@@ -5,6 +5,9 @@
     "jest": true,
     "serviceworker": true
   },
+  "globals": {
+    "IS_ELECTRON": "readonly"
+  },
   "rules": {
     "react/forbid-prop-types": "off"
   },

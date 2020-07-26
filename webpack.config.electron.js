@@ -1,5 +1,6 @@
 const Path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const Webpack = require('webpack');
 
 module.exports = () => ({
   entry: {
@@ -62,6 +63,12 @@ module.exports = () => ({
     new StyleLintPlugin({
       configFile: 'stylelint.config.js',
       syntax: 'scss',
+    }),
+    new Webpack.DefinePlugin({
+      IS_ELECTRON: true,
+    }),
+    new Webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
     }),
   ],
   resolve: {

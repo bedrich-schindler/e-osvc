@@ -1,4 +1,3 @@
-import isElectron from 'is-electron';
 import React from 'react';
 import {
   StylesProvider,
@@ -20,7 +19,6 @@ import {
 } from './resources/auth/components';
 import { setIsOnline } from './resources/settings';
 import { registerNotificationService } from './services/notificationService';
-import { registerTimerService } from './services/timerService';
 import routes from './routes';
 
 // Main styles
@@ -36,10 +34,10 @@ const theme = createMuiTheme({
   },
 });
 
-export default (store, history, isWebVersion = true) => {
+export default (store, history) => {
   let RouterComponent = Router;
 
-  if (!isWebVersion) {
+  if (IS_ELECTRON) {
     RouterComponent = HashRouter;
   }
 
@@ -54,9 +52,13 @@ export default (store, history, isWebVersion = true) => {
   // Notification service registration
   registerNotificationService(store);
 
-  if (isElectron()) {
-    // Timer service registration
-    registerTimerService(store);
+  // Timer service registration
+  if (IS_ELECTRON) {
+    import('./services/timerService').then((timerService) => {
+      timerService.registerTimerService(store);
+
+      return timerService;
+    });
   }
 
   return (

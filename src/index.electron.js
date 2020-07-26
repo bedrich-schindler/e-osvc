@@ -18,6 +18,6 @@ window.addEventListener('load', () => {
 });
 
 render(
-  app(store, history, false),
+  app(store, history),
   document.getElementById('app'),
 );

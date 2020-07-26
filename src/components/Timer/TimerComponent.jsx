@@ -9,10 +9,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import StopArrowIcon from '@material-ui/icons/Stop';
 import TimerIcon from '@material-ui/icons/Timer';
-import isElectron from 'is-electron';
 import { TimeRecordDialog } from '../TimeRecordDialog';
 import { getTimeDifferenceString } from '../../services/dateTimeService';
-import { handleStopTimer } from '../../services/timerService';
 import styles from './styles.scss';
 
 class TimerComponent extends React.Component {
@@ -31,8 +29,12 @@ class TimerComponent extends React.Component {
     this.stopTimer = this.stopTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
 
-    if (isElectron()) {
-      handleStopTimer(this.stopTimer);
+    if (IS_ELECTRON) {
+      import('../../services/timerService').then((timerService) => {
+        timerService.handleStopTimer(this.stopTimer);
+
+        return timerService;
+      });
     }
   }
 

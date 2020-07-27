@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import {
   app,
   BrowserWindow,
@@ -52,7 +53,10 @@ const createWindow = () => {
   session.defaultSession.webRequest.onBeforeSendHeaders({ urls: [`${API_URL}/*`] }, (details, callback) => {
     details.requestHeaders.Origin = 'file://';
     details.requestHeaders['User-Agent'] = 'eOSVC Electron App';
-    callback({ cancel: false, requestHeaders: details.requestHeaders });
+    callback({
+      cancel: false,
+      requestHeaders: details.requestHeaders,
+    });
   });
 
   touchBarService.init(mainWindow, electronStore);

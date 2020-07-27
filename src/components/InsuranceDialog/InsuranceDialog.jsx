@@ -58,7 +58,7 @@ class InsuranceDialog extends React.Component {
 
   changeHandler(e) {
     const eventTarget = e.target;
-    let {
+    const {
       name,
       value,
     } = eventTarget;
@@ -74,7 +74,7 @@ class InsuranceDialog extends React.Component {
         name: 'date',
         value: value ? new Date(value) : null,
       },
-    })
+    });
   }
 
   async saveHandler() {
@@ -108,7 +108,7 @@ class InsuranceDialog extends React.Component {
             violation.propertyPath,
             violation.message,
           );
-        })
+        });
       }
 
       this.setState({ formValidity });
@@ -129,7 +129,7 @@ class InsuranceDialog extends React.Component {
     const {
       formData,
       formValidity,
-     } = this.state;
+    } = this.state;
 
     return (
       <Dialog
@@ -212,7 +212,7 @@ class InsuranceDialog extends React.Component {
             margin="dense"
             name="note"
             onChange={this.changeHandler}
-            value={formData.note?? ''}
+            value={formData.note ?? ''}
           />
         </DialogContent>
         <DialogActions>

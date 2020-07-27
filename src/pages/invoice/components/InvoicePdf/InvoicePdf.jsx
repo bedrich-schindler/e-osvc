@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Document,
@@ -21,7 +22,7 @@ Font.register({
       fontWeight: 'bold',
       src: `${IS_ELECTRON ? '.' : ''}/fonts/roboto-bold.ttf`,
     },
-  ]
+  ],
 });
 
 const styles = StyleSheet.create({
@@ -30,11 +31,11 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   page: {
+    fontFamily: 'Roboto',
     fontSize: 12,
     fontWeight: 100,
-    fontFamily: 'Roboto',
     padding: 50,
-    width: '100%'
+    width: '100%',
   },
   section: {
     marginBottom: 25,
@@ -53,18 +54,18 @@ const styles = StyleSheet.create({
     padding: 5,
     width: '40%',
   },
-  tableFooterCellNarrow: {
-    padding: 5,
-    width: '20%',
-  },
   tableFooterCellExtraWide: {
     padding: 5,
     width: '80%',
   },
+  tableFooterCellNarrow: {
+    padding: 5,
+    width: '20%',
+  },
   tableLine: {
+    borderBottom: '1pt solid gray',
     display: 'flex',
     flexDirection: 'row',
-    borderBottom: '1pt solid gray',
   },
   tableLineFooter: {
     display: 'flex',
@@ -75,10 +76,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   twoColumnsWrapper: {
-    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: '100%',
   },
 });
 
@@ -110,22 +111,38 @@ const InvoicePdf = ({ invoice }) => {
               <Text style={styles.subtitle}>Dodavatel</Text>
             </View>
             <View style={styles.sectionSmall}>
-              <Text>{invoice.userInfo.firstName} {invoice.userInfo.lastName}</Text>
+              <Text>
+                {invoice.userInfo.firstName}
+                {' '}
+                {invoice.userInfo.lastName}
+              </Text>
               <Text>{invoice.userInfo.street}</Text>
               <Text>{invoice.userInfo.city}</Text>
               <Text>{invoice.userInfo.postalCode}</Text>
             </View>
             <View style={styles.section}>
-              <Text>IČ: {invoice.userInfo.cidNumber}</Text>
-              <Text>DIČ: {invoice.userInfo.taxNumber ?? 'neplátce DPH'}</Text>
+              <Text>
+                IČ:
+                {invoice.userInfo.cidNumber}
+              </Text>
+              <Text>
+                DIČ:
+                {invoice.userInfo.taxNumber ?? 'neplátce DPH'}
+              </Text>
             </View>
             <View style={styles.sectionSmall}>
               <Text style={styles.subtitle}>Platební údaje</Text>
             </View>
             <View style={styles.section}>
               <Text>Způsob platby: převodem na účet</Text>
-              <Text>Číslo účtu: {invoice.userInfo.bankAccount}</Text>
-              <Text>Variabilní symbol: {invoice.paymentVariableSymbol}</Text>
+              <Text>
+                Číslo účtu:
+                {invoice.userInfo.bankAccount}
+              </Text>
+              <Text>
+                Variabilní symbol:
+                {invoice.paymentVariableSymbol}
+              </Text>
             </View>
           </View>
           <View style={styles.column}>
@@ -143,8 +160,14 @@ const InvoicePdf = ({ invoice }) => {
                 invoice.clientInfo.cidNumber
                   ? (
                     <>
-                      <Text>IČ: {invoice.clientInfo.cidNumber}</Text>
-                      <Text>DIČ: {invoice.clientInfo.taxNumber ?? 'neplátce DPH'}</Text>
+                      <Text>
+                        IČ:
+                        {invoice.clientInfo.cidNumber}
+                      </Text>
+                      <Text>
+                        DIČ:
+                        {invoice.clientInfo.taxNumber ?? 'neplátce DPH'}
+                      </Text>
                     </>
                   ) : (
                     <>
@@ -158,8 +181,14 @@ const InvoicePdf = ({ invoice }) => {
               <Text style={styles.subtitle}>Údaje o splatnosti</Text>
             </View>
             <View style={styles.section}>
-              <Text>Datum vystavení: {invoice.invoiceDate.toLocaleDateString()}</Text>
-              <Text>Datum splatnosti: {invoice.invoiceDueDate.toLocaleDateString()}</Text>
+              <Text>
+                Datum vystavení:
+                {invoice.invoiceDate.toLocaleDateString()}
+              </Text>
+              <Text>
+                Datum splatnosti:
+                {invoice.invoiceDueDate.toLocaleDateString()}
+              </Text>
             </View>
           </View>
         </View>
@@ -254,6 +283,54 @@ const InvoicePdf = ({ invoice }) => {
       )}
     </Document>
   );
-}
+};
+
+InvoicePdf.propTypes = {
+  invoice: PropTypes.shape({
+    clientInfo: PropTypes.shape({
+      cidNumber: PropTypes.number,
+      city: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      postalCode: PropTypes.number.isRequired,
+      street: PropTypes.string.isRequired,
+      taxNumber: PropTypes.number,
+    }).isRequired,
+    id: PropTypes.number.isRequired,
+    invoiceDate: PropTypes.object.isRequired,
+    invoiceDueDate: PropTypes.object.isRequired,
+    invoiceIdentifier: PropTypes.string.isRequired,
+    invoiceItems: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      pricePerQuantityUnit: PropTypes.number.isRequired,
+      quantity: PropTypes.number.isRequired,
+      quantityUnit: PropTypes.string,
+    })).isRequired,
+    invoicePaymentDate: PropTypes.object,
+    paymentVariableSymbol: PropTypes.number.isRequired,
+    projectInfoItems: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      original: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+      }).isRequired,
+    })).isRequired,
+    timeRecords: PropTypes.arrayOf(PropTypes.shape({
+      endDateTime: PropTypes.object.isRequired,
+      project: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }).isRequired,
+      startDateTime: PropTypes.object.isRequired,
+    })),
+    userInfo: PropTypes.shape({
+      bankAccount: PropTypes.string.isRequired,
+      cidNumber: PropTypes.number.isRequired,
+      city: PropTypes.string.isRequired,
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      postalCode: PropTypes.number.isRequired,
+      street: PropTypes.string.isRequired,
+      taxNumber: PropTypes.number,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default InvoicePdf;

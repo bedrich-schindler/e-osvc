@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { TouchBar } from 'electron';
 import { getIcon } from './iconService';
 

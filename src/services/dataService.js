@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const rowIndexRegexp = /\[([^\]\[\r\n]*)\]/;
 
 export const updateData = (object, key, value) => {

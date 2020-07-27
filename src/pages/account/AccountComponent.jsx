@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import SaveIcon from '@material-ui/icons/Save';
 import TextField from '@material-ui/core/TextField';
 import { Layout } from '../../components/Layout';
-import { updateData} from '../../services/dataService';
+import { updateData } from '../../services/dataService';
 import { validateUser } from '../../resources/user/validator';
 
 const initialFormData = {
@@ -36,7 +36,6 @@ class AccountComponent extends React.Component {
         elements: cloneDeep(initialFormData),
         isValid: true,
       },
-      isFailed: false,
     };
 
     this.changeHandler = this.changeHandler.bind(this);
@@ -64,12 +63,14 @@ class AccountComponent extends React.Component {
           username: user.username,
         },
       });
+
+      return response;
     });
   }
 
   changeHandler(e) {
     const eventTarget = e.target;
-    let {
+    const {
       name,
       value,
     } = eventTarget;
@@ -90,10 +91,7 @@ class AccountComponent extends React.Component {
       isValid: true,
     });
 
-    this.setState({
-      formValidity,
-      isFailed: false,
-    });
+    this.setState({ formValidity });
 
     if (!formValidity.isValid) {
       return;
@@ -106,14 +104,14 @@ class AccountComponent extends React.Component {
 
       if (violations) {
         violations.forEach((violation) => {
-          formValidity.elements = updateData(formValidity.elements, violation.propertyPath, violation.message)
-        })
+          formValidity.elements = updateData(
+            formValidity.elements, violation.propertyPath,
+            violation.message,
+          );
+        });
       }
 
-      this.setState({
-        formValidity,
-        isFailed: true,
-      });
+      this.setState({ formValidity });
     }
   }
 
@@ -323,7 +321,7 @@ class AccountComponent extends React.Component {
       </Layout>
     );
   }
-};
+}
 
 AccountComponent.defaultProps = {
   user: null,

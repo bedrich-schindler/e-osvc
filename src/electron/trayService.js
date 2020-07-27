@@ -1,4 +1,5 @@
 import path from 'path';
+// eslint-disable-next-line
 import {
   Menu,
   Tray,

@@ -62,17 +62,17 @@ const InvoicesComponent = ({
     getClients();
     getInvoicesFiltered(filterData);
     getProjects();
-  }, [getClients, getInvoicesFiltered, getProjects]);
+  }, [filterData, getClients, getInvoicesFiltered, getProjects]);
 
   const changeHandler = (e) => {
     const eventTarget = e.target;
-    let {
+    const {
       name,
       value,
     } = eventTarget;
 
     setFilterData(updateData(filterData, name, value));
-  }
+  };
 
   const changeInvoiceDateFromHandler = (value) => {
     let invoiceDateFrom = null;
@@ -87,7 +87,7 @@ const InvoicesComponent = ({
         value: invoiceDateFrom,
       },
     });
-  }
+  };
 
   const changeInvoiceDateToHandler = (value) => {
     let invoiceDateTo = null;
@@ -102,11 +102,11 @@ const InvoicesComponent = ({
         value: invoiceDateTo,
       },
     });
-  }
+  };
 
   const filterHandler = () => {
     getInvoicesFiltered(filterData);
-  }
+  };
 
   return (
     <Layout

@@ -70,17 +70,17 @@ const TimeRecordsComponent = ({
   useEffect(() => {
     getProjects();
     getTimeRecordsFiltered(filterData);
-  }, [getProjects, getTimeRecordsFiltered]);
+  }, [filterData, getProjects, getTimeRecordsFiltered]);
 
   const changeHandler = (e) => {
     const eventTarget = e.target;
-    let {
+    const {
       name,
       value,
     } = eventTarget;
 
     setFilterData(updateData(filterData, name, value));
-  }
+  };
 
   const changeEndDateTimeHandler = (value) => changeHandler({
     target: {
@@ -98,7 +98,7 @@ const TimeRecordsComponent = ({
 
   const filterHandler = () => {
     getTimeRecordsFiltered(filterData);
-  }
+  };
 
   return (
     <Layout

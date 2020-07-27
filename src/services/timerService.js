@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { ipcRenderer } from 'electron';
 import {
   resetTimer,

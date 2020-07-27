@@ -3,7 +3,7 @@ import { getUser } from '../resources/user';
 
 export const showNotification = (message) => {
   if (!('Notification' in window)) {
-    return;
+    return null;
   }
 
   const showNotificationImpl = () => {
@@ -29,7 +29,7 @@ export const showNotification = (message) => {
     } catch (e) {
       return new Notification('eOSVČ', notificationData);
     }
-  }
+  };
 
   if (Notification.permission === 'granted') {
     return showNotificationImpl();

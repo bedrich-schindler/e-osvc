@@ -19,9 +19,9 @@ import { updateData } from '../../services/dataService';
 
 const initialFormData = {
   endDateTime: null,
-  startDateTime: null,
-  project: { id: null },
   note: null,
+  project: { id: null },
+  startDateTime: null,
 };
 
 class TimeRecordDialog extends React.Component {
@@ -56,7 +56,7 @@ class TimeRecordDialog extends React.Component {
 
   changeHandler(e) {
     const eventTarget = e.target;
-    let {
+    const {
       name,
       value,
     } = eventTarget;
@@ -72,7 +72,7 @@ class TimeRecordDialog extends React.Component {
         name: 'endDateTime',
         value: value ? new Date(value) : null,
       },
-    })
+    });
   }
 
   changeStartDateTimeHandler(value) {
@@ -81,7 +81,7 @@ class TimeRecordDialog extends React.Component {
         name: 'startDateTime',
         value: value ? new Date(value) : null,
       },
-    })
+    });
   }
 
   async saveHandler() {
@@ -114,7 +114,7 @@ class TimeRecordDialog extends React.Component {
             violation.propertyPath,
             violation.message,
           );
-        })
+        });
       }
 
       this.setState({ formValidity });
@@ -136,7 +136,7 @@ class TimeRecordDialog extends React.Component {
     const {
       formData,
       formValidity,
-     } = this.state;
+    } = this.state;
 
     return (
       <Dialog
@@ -223,7 +223,7 @@ class TimeRecordDialog extends React.Component {
             margin="dense"
             name="note"
             onChange={this.changeHandler}
-            value={formData.note?? ''}
+            value={formData.note ?? ''}
           />
         </DialogContent>
         <DialogActions>
@@ -253,8 +253,8 @@ TimeRecordDialog.defaultProps = {
 };
 
 TimeRecordDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
   isOnline: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

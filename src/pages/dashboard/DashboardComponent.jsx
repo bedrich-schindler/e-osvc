@@ -42,15 +42,14 @@ const DashboardComponent = (props) => {
 
   useEffect(() => {
     getStatistics();
-  }, []);
+  }, [getStatistics]);
 
-  const renderStatisticsBlock = (title, statisticsItem) => {
-    return (
-      <Grid item xs={12} md={6} lg={3}>
-        <Paper style={{ height: '100%' }}>
-          <Box p={3}>
-            <h2>{title}</h2>
-            {
+  const renderStatisticsBlock = (title, statisticsItem) => (
+    <Grid item xs={12} md={6} lg={3}>
+      <Paper style={{ height: '100%' }}>
+        <Box p={3}>
+          <h2>{title}</h2>
+          {
               (getStatisticsIsPending || !statisticsItem)
                 ? (
                   <>
@@ -87,7 +86,10 @@ const DashboardComponent = (props) => {
                             Celkem
                           </TableCell>
                           <TableCell>
-                            {(statisticsItem.unpaidInvoicesPrice + statisticsItem.unpaidInvoicesPrice).toFixed(2)}
+                            {(
+                              statisticsItem.unpaidInvoicesPrice
+                              + statisticsItem.unpaidInvoicesPrice
+                            ).toFixed(2)}
                             {' '}
                             CZK
                           </TableCell>
@@ -97,11 +99,10 @@ const DashboardComponent = (props) => {
                   </TableContainer>
                 )
             }
-          </Box>
-        </Paper>
-      </Grid>
-    )
-  };
+        </Box>
+      </Paper>
+    </Grid>
+  );
 
   return (
     <Layout title="Přehled">
@@ -125,7 +126,7 @@ const DashboardComponent = (props) => {
                     >
                       {[...Array(12).keys()].map((value) => (
                         <Grid key={value} item xs={1}>
-                          <Skeleton animation="wave" height="300px"  variant="rect"/>
+                          <Skeleton animation="wave" height="300px" variant="rect" />
                         </Grid>
                       ))}
                     </Grid>
@@ -133,14 +134,19 @@ const DashboardComponent = (props) => {
                     <ResponsiveContainer height={300}>
                       <BarChart
                         data={data}
-                        margin={{ top: 20, right: 20, left: 0, bottom: 0 }}
+                        margin={{
+                          bottom: 0,
+                          left: 0,
+                          right: 20,
+                          top: 20,
+                        }}
                       >
                         <XAxis dataKey="name" />
                         <YAxis />
                         <Tooltip
                           formatter={(v) => `${v.toFixed(2)} CZK`}
                           labelStyle={{
-                            marginBottom: 5
+                            marginBottom: 5,
                           }}
                         />
                         <Bar

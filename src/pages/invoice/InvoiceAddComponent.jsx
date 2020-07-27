@@ -16,7 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import React  from 'react';
+import React from 'react';
 import SaveIcon from '@material-ui/icons/Save';
 import Select from '@material-ui/core/Select';
 import Table from '@material-ui/core/Table';
@@ -83,7 +83,6 @@ class InvoiceAddComponent extends React.Component {
         elements: cloneDeep(initialFormData),
         isValid: true,
       },
-      isFailed: false,
     };
 
     this.addInvoiceItem = this.addInvoiceItem.bind(this);
@@ -95,6 +94,38 @@ class InvoiceAddComponent extends React.Component {
     this.saveHandler = this.saveHandler.bind(this);
     this.toggleAllTimeRecord = this.toggleAllTimeRecord.bind(this);
     this.toggleTimeRecord = this.toggleTimeRecord.bind(this);
+  }
+
+  componentDidMount() {
+    const {
+      getClients,
+      getProjects,
+      getUser,
+    } = this.props;
+
+    getClients();
+    getProjects();
+    getUser().then((response) => {
+      const { payload } = response;
+
+      this.setState((prevState) => ({
+        formData: {
+          ...prevState.formData,
+          userInfo: {
+            bankAccount: payload.bankAccount,
+            cidNumber: payload.cidNumber,
+            city: payload.city,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            postalCode: payload.postalCode,
+            street: payload.street,
+            taxNumber: payload.taxNumber,
+          },
+        },
+      }));
+
+      return response;
+    });
   }
 
   addInvoiceItem() {
@@ -120,10 +151,10 @@ class InvoiceAddComponent extends React.Component {
               ...formValidity.elements.invoiceItems,
               cloneDeep(initialFormData.invoiceItems[0]),
             ],
-          }
+          },
         },
       };
-    })
+    });
   }
 
   deleteInvoiceItem(index) {
@@ -152,12 +183,12 @@ class InvoiceAddComponent extends React.Component {
           },
         },
       };
-    })
+    });
   }
 
   toggleAllTimeRecord(e) {
     const { timeRecords } = this.props;
-    let { checked } = e.target;
+    const { checked } = e.target;
 
     this.setState((prevState) => {
       let timeRecordsIds = [];
@@ -182,7 +213,7 @@ class InvoiceAddComponent extends React.Component {
     value = parseInt(value, 10);
 
     this.setState((prevState) => {
-      let { timeRecordsIds} = prevState.formData;
+      let { timeRecordsIds } = prevState.formData;
 
       if (timeRecordsIds.includes(value)) {
         timeRecordsIds = timeRecordsIds.filter((id) => id !== value);
@@ -199,39 +230,9 @@ class InvoiceAddComponent extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const {
-      getClients,
-      getProjects,
-      getUser,
-    } = this.props;
-
-    getClients();
-    getProjects();
-    getUser().then((response) => {
-      const { payload } = response;
-
-      this.setState((prevState) => ({
-        formData: {
-          ...prevState.formData,
-          userInfo: {
-            bankAccount: payload.bankAccount,
-            cidNumber: payload.cidNumber,
-            city: payload.city,
-            firstName: payload.firstName,
-            lastName: payload.lastName,
-            postalCode: payload.postalCode,
-            street: payload.street,
-            taxNumber: payload.taxNumber,
-          }
-        }
-      }))
-    });
-  }
-
   changeHandler(e) {
     const eventTarget = e.target;
-    let {
+    const {
       name,
       value,
     } = eventTarget;
@@ -243,7 +244,7 @@ class InvoiceAddComponent extends React.Component {
 
   changeClientHandler(e) {
     const eventTarget = e.target;
-    let { value } = eventTarget;
+    const { value } = eventTarget;
     const { clients } = this.props;
 
     const client = clients.find((p) => p.id === value);
@@ -267,7 +268,7 @@ class InvoiceAddComponent extends React.Component {
 
   changeProjectHandler(e) {
     const eventTarget = e.target;
-    let { value } = eventTarget;
+    const { value } = eventTarget;
     const {
       getTimeRecordsFiltered,
       projects,
@@ -282,7 +283,7 @@ class InvoiceAddComponent extends React.Component {
           return {
             name,
             original: id,
-          }
+          };
         }),
         timeRecordsIds: [],
       },
@@ -302,7 +303,7 @@ class InvoiceAddComponent extends React.Component {
         name: 'invoiceDate',
         value: value ? new Date(value) : null,
       },
-    })
+    });
   }
 
   changeInvoiceDueDateHandler(value) {
@@ -311,7 +312,7 @@ class InvoiceAddComponent extends React.Component {
         name: 'invoiceDueDate',
         value: value ? new Date(value) : null,
       },
-    })
+    });
   }
 
   async saveHandler() {
@@ -333,10 +334,7 @@ class InvoiceAddComponent extends React.Component {
       isValid: true,
     });
 
-    this.setState({
-      formValidity,
-      isFailed: false,
-    });
+    this.setState({ formValidity });
 
     if (!formValidity.isValid) {
       return;
@@ -349,14 +347,15 @@ class InvoiceAddComponent extends React.Component {
 
       if (violations) {
         violations.forEach((violation) => {
-          formValidity.elements = updateData(formValidity.elements, violation.propertyPath, violation.message)
-        })
+          formValidity.elements = updateData(
+            formValidity.elements,
+            violation.propertyPath,
+            violation.message,
+          );
+        });
       }
 
-      this.setState({
-        formValidity,
-        isFailed: true,
-      });
+      this.setState({ formValidity });
 
       return;
     }
@@ -384,9 +383,10 @@ class InvoiceAddComponent extends React.Component {
 
     let totalPrice = 0;
     if (formData && formData.invoiceItems) {
-      totalPrice = formData.invoiceItems.reduce((total, invoiceItem) => {
-        return total + invoiceItem.pricePerQuantityUnit * invoiceItem.quantity;
-      }, 0);
+      totalPrice = formData.invoiceItems.reduce(
+        (total, invoiceItem) => total + invoiceItem.pricePerQuantityUnit * invoiceItem.quantity,
+        0,
+      );
     }
 
     return (
@@ -407,7 +407,14 @@ class InvoiceAddComponent extends React.Component {
         {(getClientsIsPending || getProjectsIsPending || getUserIsPending) && (
           <CircularProgress />
         )}
-        {clients && !getClientsIsPending && !getProjectsIsPending && !getUserIsPending && projects && user && (
+        {(
+          clients
+          && !getClientsIsPending
+          && !getProjectsIsPending
+          && !getUserIsPending
+          && projects
+          && user
+        ) && (
           <Grid
             container
             spacing={2}
@@ -533,7 +540,7 @@ class InvoiceAddComponent extends React.Component {
                 </Box>
               </Paper>
             </Grid>
-            <Grid item md={4} sm={6} xs={12} >
+            <Grid item md={4} sm={6} xs={12}>
               <Paper style={{ height: '100%' }}>
                 <Box p={3}>
                   <h2 className={styles.subheading}>
@@ -748,7 +755,10 @@ class InvoiceAddComponent extends React.Component {
                     Projekty
                   </h2>
                   <FormControl
-                    disabled={projects.filter((p) => p.client.id === formData.clientInfo.original).length === 0}
+                    disabled={
+                      projects.filter((p) => p.client.id === formData.clientInfo.original)
+                        .length === 0
+                    }
                     error={typeof formValidity.elements.projectInfoItems === 'string'}
                     fullWidth
                     required
@@ -766,14 +776,18 @@ class InvoiceAddComponent extends React.Component {
                       required
                       value={formData.projectInfoItems.map((item) => item.original) ?? []}
                     >
-                      {projects.filter((p) => p.client.id === formData.clientInfo.original).map((project) => (
-                        <MenuItem
-                          key={project.id}
-                          value={project.id}
-                        >
-                          {project.name}
-                        </MenuItem>
-                      ))}
+                      {
+                        projects
+                          .filter((p) => p.client.id === formData.clientInfo.original)
+                          .map((project) => (
+                            <MenuItem
+                              key={project.id}
+                              value={project.id}
+                            >
+                              {project.name}
+                            </MenuItem>
+                          ))
+                      }
                     </Select>
                     {Boolean(formValidity.elements.projectInfoItems) && (
                       <FormHelperText>{formValidity.elements.projectInfoItems}</FormHelperText>
@@ -799,7 +813,11 @@ class InvoiceAddComponent extends React.Component {
                     {getTimeRecordsIsPending && (
                       <CircularProgress />
                     )}
-                    {formData.projectInfoItems.length > 0 && timeRecords && !getTimeRecordsIsPending && (
+                    {(
+                      formData.projectInfoItems.length > 0
+                      && timeRecords
+                      && !getTimeRecordsIsPending
+                    ) && (
                       <TableContainer component={Paper} style={{ maxHeight: 350 }}>
                         <Table className={styles.invoiceTimeRecordsTable} size="small" stickyHeader>
                           <TableHead>
@@ -879,6 +897,7 @@ class InvoiceAddComponent extends React.Component {
                   </TableHead>
                   <TableBody>
                     {formData.invoiceItems.map((invoiceItem, index) => (
+                      // eslint-disable-next-line react/no-array-index-key
                       <TableRow key={index}>
                         <TableCell>
                           <TextField
@@ -926,9 +945,13 @@ class InvoiceAddComponent extends React.Component {
                         </TableCell>
                         <TableCell>
                           <TextField
-                            error={Boolean(formValidity.elements.invoiceItems[index].pricePerQuantityUnit)}
+                            error={Boolean(
+                              formValidity.elements.invoiceItems[index].pricePerQuantityUnit,
+                            )}
                             fullWidth
-                            helperText={formValidity.elements.invoiceItems[index].pricePerQuantityUnit}
+                            helperText={
+                              formValidity.elements.invoiceItems[index].pricePerQuantityUnit
+                            }
                             id={`invoiceItems[${index}].pricePerQuantityUnit`}
                             label="Cena za MJ"
                             margin="dense"
@@ -949,7 +972,10 @@ class InvoiceAddComponent extends React.Component {
                             name={`invoiceItems[${index}].price`}
                             type="number"
                             value={
-                              ((invoiceItem.quantity ?? 0) * (invoiceItem.pricePerQuantityUnit ?? 0)).toFixed(2)
+                              (
+                                (invoiceItem.quantity ?? 0)
+                                * (invoiceItem.pricePerQuantityUnit ?? 0)
+                              ).toFixed(2)
                             }
                           />
                         </TableCell>
@@ -975,7 +1001,11 @@ class InvoiceAddComponent extends React.Component {
                         </Button>
                       </TableCell>
                       <TableCell align="right" variant="head">
-                        Celkem {totalPrice.toFixed(2)} CZK
+                        Celkem
+                        {' '}
+                        {totalPrice.toFixed(2)}
+                        {' '}
+                        CZK
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -992,6 +1022,7 @@ class InvoiceAddComponent extends React.Component {
 InvoiceAddComponent.defaultProps = {
   clients: null,
   projects: null,
+  timeRecords: null,
   user: null,
 };
 
@@ -1011,6 +1042,8 @@ InvoiceAddComponent.propTypes = {
   getClientsIsPending: PropTypes.bool.isRequired,
   getProjects: PropTypes.func.isRequired,
   getProjectsIsPending: PropTypes.bool.isRequired,
+  getTimeRecordsFiltered: PropTypes.func.isRequired,
+  getTimeRecordsIsPending: PropTypes.bool.isRequired,
   getUser: PropTypes.func.isRequired,
   getUserIsPending: PropTypes.bool.isRequired,
   history: PropTypes.shape({
@@ -1021,6 +1054,7 @@ InvoiceAddComponent.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
   })),
+  timeRecords: PropTypes.arrayOf(PropTypes.shape({})),
   user: PropTypes.shape({
     bankAccount: PropTypes.string.isRequired,
     cidNumber: PropTypes.number.isRequired,

@@ -27,6 +27,7 @@
     },
     {
       "files": [
+        "src/electron.js",
         "src/electron/**"
       ],
       "rules": {

@@ -43,7 +43,7 @@ export const editUser = (data) => (dispatch, getState) => {
       actionTypes.API_USER_EDIT_FAILURE,
     ],
   })(dispatch, getState);
-}
+};
 
 export const editUserNotifications = (userNotificationsId, data) => createApiAction({
   body: data,

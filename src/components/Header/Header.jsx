@@ -60,7 +60,8 @@ export class Header extends React.Component {
         >
           <MenuItem onClick={() => {
             history.push(routes.account.path);
-          }}>
+          }}
+          >
             Můj účet
           </MenuItem>
           <MenuItem onClick={onLogout}>

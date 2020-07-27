@@ -6,10 +6,18 @@ export const showNotification = (message) => {
     return;
   }
 
-  const showNotificationImpl = () => new Notification('eOSVČ', {
-    body: message,
-    icon: '/images/favicon-96x96.png',
-  });
+  const showNotificationImpl = () => {
+    if (IS_ELECTRON) {
+      return new Notification('eOSVČ', {
+        body: message,
+      });
+    }
+
+    return new Notification('eOSVČ', {
+      body: message,
+      icon: '/images/favicon-96x96.png',
+    });
+  }
 
   if (Notification.permission === 'granted') {
     return showNotificationImpl();

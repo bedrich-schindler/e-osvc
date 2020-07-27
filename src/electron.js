@@ -2,7 +2,9 @@ import {
   app,
   BrowserWindow,
   ipcMain,
+  session,
 } from 'electron';
+import { API_URL } from '../config/config';
 import * as touchBarService from './electron/touchBarService';
 import * as trayService from './electron/trayService';
 
@@ -46,6 +48,12 @@ const createWindow = () => {
   });
 
   mainWindow.loadFile('./public/index.electron.html');
+
+  session.defaultSession.webRequest.onBeforeSendHeaders({ urls: [`${API_URL}/*`] }, (details, callback) => {
+    details.requestHeaders.Origin = 'file://';
+    details.requestHeaders['User-Agent'] = 'eOSVC Electron App';
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
 
   touchBarService.init(mainWindow, electronStore);
   trayService.init(mainWindow, electronStore);

@@ -1,3 +1,4 @@
+import path from 'path';
 import {
   Menu,
   Tray,
@@ -30,7 +31,9 @@ export const init = (mainWindow, electronStore) => {
     type: 'normal',
   };
 
-  electronStore.tray.instance = new Tray('./public/images/favicon-16x16.png');
+  electronStore.tray.instance = new Tray(
+    path.join(__dirname, '../../public/images/favicon-16x16.png'),
+  );
   electronStore.tray.instance.setContextMenu(Menu.buildFromTemplate([
     electronStore.tray.parts.title,
     electronStore.tray.parts.separator,

@@ -13,10 +13,22 @@ export const showNotification = (message) => {
       });
     }
 
-    return new Notification('eOSVČ', {
+    const notificationData = {
       body: message,
       icon: '/images/favicon-96x96.png',
-    });
+    };
+
+    try {
+      return navigator.serviceWorker.ready.then((registration) => {
+        if ('showNotification' in registration) {
+          return registration.showNotification('eOSVČ', notificationData);
+        }
+
+        return new Notification('eOSVČ', notificationData);
+      });
+    } catch (e) {
+      return new Notification('eOSVČ', notificationData);
+    }
   }
 
   if (Notification.permission === 'granted') {

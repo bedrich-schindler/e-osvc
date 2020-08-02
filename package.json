@@ -20,6 +20,9 @@
     "appId": "com.schindler.eosvc",
     "copyright": "Copyright © 2020, Bedřich Schindler",
     "productName": "eOSVC",
+    "publish": {
+      "provider": "github"
+    },
     "dmg": {
       "contents": [
         {
@@ -96,6 +99,7 @@
     "build": "webpack --config webpack.config.web.js --mode production",
     "build-electron": "webpack --config webpack.config.electron.js --mode production",
     "build-and-pack-electron": "npm run build-electron && electron-builder -mlw",
+    "build-pack-and-release-electron": "npm run build-electron && electron-builder -mlw --publish always",
     "eslint": "eslint --ext js,jsx src",
     "jest": "jest",
     "start": "webpack-dev-server --config webpack.config.web.js --mode development",
@@ -112,6 +116,7 @@
     "@react-pdf/renderer": "^1.6.9",
     "classnames": "^2.2.6",
     "date-fns": "^2.14.0",
+    "electron-updater": "^4.3.4",
     "esm": "^3.2.25",
     "history": "^4.10.1",
     "i18next": "^19.3.3",

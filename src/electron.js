@@ -6,6 +6,7 @@ import {
   session,
 } from 'electron';
 import { API_URL } from '../config/config';
+import * as autoUpdateService from './electron/autoUpdateService';
 import * as touchBarService from './electron/touchBarService';
 import * as trayService from './electron/trayService';
 
@@ -59,6 +60,7 @@ const createWindow = () => {
     });
   });
 
+  autoUpdateService.init();
   touchBarService.init(mainWindow, electronStore);
   trayService.init(mainWindow, electronStore);
 

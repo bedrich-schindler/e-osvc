@@ -10,7 +10,6 @@ const prepareInvoiceBody = (data) => ({
     cidNumber: data.clientInfo.cidNumber ? parseInt(data.clientInfo.cidNumber, 10) : null,
     original: `/clients/${data.clientInfo.original}`,
     postalCode: parseInt(data.clientInfo.postalCode, 10),
-    taxNumber: data.clientInfo.taxNumber ? parseInt(data.clientInfo.taxNumber, 10) : null,
   },
   invoiceDate: data.invoiceDate.toJSON(),
   invoiceDueDate: data.invoiceDueDate.toJSON(),
@@ -30,7 +29,6 @@ const prepareInvoiceBody = (data) => ({
     cidNumber: parseInt(data.userInfo.cidNumber, 10),
     original: `/users/${data.userInfo.original}`,
     postalCode: parseInt(data.userInfo.postalCode, 10),
-    taxNumber: data.userInfo.taxNumber ? parseInt(data.userInfo.taxNumber, 10) : null,
   },
 });
 

@@ -1,3 +1,5 @@
+import validator from 'validator';
+
 export const validateUser = (formData, initialFormValidity) => {
   const formValidity = { ...initialFormValidity };
 
@@ -46,12 +48,17 @@ export const validateUser = (formData, initialFormValidity) => {
     formValidity.isValid = false;
   }
 
+  if (formValidity.elements.cidNumber === null && formData.cidNumber > 2147483647) {
+    formValidity.elements.cidNumber = 'Toto pole musí být menší než 2147483647.';
+    formValidity.isValid = false;
+  }
+
   if (
     formValidity.elements.taxNumber === null
     && formData.taxNumber !== null
-    && formData.taxNumber < 1
+    && formData.taxNumber.length > 32
   ) {
-    formValidity.elements.taxNumber = 'Toto pole musí být minimálně 0.';
+    formValidity.elements.taxNumber = 'Toto pole musí být maximálně 32 znaků dlouhé.';
     formValidity.isValid = false;
   }
 
@@ -62,6 +69,11 @@ export const validateUser = (formData, initialFormValidity) => {
 
   if (formValidity.elements.email === null && formData.email.length > 64) {
     formValidity.elements.email = 'Toto pole musí být maximálně 64 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.email === null && !validator.isEmail(formData.email)) {
+    formValidity.elements.email = 'Toto pole musí být platná e-mailová adresa.';
     formValidity.isValid = false;
   }
 
@@ -80,6 +92,54 @@ export const validateUser = (formData, initialFormValidity) => {
     && formData.plainPassword !== null
     && formData.plainPassword.length < 8
   ) {
+    formValidity.elements.plainPassword = 'Toto pole musí být minimálně 8 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  return formValidity;
+};
+
+export const validateUserFirstStep = (formData, initialFormValidity) => {
+  const formValidity = { ...initialFormValidity };
+
+  ['email', 'firstName', 'lastName', 'username', 'plainPassword'].forEach((element) => {
+    if (formData[element] === null || formData[element] === '') {
+      formValidity.elements[element] = 'Toto pole je povinné.';
+      formValidity.isValid = false;
+    }
+  });
+
+  if (formValidity.elements.firstName === null && formData.firstName.length > 64) {
+    formValidity.elements.firstName = 'Toto pole musí být maximálně 64 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.lastName === null && formData.lastName.length > 64) {
+    formValidity.elements.lastName = 'Toto pole musí být maximálně 64 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.email === null && formData.email.length > 64) {
+    formValidity.elements.email = 'Toto pole musí být maximálně 64 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.email === null && !validator.isEmail(formData.email)) {
+    formValidity.elements.email = 'Toto pole musí být platná e-mailová adresa.';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.username === null && formData.username.length < 2) {
+    formValidity.elements.username = 'Toto pole musí být minimálně 2 znaky dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.username === null && formData.username.length > 64) {
+    formValidity.elements.username = 'Toto pole musí být maximálně 66 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (formValidity.elements.plainPassword === null && formData.plainPassword.length < 8) {
     formValidity.elements.plainPassword = 'Toto pole musí být minimálně 8 znaků dlouhé';
     formValidity.isValid = false;
   }

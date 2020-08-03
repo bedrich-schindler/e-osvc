@@ -1,4 +1,3 @@
-import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -14,22 +13,25 @@ import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import styles from '../../styles.scss';
+import { cloneDeep } from 'lodash';
+import { validateProject } from '../../../../resources/project/validator';
+import { updateData } from '../../../../services/dataService';
+
+const initialFormData = {
+  client: null,
+  name: null,
+};
 
 class AddProjectDialog extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      formData: {
-        client: '',
-        name: '',
+      formData: cloneDeep(initialFormData),
+      formValidity: {
+        elements: cloneDeep(initialFormData),
+        isValid: true,
       },
-      formErrors: {
-        client: null,
-        name: null,
-      },
-      isFailed: false,
     };
 
     this.changeHandler = this.changeHandler.bind(this);
@@ -42,7 +44,7 @@ class AddProjectDialog extends React.Component {
     this.setState((prevState) => ({
       formData: {
         ...prevState.formData,
-        client: clients.length > 0 ? clients[0].id : '',
+        client: clients.length > 0 ? clients[0].id : null,
       },
     }));
   }
@@ -53,6 +55,8 @@ class AddProjectDialog extends React.Component {
 
     if (eventTarget.name === 'client') {
       value = parseInt(value, 10);
+    } else {
+      value = value !== '' ? value : null;
     }
 
     this.setState((prevState) => ({
@@ -70,13 +74,16 @@ class AddProjectDialog extends React.Component {
     } = this.props;
     const { formData } = this.state;
 
-    this.setState({
-      formErrors: {
-        client: null,
-        name: null,
-      },
-      isFailed: false,
+    const formValidity = validateProject(formData, {
+      elements: cloneDeep(initialFormData),
+      isValid: true,
     });
+
+    this.setState({ formValidity });
+
+    if (!formValidity.isValid) {
+      return;
+    }
 
     const response = await addProject({
       ...formData,
@@ -84,23 +91,19 @@ class AddProjectDialog extends React.Component {
     });
 
     if (response.error) {
-      const newFormErrors = {};
+      const { violations } = response.payload.response;
 
-      Object.keys(formData).forEach((attr) => {
-        const { violations } = response.payload.response;
-        const foundViolation = violations.find((violation) => violation.propertyPath === attr);
+      if (violations) {
+        violations.forEach((violation) => {
+          formValidity.elements = updateData(
+            formValidity.elements,
+            violation.propertyPath,
+            violation.message,
+          );
+        });
+      }
 
-        if (foundViolation) {
-          newFormErrors[attr] = foundViolation.message;
-        } else {
-          newFormErrors[attr] = null;
-        }
-      });
-
-      this.setState({
-        formErrors: newFormErrors,
-        isFailed: true,
-      });
+      this.setState({ formValidity });
 
       return;
     }
@@ -117,8 +120,7 @@ class AddProjectDialog extends React.Component {
     } = this.props;
     const {
       formData,
-      formErrors,
-      isFailed,
+      formValidity,
     } = this.state;
 
     return (
@@ -130,20 +132,11 @@ class AddProjectDialog extends React.Component {
       >
         <DialogTitle>Přidat projekt</DialogTitle>
         <DialogContent>
-          {isFailed && (
-            <Alert
-              className={styles.alert}
-              severity="error"
-              variant="filled"
-            >
-              Přidání projektu se nezdařilo.
-            </Alert>
-          )}
           <TextField
             autoFocus
-            error={Boolean(formErrors.name)}
+            error={Boolean(formValidity.elements.name)}
             fullWidth
-            helperText={formErrors.name}
+            helperText={formValidity.elements.name}
             id="name"
             label="Jméno"
             margin="dense"
@@ -151,12 +144,12 @@ class AddProjectDialog extends React.Component {
             onChange={this.changeHandler}
             required
             type="text"
-            value={formData.name}
+            value={formData.name ?? ''}
           />
           <Box mt={2}>
             <FormControl
               className="mt-5"
-              error={Boolean(formErrors.client)}
+              error={Boolean(formValidity.elements.client)}
               fullWidth
               required
             >
@@ -170,7 +163,7 @@ class AddProjectDialog extends React.Component {
                 name="client"
                 onChange={this.changeHandler}
                 required
-                value={formData.client}
+                value={formData.client ?? ''}
               >
                 {clients.map((client) => (
                   <MenuItem
@@ -181,8 +174,8 @@ class AddProjectDialog extends React.Component {
                   </MenuItem>
                 ))}
               </Select>
-              {Boolean(formErrors.client) && (
-                <FormHelperText>{formErrors.client}</FormHelperText>
+              {Boolean(formValidity.elements.client) && (
+                <FormHelperText>{formValidity.elements.client}</FormHelperText>
               )}
             </FormControl>
           </Box>
@@ -196,11 +189,7 @@ class AddProjectDialog extends React.Component {
           </Button>
           <Button
             color="primary"
-            disabled={
-              addProjectIsPending
-              || formData.name.length === 0
-              || !isOnline
-            }
+            disabled={addProjectIsPending || !isOnline}
             onClick={this.saveHandler}
             startIcon={addProjectIsPending ? <CircularProgress size={14} /> : null}
           >

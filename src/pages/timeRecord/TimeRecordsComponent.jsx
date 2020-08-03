@@ -70,7 +70,7 @@ const TimeRecordsComponent = ({
   useEffect(() => {
     getProjects();
     getTimeRecordsFiltered(filterData);
-  }, [filterData, getProjects, getTimeRecordsFiltered]);
+  }, [getProjects, getTimeRecordsFiltered]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const changeHandler = (e) => {
     const eventTarget = e.target;

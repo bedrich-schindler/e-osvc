@@ -38,8 +38,52 @@ export const validateUser = (formData, initialFormValidity) => {
       });
     });
 
+  if (
+    formValidity.elements.invoiceDate === null
+    && formData.invoiceDate instanceof Date
+    && Number.isNaN(formData.invoiceDate.valueOf())
+  ) {
+    formValidity.elements.invoiceDate = 'Toto pole neobsahuje platný datum.';
+    formValidity.isValid = false;
+  }
+
+  if (
+    formValidity.elements.invoiceDueDate === null
+    && formData.invoiceDueDate instanceof Date
+    && Number.isNaN(formData.invoiceDueDate.valueOf())
+  ) {
+    formValidity.elements.invoiceDueDate = 'Toto pole neobsahuje platný datum.';
+    formValidity.isValid = false;
+  }
+
+  if (
+    formValidity.elements.invoicePaymentDate === null
+    && formData.invoicePaymentDate !== null
+    && formData.invoicePaymentDate instanceof Date
+    && Number.isNaN(formData.invoicePaymentDate.valueOf())
+  ) {
+    formValidity.elements.invoicePaymentDate = 'Toto pole neobsahuje platný datum.';
+    formValidity.isValid = false;
+  }
+
   if (formValidity.elements.invoiceIdentifier === null && formData.invoiceIdentifier.length > 32) {
     formValidity.elements.invoiceIdentifier = 'Toto pole musí být maximálně 32 znaků dlouhé';
+    formValidity.isValid = false;
+  }
+
+  if (
+    formValidity.elements.paymentVariableSymbol === null
+    && formData.paymentVariableSymbol < 1
+  ) {
+    formValidity.elements.paymentVariableSymbol = 'Toto pole musí být větší než 0.';
+    formValidity.isValid = false;
+  }
+
+  if (
+    formValidity.elements.paymentVariableSymbol === null
+    && formData.paymentVariableSymbol > 2147483647
+  ) {
+    formValidity.elements.paymentVariableSymbol = 'Toto pole musí být menší než 2147483647.';
     formValidity.isValid = false;
   }
 
@@ -60,7 +104,7 @@ export const validateUser = (formData, initialFormValidity) => {
 
   if (
     formValidity.elements.clientInfo.postalCode === null
-    && formData.clientInfo.postalCode <= 0
+    && formData.clientInfo.postalCode < 1
   ) {
     formValidity.elements.clientInfo.postalCode = 'Toto pole musí být větší než 0.';
     formValidity.isValid = false;
@@ -84,17 +128,26 @@ export const validateUser = (formData, initialFormValidity) => {
   }
 
   if (
+    formValidity.elements.clientInfo.cidNumber === null
+    && formData.clientInfo.cidNumber !== null
+    && formData.clientInfo.cidNumber > 2147483647
+  ) {
+    formValidity.elements.clientInfo.cidNumber = 'Toto pole musí být menší než 2147483647.';
+    formValidity.isValid = false;
+  }
+
+  if (
     formValidity.elements.clientInfo.taxNumber === null
     && formData.clientInfo.taxNumber !== null
-    && formData.clientInfo.taxNumber <= 0
+    && formData.clientInfo.taxNumber.length > 32
   ) {
-    formValidity.elements.clientInfo.taxNumber = 'Toto pole musí být větší než 0.';
+    formValidity.elements.clientInfo.taxNumber = 'Toto pole musí být maximálně 32 znaků dlouhé';
     formValidity.isValid = false;
   }
 
   if (
     formValidity.elements.userInfo.firstName === null
-    && formData.userInfo.firstName.length > 32
+    && formData.userInfo.firstName.length > 64
   ) {
     formValidity.elements.userInfo.firstName = 'Toto pole musí být maximálně 64 znaků dlouhé';
     formValidity.isValid = false;
@@ -102,7 +155,7 @@ export const validateUser = (formData, initialFormValidity) => {
 
   if (
     formValidity.elements.userInfo.lastName === null
-    && formData.userInfo.lastName.length > 32
+    && formData.userInfo.lastName.length > 64
   ) {
     formValidity.elements.userInfo.lastName = 'Toto pole musí být maximálně 64 znaků dlouhé';
     formValidity.isValid = false;
@@ -136,18 +189,26 @@ export const validateUser = (formData, initialFormValidity) => {
 
   if (
     formValidity.elements.userInfo.cidNumber === null
-    && formData.userInfo.cidNumber <= 0
+    && formData.userInfo.cidNumber < 1
   ) {
     formValidity.elements.userInfo.cidNumber = 'Toto pole musí být větší než 0.';
     formValidity.isValid = false;
   }
 
   if (
+    formValidity.elements.userInfo.cidNumber === null
+    && formData.userInfo.cidNumber > 2147483647
+  ) {
+    formValidity.elements.userInfo.cidNumber = 'Toto pole musí být menší než 2147483647.';
+    formValidity.isValid = false;
+  }
+
+  if (
     formValidity.elements.userInfo.taxNumber === null
     && formData.userInfo.taxNumber !== null
-    && formData.userInfo.taxNumber <= 0
+    && formData.userInfo.taxNumber.length > 32
   ) {
-    formValidity.elements.userInfo.taxNumber = 'Toto pole musí být větší než 0.';
+    formValidity.elements.userInfo.taxNumber = 'Toto pole musí být maximálně 32 znaků dlouhé';
     formValidity.isValid = false;
   }
 
@@ -169,10 +230,26 @@ export const validateUser = (formData, initialFormValidity) => {
     }
 
     if (
+      formValidity.elements.invoiceItems[rowIndex].quantity === null
+      && rowData.quantity > 2147483647
+    ) {
+      formValidity.elements.invoiceItems[rowIndex].quantity = 'Toto pole musí být menší než 2147483647.';
+      formValidity.isValid = false;
+    }
+
+    if (
       formValidity.elements.invoiceItems[rowIndex].pricePerQuantityUnit === null
       && rowData.pricePerQuantityUnit <= 0
     ) {
       formValidity.elements.invoiceItems[rowIndex].pricePerQuantityUnit = 'Toto pole musí být větší než 0.';
+      formValidity.isValid = false;
+    }
+
+    if (
+      formValidity.elements.invoiceItems[rowIndex].pricePerQuantityUnit === null
+      && rowData.pricePerQuantityUnit > 2147483647
+    ) {
+      formValidity.elements.invoiceItems[rowIndex].pricePerQuantityUnit = 'Toto pole musí být menší než 2147483647.';
       formValidity.isValid = false;
     }
 

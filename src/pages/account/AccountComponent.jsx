@@ -297,7 +297,6 @@ class AccountComponent extends React.Component {
                         margin="dense"
                         name="taxNumber"
                         onChange={this.changeHandler}
-                        type="number"
                         value={formData.taxNumber ?? ''}
                       />
                       <TextField
@@ -341,7 +340,7 @@ AccountComponent.propTypes = {
     lastName: PropTypes.string.isRequired,
     postalCode: PropTypes.number.isRequired,
     street: PropTypes.string.isRequired,
-    taxNumber: PropTypes.number,
+    taxNumber: PropTypes.string,
     username: PropTypes.string.isRequired,
   }),
 };

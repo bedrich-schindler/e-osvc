@@ -1,4 +1,3 @@
-import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,35 +7,32 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import styles from '../../styles.scss';
+import { cloneDeep } from 'lodash';
+import { validateClient } from '../../../../resources/client/validator';
+import { updateData } from '../../../../services/dataService';
+
+const initialFormData = {
+  cidNumber: null,
+  city: null,
+  contactEmail: null,
+  contactPhoneNumber: null,
+  id: null,
+  name: null,
+  postalCode: null,
+  street: null,
+  taxNumber: null,
+};
 
 class EditClientDialog extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      formData: {
-        cidNumber: '',
-        city: '',
-        contactEmail: '',
-        contactPhoneNumber: '',
-        id: null,
-        name: '',
-        postalCode: '',
-        street: '',
-        taxNumber: '',
+      formData: cloneDeep(initialFormData),
+      formValidity: {
+        elements: cloneDeep(initialFormData),
+        isValid: true,
       },
-      formErrors: {
-        cidNumber: null,
-        city: null,
-        contactEmail: null,
-        contactPhoneNumber: null,
-        name: null,
-        postalCode: null,
-        street: null,
-        taxNumber: null,
-      },
-      isFailed: false,
     };
 
     this.changeHandler = this.changeHandler.bind(this);
@@ -48,15 +44,15 @@ class EditClientDialog extends React.Component {
 
     this.setState({
       formData: {
-        cidNumber: client.cidNumber ? client.cidNumber.toString() : '',
+        cidNumber: client.cidNumber ? client.cidNumber.toString() : null,
         city: client.city,
-        contactEmail: client.contactEmail || '',
-        contactPhoneNumber: client.contactPhoneNumber || '',
+        contactEmail: client.contactEmail ?? null,
+        contactPhoneNumber: client.contactPhoneNumber ?? null,
         id: client.id,
         name: client.name,
-        postalCode: client.postalCode,
+        postalCode: client.postalCode.toString(),
         street: client.street,
-        taxNumber: client.taxNumber ? client.taxNumber.toString() : '',
+        taxNumber: client.taxNumber ?? null,
       },
     });
   }
@@ -67,7 +63,7 @@ class EditClientDialog extends React.Component {
     this.setState((prevState) => ({
       formData: {
         ...prevState.formData,
-        [eventTarget.id]: eventTarget.value,
+        [eventTarget.name]: eventTarget.value !== '' ? eventTarget.value : null,
       },
     }));
   }
@@ -79,40 +75,33 @@ class EditClientDialog extends React.Component {
     } = this.props;
     const { formData } = this.state;
 
-    this.setState({
-      formErrors: {
-        cidNumber: null,
-        city: null,
-        contactEmail: null,
-        contactPhoneNumber: null,
-        name: null,
-        postalCode: null,
-        street: null,
-        taxNumber: null,
-      },
-      isFailed: false,
+    const formValidity = validateClient(formData, {
+      elements: cloneDeep(initialFormData),
+      isValid: true,
     });
+
+    this.setState({ formValidity });
+
+    if (!formValidity.isValid) {
+      return;
+    }
 
     const response = await editClient(formData.id, formData);
 
     if (response.error) {
-      const newFormErrors = {};
+      const { violations } = response.payload.response;
 
-      Object.keys(formData).forEach((attr) => {
-        const { violations } = response.payload.response;
-        const foundViolation = violations.find((violation) => violation.propertyPath === attr);
+      if (violations) {
+        violations.forEach((violation) => {
+          formValidity.elements = updateData(
+            formValidity.elements,
+            violation.propertyPath,
+            violation.message,
+          );
+        });
+      }
 
-        if (foundViolation) {
-          newFormErrors[attr] = foundViolation.message;
-        } else {
-          newFormErrors[attr] = null;
-        }
-      });
-
-      this.setState({
-        formErrors: newFormErrors,
-        isFailed: true,
-      });
+      this.setState({ formValidity });
 
       return;
     }
@@ -128,8 +117,7 @@ class EditClientDialog extends React.Component {
     } = this.props;
     const {
       formData,
-      formErrors,
-      isFailed,
+      formValidity,
     } = this.state;
 
     return (
@@ -141,20 +129,11 @@ class EditClientDialog extends React.Component {
       >
         <DialogTitle>Upravit klienta</DialogTitle>
         <DialogContent>
-          {isFailed && (
-            <Alert
-              className={styles.alert}
-              severity="error"
-              variant="filled"
-            >
-              Úprava klienta se nezdařila.
-            </Alert>
-          )}
           <TextField
             autoFocus
-            error={Boolean(formErrors.name)}
+            error={Boolean(formValidity.elements.name)}
             fullWidth
-            helperText={formErrors.name}
+            helperText={formValidity.elements.name}
             id="name"
             label="Jméno"
             margin="dense"
@@ -162,36 +141,36 @@ class EditClientDialog extends React.Component {
             onChange={this.changeHandler}
             required
             type="text"
-            value={formData.name}
+            value={formData.name ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.street)}
+            error={Boolean(formValidity.elements.street)}
             fullWidth
-            helperText={formErrors.street}
+            helperText={formValidity.elements.street}
             id="street"
             label="Ulice"
             margin="dense"
             name="street"
             onChange={this.changeHandler}
             required
-            value={formData.street}
+            value={formData.street ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.city)}
+            error={Boolean(formValidity.elements.city)}
             fullWidth
-            helperText={formErrors.city}
+            helperText={formValidity.elements.city}
             id="city"
             label="Město"
             margin="dense"
             name="city"
             onChange={this.changeHandler}
             required
-            value={formData.city}
+            value={formData.city ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.postalCode)}
+            error={Boolean(formValidity.elements.postalCode)}
             fullWidth
-            helperText={formErrors.postalCode}
+            helperText={formValidity.elements.postalCode}
             id="postalCode"
             label="PSČ"
             margin="dense"
@@ -199,57 +178,53 @@ class EditClientDialog extends React.Component {
             onChange={this.changeHandler}
             required
             type="number"
-            value={formData.postalCode}
+            value={formData.postalCode ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.cidNumber)}
+            error={Boolean(formValidity.elements.cidNumber)}
             fullWidth
-            helperText={formErrors.cidNumber}
+            helperText={formValidity.elements.cidNumber}
             id="cidNumber"
             label="IČ"
             margin="dense"
             name="cidNumber"
             onChange={this.changeHandler}
-            required
             type="number"
-            value={formData.cidNumber}
+            value={formData.cidNumber ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.taxNumber)}
+            error={Boolean(formValidity.elements.taxNumber)}
             fullWidth
-            helperText={formErrors.taxNumber}
+            helperText={formValidity.elements.taxNumber}
             id="taxNumber"
             label="DIČ"
             margin="dense"
             name="taxNumber"
             onChange={this.changeHandler}
-            type="number"
-            value={formData.taxNumber}
+            value={formData.taxNumber ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.contactEmail)}
+            error={Boolean(formValidity.elements.contactEmail)}
             fullWidth
-            helperText={formErrors.contactEmail}
+            helperText={formValidity.elements.contactEmail}
             id="contactEmail"
             label="Kontaktní e-mail"
             margin="dense"
             name="contactEmail"
             onChange={this.changeHandler}
-            required
             type="email"
-            value={formData.contactEmail}
+            value={formData.contactEmail ?? ''}
           />
           <TextField
-            error={Boolean(formErrors.contactPhoneNumber)}
+            error={Boolean(formValidity.elements.contactPhoneNumber)}
             fullWidth
-            helperText={formErrors.contactPhoneNumber}
+            helperText={formValidity.elements.contactPhoneNumber}
             id="contactPhoneNumber"
             label="Kontaktní telefon"
             margin="dense"
             name="contactPhoneNumber"
             onChange={this.changeHandler}
-            required
-            value={formData.contactPhoneNumber}
+            value={formData.contactPhoneNumber ?? ''}
           />
         </DialogContent>
         <DialogActions>
@@ -261,11 +236,7 @@ class EditClientDialog extends React.Component {
           </Button>
           <Button
             color="primary"
-            disabled={
-              editClientIsPending
-              || formData.name.length === 0
-              || !isOnline
-            }
+            disabled={editClientIsPending || !isOnline}
             onClick={this.saveHandler}
             startIcon={editClientIsPending ? <CircularProgress size={14} /> : null}
           >
@@ -287,7 +258,7 @@ EditClientDialog.propTypes = {
     name: PropTypes.string.isRequired,
     postalCode: PropTypes.number.isRequired,
     street: PropTypes.string.isRequired,
-    taxNumber: PropTypes.number,
+    taxNumber: PropTypes.string,
   }).isRequired,
   editClient: PropTypes.func.isRequired,
   editClientIsPending: PropTypes.bool.isRequired,

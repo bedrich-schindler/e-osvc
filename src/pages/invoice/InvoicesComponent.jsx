@@ -62,7 +62,7 @@ const InvoicesComponent = ({
     getClients();
     getInvoicesFiltered(filterData);
     getProjects();
-  }, [filterData, getClients, getInvoicesFiltered, getProjects]);
+  }, [getClients, getInvoicesFiltered, getProjects]); // eslint-disable-line
 
   const changeHandler = (e) => {
     const eventTarget = e.target;

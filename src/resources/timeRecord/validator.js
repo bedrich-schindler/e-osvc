@@ -14,6 +14,33 @@ export const validateTimeRecord = (formData, initialFormValidity) => {
   }
 
   if (
+    formValidity.elements.endDateTime === null
+    && formData.endDateTime instanceof Date
+    && Number.isNaN(formData.endDateTime.valueOf())
+  ) {
+    formValidity.elements.endDateTime = 'Toto pole neobsahuje platný datum.';
+    formValidity.isValid = false;
+  }
+
+  if (
+    formValidity.elements.startDateTime === null
+    && formData.startDateTime instanceof Date
+    && Number.isNaN(formData.startDateTime.valueOf())
+  ) {
+    formValidity.elements.startDateTime = 'Toto pole neobsahuje platný datum.';
+    formValidity.isValid = false;
+  }
+
+  if (
+    formValidity.elements.startDateTime === null
+    && formValidity.elements.endDateTime === null
+    && formData.startDateTime.valueOf() > formData.endDateTime.valueOf()
+  ) {
+    formValidity.elements.endDateTime = 'Toto pole musí být větší než datum začatku.';
+    formValidity.isValid = false;
+  }
+
+  if (
     formValidity.elements.note === null
     && formData.note !== null
     && formData.note.length > 256

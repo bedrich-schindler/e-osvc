@@ -12,6 +12,10 @@ import StepContent from '@material-ui/core/StepContent';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Link as RouterLink } from 'react-router-dom';
+import {
+  validateUser,
+  validateUserFirstStep,
+} from '../../resources/user/validator';
 import routes from '../../routes';
 import styles from './styles.scss';
 
@@ -51,9 +55,12 @@ class RegistrationComponent extends React.Component {
         taxNumber: null,
         username: null,
       },
+      isRegistrationFailed: false,
+      isRegistrationSuccessful: false,
     };
 
     this.changeHandler = this.changeHandler.bind(this);
+    this.continueHandler = this.continueHandler.bind(this);
     this.registerHandler = this.registerHandler.bind(this);
   }
 
@@ -111,9 +118,9 @@ class RegistrationComponent extends React.Component {
         />
         <TextField
           autoComplete="username"
-          error={Boolean(formErrors.plainPassword)}
+          error={Boolean(formErrors.username)}
           fullWidth
-          helperText={formErrors.plainPassword}
+          helperText={formErrors.username}
           id="username"
           label="Uživatelské jméno"
           margin="normal"
@@ -217,7 +224,6 @@ class RegistrationComponent extends React.Component {
           margin="normal"
           name="taxNumber"
           onChange={this.changeHandler}
-          type="number"
           value={formData.taxNumber}
           variant="outlined"
         />
@@ -239,22 +245,13 @@ class RegistrationComponent extends React.Component {
   }
 
   getFirstStepAction() {
-    const { formData } = this.state;
-
     return (
       <>
         <Button
           className={styles.continueButton}
           color="primary"
-          disabled={
-            formData.firstName.length === 0
-            || formData.lastName.length === 0
-            || formData.email.length === 0
-            || formData.username.length === 0
-            || formData.plainPassword.length === 0
-          }
           fullWidth
-          onClick={() => this.setState({ activeStepIndex: 1 })}
+          onClick={this.continueHandler}
           type="submit"
           variant="contained"
         >
@@ -281,22 +278,13 @@ class RegistrationComponent extends React.Component {
       addUserIsPending,
       isOnline,
     } = this.props;
-    const { formData } = this.state;
 
     return (
       <>
         <Button
           className={styles.continueButton}
           color="primary"
-          disabled={
-            addUserIsPending
-            || formData.bankAccount.length === 0
-            || formData.cidNumber.length === 0
-            || formData.city.length === 0
-            || formData.postalCode.length === 0
-            || formData.street.length === 0
-            || !isOnline
-          }
+          disabled={!isOnline}
           fullWidth
           onClick={this.registerHandler}
           startIcon={addUserIsPending ? <CircularProgress size={14} /> : null}
@@ -390,27 +378,78 @@ class RegistrationComponent extends React.Component {
     }));
   }
 
+  continueHandler() {
+    const { formData } = this.state;
+
+    const formValidity = validateUserFirstStep(
+      formData,
+      {
+        elements: {
+          email: null,
+          firstName: null,
+          lastName: null,
+          plainPassword: null,
+          username: null,
+        },
+        isValid: true,
+      },
+    );
+
+    this.setState((prevState) => ({
+      formErrors: {
+        ...prevState.formErrors,
+        ...formValidity.elements,
+      },
+    }));
+
+    if (!formValidity.isValid) {
+      return;
+    }
+
+    this.setState({ activeStepIndex: 1 });
+  }
+
   async registerHandler() {
     const { addUser } = this.props;
     const { formData } = this.state;
 
-    this.setState({
-      formErrors: {
-        bankAccount: null,
-        cidNumber: null,
-        city: null,
-        email: null,
-        firstName: null,
-        lastName: null,
-        plainPassword: null,
-        postalCode: null,
-        street: null,
-        taxNumber: null,
-        username: null,
+    const formValidity = validateUser(
+      formData,
+      {
+        elements: {
+          bankAccount: null,
+          cidNumber: null,
+          city: null,
+          email: null,
+          firstName: null,
+          lastName: null,
+          plainPassword: null,
+          postalCode: null,
+          street: null,
+          taxNumber: null,
+          username: null,
+        },
+        isValid: true,
       },
-      isRegistrationFailed: false,
-      isRegistrationSuccessful: false,
-    });
+    );
+
+    this.setState((prevState) => ({
+      formErrors: {
+        ...prevState.formErrors,
+        ...formValidity.elements,
+      },
+    }));
+
+    if (!formValidity.isValid) {
+      this.setState((prevState) => ({
+        formErrors: {
+          ...prevState.formErrors,
+          ...formValidity.elements,
+        },
+      }));
+
+      return;
+    }
 
     const response = await addUser(formData);
 

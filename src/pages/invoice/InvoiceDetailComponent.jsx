@@ -360,7 +360,7 @@ InvoiceDetailComponent.propTypes = {
       name: PropTypes.string.isRequired,
       postalCode: PropTypes.number.isRequired,
       street: PropTypes.string.isRequired,
-      taxNumber: PropTypes.number,
+      taxNumber: PropTypes.string,
     }).isRequired,
     id: PropTypes.number.isRequired,
     invoiceDate: PropTypes.object.isRequired,

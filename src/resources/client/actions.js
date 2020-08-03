@@ -3,13 +3,16 @@ import { createApiAction } from '../../services/apiService';
 import { selectToken } from '../auth';
 import * as actionTypes from './actionTypes';
 
+const prepareClientBody = (data) => ({
+  ...data,
+  cidNumber: (data.cidNumber && data.cidNumber.length > 0)
+    ? parseInt(data.cidNumber, 10)
+    : null,
+  postalCode: parseInt(data.postalCode, 10),
+});
+
 export const addClient = (data) => createApiAction({
-  body: {
-    ...data,
-    cidNumber: data.cidNumber.length > 0 ? parseInt(data.cidNumber, 10) : null,
-    postalCode: parseInt(data.postalCode, 10),
-    taxNumber: data.taxNumber.length > 0 ? parseInt(data.taxNumber, 10) : null,
-  },
+  body: prepareClientBody(data),
   endpoint: '/clients',
   method: 'POST',
   notificationMessages: {
@@ -38,12 +41,7 @@ export const deleteClient = (clientId) => createApiAction({
 });
 
 export const editClient = (clientId, data) => createApiAction({
-  body: {
-    ...data,
-    cidNumber: data.cidNumber.length > 0 ? parseInt(data.cidNumber, 10) : null,
-    postalCode: parseInt(data.postalCode, 10),
-    taxNumber: data.taxNumber.length > 0 ? parseInt(data.taxNumber, 10) : null,
-  },
+  body: prepareClientBody(data),
   endpoint: `/clients/${clientId}`,
   method: 'PUT',
   notificationMessages: {

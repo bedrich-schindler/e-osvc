@@ -238,7 +238,11 @@ class InvoiceAddComponent extends React.Component {
     } = eventTarget;
 
     this.setState((prevState) => ({
-      formData: updateData(prevState.formData, name, value),
+      formData: updateData(
+        prevState.formData,
+        name,
+        value !== '' ? value : null,
+      ),
     }));
   }
 
@@ -534,7 +538,6 @@ class InvoiceAddComponent extends React.Component {
                     margin="dense"
                     name="userInfo.taxNumber"
                     onChange={this.changeHandler}
-                    type="number"
                     value={formData.userInfo.taxNumber ?? ''}
                   />
                 </Box>
@@ -650,7 +653,6 @@ class InvoiceAddComponent extends React.Component {
                     margin="dense"
                     name="clientInfo.taxNumber"
                     onChange={this.changeHandler}
-                    type="number"
                     value={formData.clientInfo.taxNumber ?? ''}
                   />
                 </Box>
@@ -1036,7 +1038,7 @@ InvoiceAddComponent.propTypes = {
     name: PropTypes.string.isRequired,
     postalCode: PropTypes.number.isRequired,
     street: PropTypes.string.isRequired,
-    taxNumber: PropTypes.number,
+    taxNumber: PropTypes.string,
   })),
   getClients: PropTypes.func.isRequired,
   getClientsIsPending: PropTypes.bool.isRequired,
@@ -1064,7 +1066,7 @@ InvoiceAddComponent.propTypes = {
     lastName: PropTypes.string.isRequired,
     postalCode: PropTypes.number.isRequired,
     street: PropTypes.string.isRequired,
-    taxNumber: PropTypes.number,
+    taxNumber: PropTypes.string,
   }),
 };
 

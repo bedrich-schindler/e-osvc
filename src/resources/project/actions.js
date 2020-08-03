@@ -3,11 +3,13 @@ import { createApiAction } from '../../services/apiService';
 import { selectToken } from '../auth';
 import * as actionTypes from './actionTypes';
 
+const prepareProjectBody = (data) => ({
+  ...data,
+  client: `/clients/${data.client.id}`,
+});
+
 export const addProject = (data) => createApiAction({
-  body: {
-    ...data,
-    client: `/clients/${data.client.id}`,
-  },
+  body: prepareProjectBody(data),
   endpoint: '/projects',
   method: 'POST',
   notificationMessages: {
@@ -36,10 +38,7 @@ export const deleteProject = (projectId) => createApiAction({
 });
 
 export const editProject = (projectId, data) => createApiAction({
-  body: {
-    ...data,
-    client: `/clients/${data.client.id}`,
-  },
+  body: prepareProjectBody(data),
   endpoint: `/projects/${projectId}`,
   method: 'PUT',
   notificationMessages: {

@@ -263,7 +263,11 @@ class InvoiceEditComponent extends React.Component {
     } = eventTarget;
 
     this.setState((prevState) => ({
-      formData: updateData(prevState.formData, name, value),
+      formData: updateData(
+        prevState.formData,
+        name,
+        value !== '' ? value : null,
+      ),
     }));
   }
 
@@ -591,7 +595,6 @@ class InvoiceEditComponent extends React.Component {
                     margin="dense"
                     name="userInfo.taxNumber"
                     onChange={this.changeHandler}
-                    type="number"
                     value={formData.userInfo.taxNumber ?? ''}
                   />
                 </Box>
@@ -707,7 +710,6 @@ class InvoiceEditComponent extends React.Component {
                     margin="dense"
                     name="clientInfo.taxNumber"
                     onChange={this.changeHandler}
-                    type="number"
                     value={formData.clientInfo.taxNumber ?? ''}
                   />
                 </Box>
@@ -1108,7 +1110,7 @@ InvoiceEditComponent.propTypes = {
     name: PropTypes.string.isRequired,
     postalCode: PropTypes.number.isRequired,
     street: PropTypes.string.isRequired,
-    taxNumber: PropTypes.number,
+    taxNumber: PropTypes.string,
   })),
   deleteInvoice: PropTypes.func.isRequired,
   deleteInvoiceIsPending: PropTypes.bool.isRequired,
@@ -1134,7 +1136,7 @@ InvoiceEditComponent.propTypes = {
       name: PropTypes.string.isRequired,
       postalCode: PropTypes.number.isRequired,
       street: PropTypes.string.isRequired,
-      taxNumber: PropTypes.number,
+      taxNumber: PropTypes.string,
     }).isRequired,
     id: PropTypes.number.isRequired,
     invoiceDate: PropTypes.object.isRequired,
@@ -1162,7 +1164,7 @@ InvoiceEditComponent.propTypes = {
       lastName: PropTypes.string.isRequired,
       postalCode: PropTypes.number.isRequired,
       street: PropTypes.string.isRequired,
-      taxNumber: PropTypes.number,
+      taxNumber: PropTypes.string,
     }).isRequired,
   }),
   isOnline: PropTypes.bool.isRequired,
@@ -1185,7 +1187,7 @@ InvoiceEditComponent.propTypes = {
     lastName: PropTypes.string.isRequired,
     postalCode: PropTypes.number.isRequired,
     street: PropTypes.string.isRequired,
-    taxNumber: PropTypes.number,
+    taxNumber: PropTypes.string,
   }),
 };
 

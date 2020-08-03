@@ -8,11 +8,13 @@ import { Provider } from 'react-redux';
 import {
   HashRouter,
   Router,
+  Route,
   Switch,
 } from 'react-router-dom';
 import teal from '@material-ui/core/colors/teal';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { NotFoundPage } from './pages/notFound';
 import {
   AuthorizedRoute,
   UnauthorizedRoute,
@@ -89,6 +91,7 @@ export default (store, history) => {
                     />
                   );
                 })}
+                <Route component={NotFoundPage} />
               </Switch>
             </StylesProvider>
           </MuiPickersUtilsProvider>

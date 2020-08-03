@@ -87,7 +87,7 @@ const DashboardComponent = (props) => {
                           </TableCell>
                           <TableCell>
                             {(
-                              statisticsItem.unpaidInvoicesPrice
+                              statisticsItem.paidInvoicesPrice
                               + statisticsItem.unpaidInvoicesPrice
                             ).toFixed(2)}
                             {' '}

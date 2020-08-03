@@ -2,7 +2,7 @@
   "private": true,
   "name": "e-osvc",
   "description": "Application for management of self-employeed people",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "author": {
     "email": "bedrich.schindler@gmail.com",

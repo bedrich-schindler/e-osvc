@@ -18,13 +18,13 @@ export default (theme) => ({
   },
   drawer: {
     flexShrink: 0,
+    left: 0,
     position: 'fixed',
     whiteSpace: 'nowrap',
     width: SIDEBAR_WIDTH,
     zIndex: 1000,
   },
   drawerClose: {
-    overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       duration: theme.transitions.duration.leavingScreen,
       easing: theme.transitions.easing.sharp,

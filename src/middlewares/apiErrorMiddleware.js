@@ -1,17 +1,11 @@
-import { matchPath } from 'react-router';
 import { logout } from '../resources/auth';
+import { API_LOGIN_FAILURE } from '../resources/auth/actionTypes';
 import history from '../routerHistory';
 import routes from '../routes';
 
 const apiErrorMiddleware = (store) => (next) => (action) => {
   if (
-    !matchPath(
-      history.location.pathname,
-      {
-        exact: true,
-        path: routes.login.path,
-      },
-    )
+    action.type !== API_LOGIN_FAILURE
     && typeof action.payload !== 'undefined'
     && action.error
     && (action.payload.status === 401 || action.payload.status === 403)

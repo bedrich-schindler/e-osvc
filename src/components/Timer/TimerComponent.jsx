@@ -124,7 +124,7 @@ class TimerComponent extends React.Component {
       return (
         <Fab
           className={styles.rootButton}
-          color="default"
+          color={timer ? 'primary' : 'default'}
           onClick={this.toggleButton}
           title="Zobrazit časovač"
         >

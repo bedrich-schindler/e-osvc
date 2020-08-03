@@ -44,6 +44,7 @@ const InvoicesComponent = ({
   history,
   invoices,
   isOnline,
+  location,
   projects,
 }) => {
   const isTableLoading = getInvoicesIsPending
@@ -54,8 +55,8 @@ const InvoicesComponent = ({
 
   const [filterData, setFilterData] = useState(cloneDeep({
     clientIds: [],
-    invoiceDateFrom: null,
-    invoiceDateTo: null,
+    invoiceDateFrom: location?.state?.startDate || null,
+    invoiceDateTo: location?.state?.endDate || null,
   }));
 
   useEffect(() => {
@@ -325,6 +326,12 @@ InvoicesComponent.propTypes = {
     invoiceIdentifier: PropTypes.string.isRequired,
   })),
   isOnline: PropTypes.bool.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      endDate: PropTypes.instanceOf(Date),
+      startDate: PropTypes.instanceOf(Date),
+    }),
+  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

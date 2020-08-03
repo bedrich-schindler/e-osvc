@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
+import DetailIcon from '@material-ui/icons/Launch';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Table from '@material-ui/core/Table';
@@ -18,6 +20,8 @@ import {
   YAxis,
 } from 'recharts';
 import { Layout } from '../../components/Layout';
+import routes from '../../routes';
+import styles from './styles.scss';
 
 const getMonth = (month) => {
   const months = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen',
@@ -30,6 +34,7 @@ const DashboardComponent = (props) => {
   const {
     getStatistics,
     getStatisticsIsPending,
+    history,
     statistics,
   } = props;
 
@@ -44,11 +49,70 @@ const DashboardComponent = (props) => {
     getStatistics();
   }, [getStatistics]);
 
-  const renderStatisticsBlock = (title, statisticsItem) => (
+  const handleClickOnChart = (chartData) => {
+    const startDate = new Date(chartData.year, chartData.month - 1, 1, 0, 0, 0, 0);
+    const endDate = new Date(chartData.year, chartData.month, 1, 0, 0, 0, 0);
+
+    history.push(
+      routes.invoices.path,
+      {
+        endDate,
+        startDate,
+      },
+    );
+  };
+
+  const handleClickOnCard = (intervalType) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const startDate = new Date();
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date();
+    endDate.setHours(0, 0, 0, 0);
+
+    if (intervalType === 'last_year') {
+      startDate.setFullYear(currentDate.getFullYear() - 1, 0, 1);
+      endDate.setMonth(0, 1);
+    } else if (intervalType === 'this_year') {
+      startDate.setMonth(0, 1);
+      endDate.setFullYear(currentDate.getFullYear() + 1, 0, 1);
+    } else if (intervalType === 'last_month') {
+      startDate.setMonth(currentDate.getMonth() - 1, 1);
+      endDate.setDate(1);
+    } else if (intervalType === 'this_month') {
+      startDate.setDate(1);
+      endDate.setMonth(currentDate.getMonth() + 1, 1);
+    }
+
+    history.push(
+      routes.invoices.path,
+      {
+        endDate,
+        startDate,
+      },
+    );
+  };
+
+  const renderStatisticsBlock = (title, statisticsItem, intervalType) => (
     <Grid item xs={12} md={6} lg={3}>
       <Paper style={{ height: '100%' }}>
         <Box p={3}>
-          <h2>{title}</h2>
+          <Box pb={3}>
+            <Grid container justify="space-between" alignItems="center">
+              <Grid item>
+                <h2 className={styles.title}>{title}</h2>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  onClick={() => {
+                    handleClickOnCard(intervalType);
+                  }}
+                >
+                  <DetailIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </Box>
           {
               (getStatisticsIsPending || !statisticsItem)
                 ? (
@@ -153,12 +217,14 @@ const DashboardComponent = (props) => {
                           dataKey="paidInvoicesPrice"
                           fill="#009688"
                           name="Zaplacené"
+                          onClick={handleClickOnChart}
                           stackId="all"
                         />
                         <Bar
                           dataKey="unpaidInvoicesPrice"
                           fill="#7bcec5"
                           name="Nezaplacené"
+                          onClick={handleClickOnChart}
                           stackId="all"
                         />
                       </BarChart>
@@ -168,10 +234,10 @@ const DashboardComponent = (props) => {
             </Box>
           </Paper>
         </Grid>
-        {renderStatisticsBlock('Minulý rok', statistics?.lastYear)}
-        {renderStatisticsBlock('Tento rok', statistics?.thisYear)}
-        {renderStatisticsBlock('Minulý měsíc', statistics?.lastMonth)}
-        {renderStatisticsBlock('Tento měsíc', statistics?.thisMonth)}
+        {renderStatisticsBlock('Minulý rok', statistics?.lastYear, 'last_year')}
+        {renderStatisticsBlock('Tento rok', statistics?.thisYear, 'this_year')}
+        {renderStatisticsBlock('Minulý měsíc', statistics?.lastMonth, 'last_month')}
+        {renderStatisticsBlock('Tento měsíc', statistics?.thisMonth, 'this_month')}
       </Grid>
     </Layout>
   );
@@ -184,6 +250,9 @@ DashboardComponent.defaultProps = {
 DashboardComponent.propTypes = {
   getStatistics: PropTypes.func.isRequired,
   getStatisticsIsPending: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   statistics: PropTypes.shape({
     lastMonth: PropTypes.shape({
       paidInvoicesPrice: PropTypes.number.isRequired,

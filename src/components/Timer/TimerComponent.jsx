@@ -126,6 +126,7 @@ class TimerComponent extends React.Component {
           className={styles.rootButton}
           color="default"
           onClick={this.toggleButton}
+          title="Zobrazit časovač"
         >
           <TimerIcon />
         </Fab>
@@ -141,10 +142,10 @@ class TimerComponent extends React.Component {
                 timer
                   ? (
                     <IconButton
-                      aria-label="Zastavit"
                       disabled={!isOnline}
                       onClick={this.stopTimer}
                       size="small"
+                      title="Zastavit časovač"
                     >
                       {
                         getProjectsIsPending
@@ -154,9 +155,9 @@ class TimerComponent extends React.Component {
                     </IconButton>
                   ) : (
                     <IconButton
-                      aria-label="Spustit"
                       onClick={this.startTimer}
                       size="small"
+                      title="Spustit časovač"
                     >
                       <PlayArrowIcon />
                     </IconButton>
@@ -169,9 +170,9 @@ class TimerComponent extends React.Component {
             {timer && (
               <div className={styles.removeIcon}>
                 <IconButton
-                  aria-label="Resetovat"
                   onClick={this.resetTimer}
                   size="small"
+                  title="Resetovat časovač"
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -182,6 +183,7 @@ class TimerComponent extends React.Component {
             className={styles.button}
             color="default"
             onClick={this.toggleButton}
+            title="Skrýt časovač"
           >
             <CloseIcon />
           </Fab>

@@ -269,6 +269,7 @@ const InvoicesComponent = ({
                           onClick={() => {
                             history.push(routes.invoiceDetail.path.replace(':id', row.id));
                           }}
+                          title="Detail faktury"
                         >
                           <DetailIcon />
                         </IconButton>
@@ -277,6 +278,7 @@ const InvoicesComponent = ({
                           onClick={() => {
                             history.push(routes.invoiceEdit.path.replace(':id', row.id));
                           }}
+                          title="Upravit fakturu"
                         >
                           <EditIcon />
                         </IconButton>
@@ -286,6 +288,7 @@ const InvoicesComponent = ({
                             await deleteInvoice(row.id);
                             getInvoicesFiltered(filterData);
                           }}
+                          title="Smazat fakturu"
                         >
                           <DeleteIcon />
                         </IconButton>

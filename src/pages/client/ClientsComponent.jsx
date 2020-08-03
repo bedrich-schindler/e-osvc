@@ -101,6 +101,7 @@ const ClientsComponent = ({
                         setEditDialogData(row);
                         setIsEditDialogOpened(true);
                       }}
+                      title="Upravit klienta"
                     >
                       <EditIcon />
                     </IconButton>
@@ -110,6 +111,7 @@ const ClientsComponent = ({
                         await deleteClient(row.id);
                         getClients();
                       }}
+                      title="Smazat klienta"
                     >
                       <DeleteIcon />
                     </IconButton>

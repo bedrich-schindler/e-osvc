@@ -248,6 +248,7 @@ const TimeRecordsComponent = ({
                                   setEditDialogData(row);
                                   setIsEditDialogOpened(true);
                                 }}
+                                title="Upravit záznam"
                               >
                                 <EditIcon />
                               </IconButton>
@@ -257,6 +258,7 @@ const TimeRecordsComponent = ({
                                   await deleteTimeRecord(row.id);
                                   getTimeRecordsFiltered(filterData);
                                 }}
+                                title="Smazat záznam"
                               >
                                 <DeleteIcon />
                               </IconButton>
@@ -266,6 +268,7 @@ const TimeRecordsComponent = ({
                               onClick={() => {
                                 history.push(routes.invoiceDetail.path.replace(':id', row.invoice.id));
                               }}
+                              title="Detail faktury"
                             >
                               <DescriptionIcon />
                             </IconButton>

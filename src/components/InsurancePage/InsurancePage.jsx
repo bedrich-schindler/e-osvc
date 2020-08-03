@@ -101,6 +101,7 @@ const InsuranceComponent = ({
                         setEditDialogData(row);
                         setIsEditDialogOpened(true);
                       }}
+                      title="Upravit platbu"
                     >
                       <EditIcon />
                     </IconButton>
@@ -110,6 +111,7 @@ const InsuranceComponent = ({
                         await deleteInsurance(row.id);
                         getInsurances();
                       }}
+                      title="Smazat platbu"
                     >
                       <DeleteIcon />
                     </IconButton>

@@ -93,6 +93,7 @@ const ProjectsComponent = ({
                         setEditDialogData(row);
                         setIsEditDialogOpened(true);
                       }}
+                      title="Upravit projekt"
                     >
                       <EditIcon />
                     </IconButton>
@@ -102,6 +103,7 @@ const ProjectsComponent = ({
                         await deleteProject(row.id);
                         getProjects();
                       }}
+                      title="Smazat projekt"
                     >
                       <DeleteIcon />
                     </IconButton>

@@ -107,6 +107,7 @@ const DashboardComponent = (props) => {
                   onClick={() => {
                     handleClickOnCard(intervalType);
                   }}
+                  title="Přejít na výpis faktur"
                 >
                   <DetailIcon />
                 </IconButton>

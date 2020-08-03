@@ -27,7 +27,7 @@ export const deleteProject = (projectId) => createApiAction({
   endpoint: `/projects/${projectId}`,
   method: 'DELETE',
   notificationMessages: {
-    failure: 'Smazání projektu se nezdařilo.',
+    failure: 'Smazání projektu se nezdařilo. Pokud jsou na tomto projektu závislé další entity, smažte nejdříve je.',
     success: 'Projekt byl úspěšně smazán.',
   },
   types: [

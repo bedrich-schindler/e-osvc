@@ -30,7 +30,7 @@ export const deleteClient = (clientId) => createApiAction({
   endpoint: `/clients/${clientId}`,
   method: 'DELETE',
   notificationMessages: {
-    failure: 'Smazání klienta se nezdařilo.',
+    failure: 'Smazání klienta se nezdařilo. Pokud jsou na tomto klientovi závislé další entity, smažte nejdříve je.',
     success: 'Klient byl úspěšně smazán.',
   },
   types: [
